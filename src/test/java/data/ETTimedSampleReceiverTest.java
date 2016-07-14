@@ -2,24 +2,25 @@ package data;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import data.ETSample;
 import data.ETEyeData;
-import data.ETPlaybackSampleReceiver;
-import data.ETSortedSampleList;
+import data.ETTimedSampleReceiver;
+import data.ETTimer;
 
-public class ETPlaybackSampleReceiverTest {
+public class ETTimedSampleReceiverTest {
 	
 	@Test
 	public void getSample_noSampleBatch_returnsNull() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETTimedSampleReceiver sampleReceiver = new ETTimedSampleReceiver(createTimerMock());
 		
 		assertNull(sampleReceiver.getSample());
 	}
-
+	
 	@Test
 	public void getSample_emptySampleBatch_returnsNull() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETTimedSampleReceiver sampleReceiver = new ETTimedSampleReceiver(createTimerMock());
 		ETSortedSampleList emptySampleList = new ETSortedSampleList();
 		sampleReceiver.setSamples(emptySampleList);
 		
@@ -28,7 +29,7 @@ public class ETPlaybackSampleReceiverTest {
 	
 	@Test
 	public void getSample_emptySampleBatch_subsequentCallsReturnNull() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETTimedSampleReceiver sampleReceiver = new ETTimedSampleReceiver(createTimerMock());
 		ETSortedSampleList emptySampleList = new ETSortedSampleList();
 		sampleReceiver.setSamples(emptySampleList);
 		
@@ -38,7 +39,7 @@ public class ETPlaybackSampleReceiverTest {
 	
 	@Test
 	public void getSample_orderedSampleBatch_returnsEverySample() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETTimedSampleReceiver sampleReceiver = new ETTimedSampleReceiver(createTimerMock());
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
 		
@@ -49,7 +50,7 @@ public class ETPlaybackSampleReceiverTest {
 	
 	@Test
 	public void getSample_orderedSampleBatch_returnsNullAfterBatchDepleted() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETTimedSampleReceiver sampleReceiver = new ETTimedSampleReceiver(createTimerMock());
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
 		
@@ -62,7 +63,7 @@ public class ETPlaybackSampleReceiverTest {
 	
 	@Test
 	public void getSample_orderedSampleBatchDepletedResetCalled_returnsEverySample() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETTimedSampleReceiver sampleReceiver = new ETTimedSampleReceiver(createTimerMock());
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
 		
@@ -79,7 +80,7 @@ public class ETPlaybackSampleReceiverTest {
 	
 	@Test
 	public void getSample_setNewEmptySampleBatch_returnsNull() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETTimedSampleReceiver sampleReceiver = new ETTimedSampleReceiver(createTimerMock());
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
 		
@@ -91,7 +92,7 @@ public class ETPlaybackSampleReceiverTest {
 	
 	@Test
 	public void getSample_setNewOrderedSampleBatch_returnsEverySample() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETTimedSampleReceiver sampleReceiver = new ETTimedSampleReceiver(createTimerMock());
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
 		
@@ -103,14 +104,40 @@ public class ETPlaybackSampleReceiverTest {
 		assertSame(sampleReceiver.getSample(), newSampleList.get(2));
 	}
 	
+	private ETTimer createTimerMock() {
+		ETTimer timer = mock(ETTimer.class);
+		
+		// Timestamps
+		long ts0 = 0;
+		long ts1 = 1;
+		long ts2 = 2;
+		long ts3 = 3;
+		long ts4 = 4;
+		long ts5 = 5;
+		long ts6 = 6;
+		long ts7 = 7;
+		
+		when(timer.getTime())
+			.thenReturn(ts0)
+			.thenReturn(ts1)
+			.thenReturn(ts2)
+			.thenReturn(ts3)
+			.thenReturn(ts4)
+			.thenReturn(ts5)
+			.thenReturn(ts6)
+			.thenReturn(ts7);
+		
+		return timer;
+	}
+	
 	private ETSortedSampleList createTestSampleBatch() {
 		ETSortedSampleList samples = new ETSortedSampleList();
-		ETSample sample1 = new ETSample(new ETEyeData(0,0,0,0,0,0), new ETEyeData(0,0,0,0,0,0), 0);
-		ETSample sample2 = new ETSample(new ETEyeData(1,1,1,1,1,1), new ETEyeData(1,1,1,1,1,1), 1);
-		ETSample sample3 = new ETSample(new ETEyeData(2,2,2,2,2,2), new ETEyeData(2,2,2,2,2,2), 2);
+		ETSample sample1 = new ETSample(new ETEyeData(1,1,1,1,1,1), new ETEyeData(1,1,1,1,1,1), 1);
+		ETSample sample2 = new ETSample(new ETEyeData(2,2,2,2,2,2), new ETEyeData(2,2,2,2,2,2), 2);
+		ETSample sample3 = new ETSample(new ETEyeData(3,3,3,3,3,3), new ETEyeData(3,3,3,3,3,3), 3);
 		samples.addIgnore(sample1);
 		samples.addIgnore(sample2);
 		samples.addIgnore(sample3);
-		return samples;
+		return samples;	
 	}
 }

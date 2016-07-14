@@ -13,6 +13,10 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 	
 	public ETTimedSampleReceiver(ETTimer timer) {
 		this.timer = timer;
+		
+		samples = new ETSortedSampleList();
+		samplesIter = samples.iterator();
+		
 		reset();
 	}
 
@@ -41,7 +45,15 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 	}
 	
 	public void reset() {
+		resetTimer();
+		resetSampleIteration();
+	}
+	
+	private void resetTimer() {
 		startTime = timer.getTime();
+	}
+	
+	private void resetSampleIteration() {
 		samplesIter = samples.iterator();
 		
 		if(samplesIter.hasNext())
@@ -52,6 +64,7 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 	
 	public void setSamples(ETSortedSampleList samples) {
 		this.samples = samples;
+		resetSampleIteration();
 	}
 
 }
