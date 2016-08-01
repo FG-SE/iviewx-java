@@ -9,8 +9,6 @@ repositories {
 // Dependencies
 dependencies {
 	// Compile
-    compile 'org.slf4j:slf4j-api:1.7.13'
-    compile 'net.java.dev.jna:jna:4.1.0'
     compile files('libs/IViewXAPI.jar')
     
 
