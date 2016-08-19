@@ -9,11 +9,7 @@ repositories {
 // Dependencies
 dependencies {
 	// Compile
-    compile files('libs/IViewXAPI.jar')
     compile 'net.java.dev.jna:jna:4.1.0'
-
-
-    
 
     // Test
     testCompile 'junit:junit:4.12'
