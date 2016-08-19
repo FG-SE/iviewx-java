@@ -20,9 +20,9 @@ public class ETErrorHandler {
 			case RET_WINDOW_IS_CLOSED :
 				return;
 			case ERR_COULD_NOT_CONNECT :
-				return;
+				throw new ETConnectionException("Could not connect.");
 			case ERR_NOT_CONNECTED :
-				return;
+				throw new ETConnectionException("Not connected.");
 			case ERR_NOT_CALIBRATED :
 				return;
 			case ERR_NOT_VALIDATED :
@@ -30,11 +30,11 @@ public class ETErrorHandler {
 			case ERR_EYETRACKING_APPLICATION_NOT_RUNNING :
 				return;
 			case ERR_WRONG_COMMUNICATION_PARAMETER :
-				return;
+				throw new ETConnectionException("Failed to establish connection.");
 			case ERR_WRONG_DEVICE :
 				return;
 			case ERR_WRONG_PARAMETER :
-				return;
+				throw new ETParameterException("Parameter value is out of range.");
 			case ERR_WRONG_CALIBRATION_METHOD :
 				return;
 			case ERR_CALIBRATION_TIMEOUT :
@@ -52,11 +52,11 @@ public class ETErrorHandler {
 			case ERR_DELETE_SOCKET :
 				return;
 			case ERR_NO_RESPONSE_FROM_IVIEWX :
-				return;
+				throw new ETServerException("No respone from server.");
 			case ERR_INVALID_IVIEWX_VERSION :
-				return;
+				throw new ETServerException("Invalid server version.");
 			case ERR_WRONG_IVIEWX_VERSION :
-				return;
+				throw new ETServerException("Wrong server version.");
 			case ERR_ACCESS_TO_FILE :
 				return;
 			case ERR_SOCKET_CONNECTION :
@@ -68,17 +68,17 @@ public class ETErrorHandler {
 			case ERR_FULL_DATA_BUFFER :
 				return;
 			case ERR_IVIEWX_IS_NOT_READY :
-				return;
+				throw new ETServerException("Server not ready.");
 			case ERR_PAUSED_DATA_BUFFER :
 				return;
 			case ERR_IVIEWX_NOT_FOUND :
-				return;
+				throw new ETServerException("Server not found.");
 			case ERR_IVIEWX_PATH_NOT_FOUND :
-				return;
+				throw new ETServerException("Path to server not found.");
 			case ERR_IVIEWX_ACCESS_DENIED :
-				return;
+				throw new ETServerException("Access to server denied.");
 			case ERR_IVIEWX_ACCESS_INCOMPLETE :
-				return;
+				throw new ETServerException("Access to server incomplete.");
 			case ERR_IVIEWX_OUT_OF_MEMORY :
 				return;
 			case ERR_MULTIPLE_DEVICES :
