@@ -1,5 +1,7 @@
 package connection;
 
+import iviewxapi.IViewXAPILibrary;
+
 public interface ETConnection {
 	
 	// Connection
@@ -10,6 +12,6 @@ public interface ETConnection {
 	public void setConnectionTimeout(int seconds);
 	
 	// JNA mapping of IView X API
-	//public IViewXAPIDllLibrary getIViewXLibrary();
+	public IViewXAPILibrary getIViewXLibrary();
 	
 }

@@ -1,19 +1,26 @@
 package connection;
 
+import java.nio.ByteBuffer;
+
+import iviewxapi.IViewXAPILibrary;
+import exception.ETErrorHandler;
+
 public class ETIViewXConnection implements ETConnection {
 	
-	//private IViewXAPIDllLibrary iViewXLibrary = IViewXAPI.getDllInstance();
+	private IViewXAPILibrary iViewXLibrary = IViewXAPILibrary.INSTANCE;
 
 	@Override
 	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort) {
-		// TODO Auto-generated method stub
-		
+		ByteBuffer sendIpBuffer = ByteBuffer.wrap(sendIp.getBytes());
+		ByteBuffer receiveIpBuffer = ByteBuffer.wrap(receiveIp.getBytes());
+		int status = iViewXLibrary.iV_Connect(sendIpBuffer, sendPort, receiveIpBuffer, receivePort);
+		ETErrorHandler.handle(status);
 	}
 
 	@Override
 	public void connectLocal() {
-		// TODO Auto-generated method stub
-		
+		int status = iViewXLibrary.iV_ConnectLocal();
+		System.out.println(status);
 	}
 
 	@Override
@@ -34,10 +41,9 @@ public class ETIViewXConnection implements ETConnection {
 		
 	}
 
-	/*@Override
-	public IViewXAPIDllLibrary getIViewXLibrary() {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
+	@Override
+	public IViewXAPILibrary getIViewXLibrary() {
+		return iViewXLibrary;
+	}
 
 }
