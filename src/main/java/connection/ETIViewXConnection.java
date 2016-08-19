@@ -1,11 +1,8 @@
 package connection;
 
-import dll.IViewXAPI;
-import dll.IViewXAPIDllLibrary;
-
 public class ETIViewXConnection implements ETConnection {
 	
-	private IViewXAPIDllLibrary iViewXLibrary = IViewXAPI.getDllInstance();
+	//private IViewXAPIDllLibrary iViewXLibrary = IViewXAPI.getDllInstance();
 
 	@Override
 	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort) {
@@ -37,10 +34,10 @@ public class ETIViewXConnection implements ETConnection {
 		
 	}
 
-	@Override
+	/*@Override
 	public IViewXAPIDllLibrary getIViewXLibrary() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 }
