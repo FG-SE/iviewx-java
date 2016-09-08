@@ -3,6 +3,7 @@ package connection;
 import java.nio.ByteBuffer;
 
 import iviewxapi.IViewXAPILibrary;
+import static iviewxapi.IViewXAPILibrary.*;
 import exception.ETErrorHandler;
 
 public class ETIViewXConnection implements ETConnection {
@@ -20,25 +21,25 @@ public class ETIViewXConnection implements ETConnection {
 	@Override
 	public void connectLocal() {
 		int status = iViewXLibrary.iV_ConnectLocal();
-		System.out.println(status);
+		ETErrorHandler.handle(status);
 	}
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
-		
+		int status = iViewXLibrary.iV_Disconnect();
+		ETErrorHandler.handle(status);
 	}
 
 	@Override
 	public boolean isConnected() {
-		// TODO Auto-generated method stub
-		return false;
+		int status = iViewXLibrary.iV_IsConnected();
+		return status == RET_SUCCESS;
 	}
 
 	@Override
 	public void setConnectionTimeout(int seconds) {
-		// TODO Auto-generated method stub
-		
+		int status = iViewXLibrary.iV_SetConnectionTimeout(seconds);
+		ETErrorHandler.handle(status);
 	}
 
 	@Override
