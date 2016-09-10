@@ -1,24 +1,25 @@
 package sample;
 
-import connection.ETConnection;
 import data.ETEyeData;
 import exception.ETErrorHandler;
+import iviewxapi.IViewXAPILibrary;
 import iviewxapi.SampleStruct;
 import iviewxapi.EyeDataStruct;
 
 public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	
-	private ETConnection connection;
+	private IViewXAPILibrary iView;
+	
 	private SampleStruct sampleStruct;
 	
-	public ETIViewXSampleReceiver(ETConnection connection) {
-		this.connection = connection;
+	public ETIViewXSampleReceiver(IViewXAPILibrary lib) {
+		iView = lib;
 		sampleStruct = new SampleStruct();
 	}
 
 	@Override
 	public ETSample getSample() {
-		int status = connection.getIViewXLibrary().iV_GetSample(sampleStruct);
+		int status = iView.iV_GetSample(sampleStruct);
 		ETErrorHandler.handle(status);
 		return structToSample(sampleStruct);
 	}
