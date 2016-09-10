@@ -1,4 +1,4 @@
-package data;
+package sample;
 
 public class ETDeviceSampleReceiver implements ETSampleReceiver {
 	

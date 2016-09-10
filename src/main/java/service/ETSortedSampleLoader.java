@@ -7,8 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import data.ETEyeData;
-import data.ETSample;
-import data.ETSortedSampleList;
+import sample.ETSample;
+import sample.ETSortedSampleList;
 
 public class ETSortedSampleLoader {
 

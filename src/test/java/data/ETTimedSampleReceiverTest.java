@@ -4,10 +4,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import data.ETSample;
 import data.ETEyeData;
-import data.ETTimedSampleReceiver;
-import data.ETTimer;
+import sample.ETSample;
+import sample.ETSortedSampleList;
+import sample.ETTimedSampleReceiver;
+import sample.ETTimer;
 
 public class ETTimedSampleReceiverTest {
 	

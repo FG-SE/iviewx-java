@@ -1,4 +1,6 @@
-package data;
+package sample;
+
+import data.ETEyeData;
 
 public class ETSample {
 	

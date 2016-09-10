@@ -1,4 +1,6 @@
-package data;
+package event;
+
+import data.ETEye;
 
 public class ETEvent {
 	

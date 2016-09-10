@@ -1,6 +1,7 @@
-package data;
+package sample;
 
 import connection.ETConnection;
+import data.ETEyeData;
 import exception.ETErrorHandler;
 import iviewxapi.SampleStruct;
 import iviewxapi.EyeDataStruct;

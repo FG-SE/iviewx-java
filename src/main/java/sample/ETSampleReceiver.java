@@ -1,4 +1,4 @@
-package data;
+package sample;
 
 public interface ETSampleReceiver {
 	

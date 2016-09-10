@@ -3,10 +3,10 @@ package data;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import data.ETSample;
 import data.ETEyeData;
-import data.ETPlaybackSampleReceiver;
-import data.ETSortedSampleList;
+import sample.ETPlaybackSampleReceiver;
+import sample.ETSample;
+import sample.ETSortedSampleList;
 
 public class ETPlaybackSampleReceiverTest {
 	
