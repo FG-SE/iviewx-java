@@ -2,7 +2,7 @@ package connection;
 
 import iviewxapi.IViewXAPILibrary;
 
-public interface ETConnection {
+public interface ETConnectionManager {
 	
 	// Connection
 	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort);
@@ -10,8 +10,5 @@ public interface ETConnection {
 	public void disconnect();
 	public boolean isConnected();
 	public void setConnectionTimeout(int seconds);
-	
-	// JNA mapping of IView X API
-	public IViewXAPILibrary getIViewXLibrary();
 	
 }

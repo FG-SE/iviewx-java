@@ -6,45 +6,44 @@ import iviewxapi.IViewXAPILibrary;
 import static iviewxapi.IViewXAPILibrary.*;
 import exception.ETErrorHandler;
 
-public class ETIViewXConnection implements ETConnection {
+public class ETIViewXConnectionManager implements ETConnectionManager {
 	
-	private IViewXAPILibrary iViewXLibrary = IViewXAPILibrary.INSTANCE;
+	private IViewXAPILibrary iView;
+	
+	public ETIViewXConnectionManager(IViewXAPILibrary lib) {
+		iView = lib;
+	}
 
 	@Override
 	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort) {
 		ByteBuffer sendIpBuffer = ByteBuffer.wrap(sendIp.getBytes());
 		ByteBuffer receiveIpBuffer = ByteBuffer.wrap(receiveIp.getBytes());
-		int status = iViewXLibrary.iV_Connect(sendIpBuffer, sendPort, receiveIpBuffer, receivePort);
+		int status = iView.iV_Connect(sendIpBuffer, sendPort, receiveIpBuffer, receivePort);
 		ETErrorHandler.handle(status);
 	}
 
 	@Override
 	public void connectLocal() {
-		int status = iViewXLibrary.iV_ConnectLocal();
+		int status = iView.iV_ConnectLocal();
 		ETErrorHandler.handle(status);
 	}
 
 	@Override
 	public void disconnect() {
-		int status = iViewXLibrary.iV_Disconnect();
+		int status = iView.iV_Disconnect();
 		ETErrorHandler.handle(status);
 	}
 
 	@Override
 	public boolean isConnected() {
-		int status = iViewXLibrary.iV_IsConnected();
+		int status = iView.iV_IsConnected();
 		return status == RET_SUCCESS;
 	}
 
 	@Override
 	public void setConnectionTimeout(int seconds) {
-		int status = iViewXLibrary.iV_SetConnectionTimeout(seconds);
+		int status = iView.iV_SetConnectionTimeout(seconds);
 		ETErrorHandler.handle(status);
-	}
-
-	@Override
-	public IViewXAPILibrary getIViewXLibrary() {
-		return iViewXLibrary;
 	}
 
 }
