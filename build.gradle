@@ -22,3 +22,8 @@ test {
         showStandardStreams = true
     }
 }
+
+//Tasks
+javadoc {
+	exclude "**/iviewxapi/**"
+}
