@@ -24,7 +24,8 @@ public class ETSortedSampleList implements Iterable<ETSample>{
 			samples.add(sample);
 		else if(last.getTimestamp() < sample.getTimestamp())
 			samples.add(sample);
-		// else ignore
+		else
+			return;
 	}
 	
 	public int size() {
