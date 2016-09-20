@@ -10,7 +10,7 @@ public class ETEvent {
 	private double posX;
 	private double posY;
 	
-	public ETEvent(long startTime, long endTime, ETEye eye, long posX, long posY) {
+	public ETEvent(long startTime, long endTime, ETEye eye, double posX, double posY) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.eye = eye;
