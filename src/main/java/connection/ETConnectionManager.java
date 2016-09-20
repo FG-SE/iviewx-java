@@ -1,7 +1,5 @@
 package connection;
 
-import iviewxapi.IViewXAPILibrary;
-
 public interface ETConnectionManager {
 	
 	// Connection
