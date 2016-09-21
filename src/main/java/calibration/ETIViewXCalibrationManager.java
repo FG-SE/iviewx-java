@@ -5,10 +5,12 @@ import iviewxapi.IViewXAPILibrary;
 
 /** Manages the calibration process for the RED-m eyetracker.
  *  <p>
- *  Calibration responsibility is delegated using the IView X SDK.
- *  <p>
  *  Currently only supports automatic calibration.
  *  Custom calibration and advanced calibration settings might get added in the future.
+ *  <p>
+ *  There can only be one active calibration at a time. 
+ *  Having multiple instances of this class will result in unintuitive behavior 
+ *  because of shared state. Please use the IViewX class as a central access point.
  * 
  *  @author Luca Fuelbier
  */
