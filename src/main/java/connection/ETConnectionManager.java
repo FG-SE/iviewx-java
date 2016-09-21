@@ -1,16 +1,12 @@
 package connection;
 
-/** Manages the connection to the RED-m eyetracker.
- *  <p>
- *  There can only be one active connection at a time.
- *  Having multiple instances of this class will result in unintuitive behavior 
- *  because of shared state. Please use the IViewX class as a central access point.
+/** Manages a connection to an eyetracker.
  * 
  *  @author Luca Fuelbier
  */
 public interface ETConnectionManager {
 	
-	/** Connects to a IView X Server that manages a RED-m eyetracker.
+	/** Connects to a server that manages an eyetracker.
 	 * 
 	 *  @param sendIp IP on which messages will be send to the server
 	 *  @param sendPort Port on which messages will be send to the server
@@ -19,13 +15,16 @@ public interface ETConnectionManager {
 	 */
 	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort);
 	
-	/** Connects to locally running IViewX Server that manages a RED-m eyetracker. */
+	/** Connects to locally running server that manages an eyetracker. */
 	public void connectLocal();
 	
-	/** Disconnects from the currently connected IView X Server. */
+	/** Disconnects from the currently connected server. */
 	public void disconnect();
 	
-	/** Returns <i>true</i> if the ConnectionManager if the ConnectionManager manages an active connection. */
+	/** Returns <i>true</i> if the ETConnectionManager manages a active connection.
+	 * 
+	 * 	@return <i>true</i> if the ETConnectionManager manages a active connection
+	 */
 	public boolean isConnected();
 	
 	/** Sets the connection timeout in seconds.
