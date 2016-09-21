@@ -1,11 +1,34 @@
 package data;
 
+/** Eye of one side of the face.
+ *  <ul>
+ *    <li>{@link #LEFT}</li>
+ *    <li>{@link #RIGHT}</li>
+ *  </ul>
+ * 
+ * @author Luca Fuelbier
+ *
+ */
 public enum ETEye {
+	
+	/** Left eye */
 	LEFT,
+	
+	/** Right eye */
 	RIGHT;
 	
+	/** Converts a ASCII encoded character to the corresponding enum value.
+	 *  <p>
+	 *  Only the characters 'l' and 'r' are allowed.
+	 *  Other characters are invalid and will throw an exception.
+	 * 
+	 * @param b ASCII codepoint representing a single character
+	 * @return {@link ETEye} enum value that corresponds to the provided character
+	 * @throws IllegalArgumentException If a invalid character was provided
+	 */
 	public static ETEye fromByte(byte b) throws IllegalArgumentException {
 		
+		// Converts a byte (signed) to a char (unsigned)
 		char eyeCharacter = (char)(b & 0xFF);
 		
 		switch(eyeCharacter)
