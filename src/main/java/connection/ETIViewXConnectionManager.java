@@ -18,6 +18,10 @@ public class ETIViewXConnectionManager implements ETConnectionManager {
 	
 	private IViewXAPILibrary iView;
 	
+	/** Constructs a IView X ConnectionManager that uses the provided IView X SDK binding.
+	 * 
+	 *  @param lib IView X SDK binding for eyetracker communication
+	 */
 	public ETIViewXConnectionManager(IViewXAPILibrary lib) {
 		iView = lib;
 	}
