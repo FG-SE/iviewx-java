@@ -34,7 +34,7 @@ public class ETIViewXCalibrationManager implements ETCalibrationManager {
 	 *  Manipulating the calibration settings is not supported yet, but might be added in 
 	 *  a future version.
 	 *  
-	 *  @throws ETException If there was a problem with the EyeTracker, or the IView X Server
+	 *  @throws exception.ETException If there was a problem with the EyeTracker, or the IView X Server
 	 */
 	@Override
 	public void calibrate() {
