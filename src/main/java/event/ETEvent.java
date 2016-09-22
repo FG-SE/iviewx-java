@@ -2,6 +2,13 @@ package event;
 
 import data.ETEye;
 
+/** Stores eyetracking event information.
+ *  <p>
+ *  Eyetracking events are fixation events.
+ *  Fixation means a fixation of a screen coordinate for a given timeframe.
+ * 
+ *  @author Luca Fuelbier
+ */
 public class ETEvent {
 	
 	private long startTime;
@@ -10,6 +17,14 @@ public class ETEvent {
 	private double posX;
 	private double posY;
 	
+	/** Constructs a new eyetracking event information object.
+	 * 
+	 * @param startTime Start time of the event [us]
+	 * @param endTime End time of the event [us]
+	 * @param eye Related eye ({@link data.ETEye#LEFT}/{@link data.ETEye#RIGHT})
+	 * @param posX Horizontal position of the fixation [px]
+	 * @param posY Vertical position of the fixation [px]
+	 */
 	public ETEvent(long startTime, long endTime, ETEye eye, double posX, double posY) {
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -18,29 +33,52 @@ public class ETEvent {
 		this.posY = posY;
 	}
 	
-	// Timing
+	/** Returns the start time of the event in microseconds.
+	 * 
+	 *  @return The start time of the event in us
+	 */
 	public long getStartTime() {
 		return startTime;
 	}
 	
+	/** Returns the end time of the event in microseconds.
+	 * 
+	 *  @return The end time of the event in us
+	 */
 	public long getEndTime() {
 		return endTime;
 	}
 	
+	/** Returns the duration of the event in microseconds.
+	 * 
+	 *  @return The duration of the event in us
+	 */
 	public long getDuration() {
 		return endTime - startTime;
 	}
 	
-	// Eye information
+	/** Returns the eye related to the event.
+	 *  <p>
+	 *  Possible values are {@link data.ETEye#LEFT} and {@link data.ETEye#RIGHT}.
+	 * 
+	 *  @return Eye related to the event
+	 */
 	public ETEye getEye() {
 		return eye;
 	}
 	
-	// Position
+	/** Returns the horizontal position of the fixation in pixel.
+	 * 
+	 *  @return The horizontal position of the fixation in px
+	 */
 	public double getPositionX() {
 		return posX;
 	}
 	
+	/** Returns the vertical position of the fixation in pixel.
+	 * 
+	 *  @return The vertical position of the fixation in px
+	 */
 	public double getPositionY() {
 		return posY;
 	}
