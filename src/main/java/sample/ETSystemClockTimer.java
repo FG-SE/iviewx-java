@@ -11,7 +11,8 @@ public class ETSystemClockTimer implements ETTimer{
 	 *  @Return Current system time [us]
 	 */
 	@Override
-	public long getTime() {
+	public long getTimeMicro() {
+		// System.currentTimeMillis() performs very fast and is accurate enough
 		return System.currentTimeMillis() * 1000;
 	}
 	

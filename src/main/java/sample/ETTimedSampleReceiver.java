@@ -17,7 +17,8 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 		samples = new ETSortedSampleList();
 		samplesIter = samples.iterator();
 		
-		reset();
+		resetTimer();
+		resetSampleIteration();
 	}
 
 	@Override
@@ -27,7 +28,7 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 			return null;
 		}
 		
-		long elapsed = timer.getTime() - startTime;
+		long elapsed = timer.getTimeMicro() - startTime;
 		
 		while(currentSample.getTimestamp() < elapsed)
 		{
@@ -50,7 +51,7 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 	}
 	
 	private void resetTimer() {
-		startTime = timer.getTime();
+		startTime = timer.getTimeMicro();
 	}
 	
 	private void resetSampleIteration() {
