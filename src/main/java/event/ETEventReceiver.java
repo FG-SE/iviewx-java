@@ -1,6 +1,6 @@
 package event;
 
-/** Receives eyetracking events from an eyetracker.
+/** Receives eyetracking events.
  * 
  *  @author Luca Fuelbier
  */
