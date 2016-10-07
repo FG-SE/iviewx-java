@@ -6,13 +6,13 @@ package sample;
  */
 public class ETSystemClockTimer implements ETTimer{
 
-	/** Returns the current system time in milliseconds.
+	/** Returns the current system time in microseconds.
 	 * 
-	 *  @Return Current system time [ms]
+	 *  @Return Current system time [us]
 	 */
 	@Override
 	public long getTime() {
-		return System.currentTimeMillis();
+		return System.currentTimeMillis() * 1000;
 	}
 	
 }
