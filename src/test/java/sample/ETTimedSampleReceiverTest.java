@@ -118,7 +118,7 @@ public class ETTimedSampleReceiverTest {
 		long ts6 = 6;
 		long ts7 = 7;
 		
-		when(timer.getTime())
+		when(timer.getTimeMicro())
 			.thenReturn(ts0)
 			.thenReturn(ts1)
 			.thenReturn(ts2)

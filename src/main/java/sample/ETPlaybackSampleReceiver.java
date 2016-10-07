@@ -35,7 +35,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 		samplesIter = samples.iterator();
 	}
 
-	/** Receives a single eyetracking sample from the sample list.
+	/** Retrieves a single eyetracking sample from the sample list.
 	 *  <p>
 	 *  The sample returned will be the next one in the list, or 
 	 *  null if the list is fully iterated or empty.
