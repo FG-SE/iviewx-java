@@ -1,2 +1,5 @@
 [Documentation]
 - Add @throws tags to methods of eyetracker dependent classes
+
+[General]
+- Remove functionality that is not supported by the RED-m eyetracker (See section "Function and Device Overview" in the IView X SDK Manual)

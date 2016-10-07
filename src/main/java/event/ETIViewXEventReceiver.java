@@ -42,8 +42,8 @@ public class ETIViewXEventReceiver implements ETEventReceiver {
 	
 	/** Converts the information of an EventStruct to an ETEvent.
 	 * 
-	 * @param struct EventStruct containing event information
-	 * @return Eyetracking event
+	 *  @param struct EventStruct containing event information
+	 *  @return Eyetracking event
 	 */
 	private ETEvent structToEvent(EventStruct struct) {
 		return new ETEvent(struct.startTime, struct.endTime,
