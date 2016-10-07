@@ -4,3 +4,7 @@
 
 [General]
 - Remove functionality that is not supported by the RED-m eyetracker (See section "Function and Device Overview" in the IView X SDK Manual)
+
+[Timed Data Retrieval]
+- Figure out, how the eyetracker measures timestamps (microseconds in a long dont make sense as a since-epoch measure)
+- System time can only be measured in milliseconds, is that okay, or do we need a more fine-grained timer?
