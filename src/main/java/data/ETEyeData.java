@@ -88,7 +88,7 @@ public class ETEyeData {
 		return gazeY;
 	}
 	
-	/** Constructs a zero initialized eyetracking data object.
+	/** Creates a zero initialized eyetracking data object.
 	 * 
 	 *  @return Zero initialized ETEyeData object
 	 */
