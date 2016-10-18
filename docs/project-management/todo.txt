@@ -6,4 +6,11 @@
 - Remove functionality that is not supported by the RED-m eyetracker (See section "Function and Device Overview" in the IView X SDK Manual)
 
 [Timed Data Retrieval]
+- Do we actually need the timed data receivers? Will they be used, or are they just making the library bigger?
 - System time can only be measured in milliseconds, is that okay, or do we need a more fine-grained timer?
+
+[Sorted Lists]
+- Refactor to remove code duplication
+
+[Events]
+- Do we need Event-Stabilization, or are they stable enough?
