@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import data.ETEyeData;
+import eye.ETEyeData;
 import sample.ETSample;
 import sample.ETSortedSampleList;
 

@@ -1,10 +1,12 @@
 package sample;
 
 import org.junit.Test;
+
+import eye.ETEyeData;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import data.ETEyeData;
 import sample.ETSample;
 import sample.ETSortedSampleList;
 import sample.ETTimedSampleReceiver;

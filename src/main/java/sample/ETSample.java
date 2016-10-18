@@ -1,6 +1,6 @@
 package sample;
 
-import data.ETEyeData;
+import eye.ETEyeData;
 
 /** Stores eyetracking sample information.
  *  <p>

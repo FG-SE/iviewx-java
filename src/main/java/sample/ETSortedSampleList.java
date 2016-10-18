@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-/** Possible improvements:
+/*  Possible improvements:
  *  - Refactor to interface to be able to provide implementations with different performance advantages
+ *  - Refactor to shared solution for Samples and Events using Generics and the Comparable interface
  */
 
 /** List of eyetracking samples sorted by their timestamp.
@@ -75,7 +76,7 @@ public class ETSortedSampleList implements Iterable<ETSample>{
 	 * @return Eyetracking sample at the specified position in this list
 	 * @throws IndexOutOfBoundsException If the index is out of range
 	 */
-	public ETSample get(int index) throws IndexOutOfBoundsException{
+	public ETSample get(int index) throws IndexOutOfBoundsException {
 		return samples.get(index);
 	}
 	

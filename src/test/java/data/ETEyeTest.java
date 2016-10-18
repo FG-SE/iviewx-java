@@ -3,9 +3,10 @@ package data;
 import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
-import static org.junit.Assert.*;
 
-import data.ETEye;
+import eye.ETEye;
+
+import static org.junit.Assert.*;
 
 public class ETEyeTest {
 	

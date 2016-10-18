@@ -1,4 +1,4 @@
-package data;
+package eye;
 
 /** Eyetracking data for one eye.
  *  <p>

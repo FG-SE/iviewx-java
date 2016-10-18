@@ -25,7 +25,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 		this(new ETSortedSampleList());
 	}
 	
-	/** Constructs a nwe Playback SampleReceiver initializing it 
+	/** Constructs a new Playback SampleReceiver initializing it 
 	 *  with a provided ETSortedSampleList. 
 	 * 
 	 * @param samples Sample list
@@ -69,7 +69,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	 */
 	public void setSamples(ETSortedSampleList samples) {
 		this.samples = samples;
-		reset();
+		samplesIter = samples.iterator();
 	}
 
 }

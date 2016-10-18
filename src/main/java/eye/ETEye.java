@@ -1,4 +1,4 @@
-package data;
+package eye;
 
 /** Eye of one side of the face.
  *  <ul>

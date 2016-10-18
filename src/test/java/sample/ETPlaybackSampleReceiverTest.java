@@ -1,9 +1,11 @@
 package sample;
 
 import org.junit.Test;
+
+import eye.ETEyeData;
+
 import static org.junit.Assert.*;
 
-import data.ETEyeData;
 import sample.ETPlaybackSampleReceiver;
 import sample.ETSample;
 import sample.ETSortedSampleList;

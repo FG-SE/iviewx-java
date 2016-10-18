@@ -1,7 +1,7 @@
 package sample;
 
-import data.ETEyeData;
 import exception.ETErrorHandler;
+import eye.ETEyeData;
 import iviewxapi.IViewXAPILibrary;
 import iviewxapi.SampleStruct;
 import iviewxapi.EyeDataStruct;
