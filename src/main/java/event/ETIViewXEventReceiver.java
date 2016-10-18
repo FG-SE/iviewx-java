@@ -2,8 +2,8 @@ package event;
 
 import iviewxapi.IViewXAPILibrary;
 import exception.ETErrorHandler;
+import eye.ETEye;
 import iviewxapi.EventStruct;
-import data.ETEye;
 
 /** Receives eyetracking events from the RED-m eyetracker.
  *  <p>
