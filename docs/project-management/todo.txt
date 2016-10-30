@@ -14,3 +14,11 @@
 
 [Events]
 - Do we need Event-Stabilization, or are they stable enough?
+
+[Sample/Event Loader, Sorted Sample/Event List]
+- How big will these lists get?
+- Do we have to stream them in/out of a file?
+- Do we have to increase the maximum heap size of the JVM at startup?
+
+[ConnectionManager]
+- Automatically disconnect from IView X Server if the class is garbage collected
