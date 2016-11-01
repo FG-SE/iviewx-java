@@ -2,23 +2,24 @@ package exception;
 
 import static iviewxapi.IViewXAPILibrary.*;
 
+/** TODO
+ * 
+ *  Status codes which only indicate correct functional behavior 
+ *  are not handled by this error handler. These status codes begin 
+ *  with the prefix "RET_" (see IViewXAPILibrary). The correct usage 
+ *  of this error handler is to handle the status codes that are 
+ *  not critical in the method that handles the SDK call and call this 
+ *  error handler, if all possible non-critical status codes have been 
+ *  checked. */
 public class ETErrorHandler {
+	
+	/** TODO
+	 * 
+	 *  @param status
+	 */
 	public static void handle(int status) {
 		switch(status) {
-			case RET_SUCCESS :
-				return;
-			case RET_NO_VALID_DATA :
-				return;
-			case RET_CALIBRATION_ABORTED : 
-				return;
-			case RET_SERVER_IS_RUNNING :
-				return;
-			case RET_CALIBRATION_NOT_IN_PROGRESS :
-				return;
-			case RET_WINDOW_IS_OPEN :
-				return;
-			case RET_WINDOW_IS_CLOSED :
-				return;
+			// Error codes that have been commented out are not documented in the SDK Manual
 			case ERR_COULD_NOT_CONNECT :
 				throw new ETConnectionException("Failed to establish connection.");
 			case ERR_NOT_CONNECTED :
@@ -28,7 +29,7 @@ public class ETErrorHandler {
 			case ERR_NOT_VALIDATED :
 				throw new ETValidationException("System is not validated.");
 			case ERR_EYETRACKING_APPLICATION_NOT_RUNNING :
-				return;
+				throw new ETException("No eyetracking application is running.");
 			case ERR_WRONG_COMMUNICATION_PARAMETER :
 				throw new ETConnectionException("Failed to establish connection.");
 			case ERR_WRONG_DEVICE :
@@ -40,7 +41,7 @@ public class ETErrorHandler {
 			case ERR_CALIBRATION_TIMEOUT :
 				throw new ETCalibrationException("Calibration timeout occured.");
 			case ERR_TRACKING_NOT_STABLE :
-				return;
+				throw new ETException("Eyetracking is not stable.");
 			case ERR_INSUFFICIENT_BUFFER_SIZE :
 				throw new ETBufferException("Insufficient buffer size.");
 			case ERR_CREATE_SOCKET :
@@ -58,7 +59,7 @@ public class ETErrorHandler {
 			case ERR_WRONG_IVIEWX_VERSION :
 				throw new ETServerException("Wrong server version.");
 			case ERR_ACCESS_TO_FILE :
-				return;
+				throw new ETException("Failed to access log file.");
 			case ERR_SOCKET_CONNECTION :
 				throw new ETSocketException("Socket connection failed.");
 			case ERR_EMPTY_DATA_BUFFER :
@@ -102,11 +103,11 @@ public class ETErrorHandler {
 			case ERR_AOI_NOT_DEFINED :
 				throw new ETAoiException("AOI not defined.");
 			case ERR_FEATURE_NOT_LICENSED :
-				return;
+				throw new ETException("Failed to access requested feature.");
 			case ERR_DEPRECATED_FUNCTION :
-				return;
+				throw new ETException("Function is deprecated.");
 			case ERR_INITIALIZATION :
-				return;
+				throw new ETException("Function or DLL not initialized.");
 			/* case ERR_FUNC_NOT_LOADED :
 				return; */
 		}
