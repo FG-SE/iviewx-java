@@ -19,6 +19,8 @@
 
 [ConnectionManager]
 - Automatically disconnect from IView X Server if the class is garbage collected
+ -> Socket and file handles should be freed by the OS on application shutdown
+ -> java.lang.Runtime#addShutdownHook might be useful if there are still any problems with resource cleanup
 
 [ETErrorHandler]
 - Remove RET_ status codes from error handler
