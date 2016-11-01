@@ -4,13 +4,12 @@ import static iviewxapi.IViewXAPILibrary.*;
 
 /** TODO
  * 
- *  Status codes which only indicate correct functional behavior 
- *  are not handled by this error handler. These status codes begin 
- *  with the prefix "RET_" (see IViewXAPILibrary). The correct usage 
- *  of this error handler is to handle the status codes that are 
- *  not critical in the method that handles the SDK call and call this 
- *  error handler, if all possible non-critical status codes have been 
- *  checked. */
+ *  Status codes which only indicate functional behavior 
+ *  are not handled by this error handler (excluding RET_SUCCESS).
+ *  These status codes begin with the prefix "RET_" (see IViewXAPILibrary).
+ *  The correct usage of this error handler is to handle the status codes 
+ *  that are not critical in the method that handles the SDK call and call this 
+ *  error handler, if all possible non-critical status codes have been checked. */
 public class ETErrorHandler {
 	
 	/** TODO
@@ -19,6 +18,9 @@ public class ETErrorHandler {
 	 */
 	public static void handle(int status) {
 		switch(status) {
+			// All status codes besides RET_SUCCESS have to be handled manually
+			case RET_SUCCESS:
+				return;
 			// Error codes that have been commented out are not documented in the SDK Manual
 			case ERR_COULD_NOT_CONNECT :
 				throw new ETConnectionException("Failed to establish connection.");
@@ -91,8 +93,8 @@ public class ETErrorHandler {
 			case ERR_WRONG_CAMERA_PORT :
 				throw new ETDeviceException("Failed to access port connected to eyetracking device.");
 			/* case ERR_USB2_CAMERA_PORT :
-				return;
-			case ERR_USB3_CAMERA_PORT :
+				return; */
+			/* case ERR_USB3_CAMERA_PORT :
 				return; */
 			case ERR_COULD_NOT_OPEN_PORT :
 				throw new ETConnectionException("Failed to open port.");
