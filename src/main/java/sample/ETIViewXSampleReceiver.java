@@ -17,6 +17,7 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	private IViewXAPILibrary iView;
 	
 	private SampleStruct sampleStruct;
+	private ETSampleStabilizationStrategy stabilizationStrategy;
 	
 	/** Constructs a new IView X SampleReceiver that uses the provided IView X SDK binding.
 	 * 
@@ -25,6 +26,19 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	public ETIViewXSampleReceiver(IViewXAPILibrary lib) {
 		iView = lib;
 		sampleStruct = new SampleStruct();
+		stabilizationStrategy = new ETPassthroughSampleStabilizationStrategy();
+	}
+	
+	/** Constructs a new IView X SampleReceiver that uses the provided IView X SDK binding 
+	 *  and the provided stabilization strategy.
+	 * 
+	 * @param lib IView X SDK binding for eyetracker communication
+	 * @param strategy Sample stabilization strategy
+	 */
+	public ETIViewXSampleReceiver(IViewXAPILibrary lib, ETSampleStabilizationStrategy strategy) {
+		iView = lib;
+		sampleStruct = new SampleStruct();
+		stabilizationStrategy = strategy;
 	}
 
 	/** Receives a single eyetracking sample from the RED-m eyetracker.
@@ -37,7 +51,22 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	public ETSample getSample() {
 		int status = iView.iV_GetSample(sampleStruct);
 		ETErrorHandler.handle(status);
-		return structToSample(sampleStruct);
+		
+		ETSample nextSample = structToSample(sampleStruct);
+		ETSample stabilizedSample = stabilizationStrategy.stabilize(nextSample);
+		return stabilizedSample;
+	}
+	
+	/** Sets the sample stabilization strategy.
+	 * 
+	 *  Stabilization strategies correct the samples returned by applying a correcting 
+	 *  algorithm to the retrieved sample before returning it.
+	 * 
+	 *  @param strategy Sample stabilization strategy
+	 */
+	@Override
+	public void setStabilizationStrategy(ETSampleStabilizationStrategy strategy) {
+		stabilizationStrategy = strategy;
 	}
 	
 	/** Converts the information of a SampleStruct to a ETSample.

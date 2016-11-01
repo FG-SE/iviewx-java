@@ -17,22 +17,45 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	ETSortedSampleList samples;
 	Iterator<ETSample> samplesIter;
 	
+	ETSampleStabilizationStrategy stabilizationStrategy;
+	
 	/** Constructs a new Playback SampleReceiver.
 	 *  <p>
 	 *  The sample list will initially be empty and has to be set manually.
 	 */
 	public ETPlaybackSampleReceiver() {
-		this(new ETSortedSampleList());
+		this(new ETSortedSampleList(), new ETPassthroughSampleStabilizationStrategy());
+	}
+	
+	/** Constructs a new Playback SampleReceiver with the given sample stabilization 
+	 *  strategy.
+	 *  <p>
+	 *  The sample list will initially be empty and has to be set manually.
+	 */
+	public ETPlaybackSampleReceiver(ETSampleStabilizationStrategy strategy) {
+		this(new ETSortedSampleList(), strategy);
 	}
 	
 	/** Constructs a new Playback SampleReceiver initializing it 
 	 *  with a provided ETSortedSampleList. 
 	 * 
-	 * @param samples Sample list
+	 *  @param samples Sample list
 	 */
 	public ETPlaybackSampleReceiver(ETSortedSampleList samples) {
+		this(samples, new ETPassthroughSampleStabilizationStrategy());
+	}
+	
+	/** Constructs a new Playback SampleReceiver initializing it 
+	 *  with a provided ETSortedSampleList and the given sample 
+	 *  stabilization strategy.
+	 * 
+	 *  @param samples Sample list
+	 *  @param strategy Sample stabilization strategy
+	 */
+	public ETPlaybackSampleReceiver(ETSortedSampleList samples, ETSampleStabilizationStrategy strategy) {
 		this.samples = samples;
 		samplesIter = samples.iterator();
+		stabilizationStrategy = strategy;
 	}
 
 	/** Retrieves a single eyetracking sample from the sample list.
@@ -48,10 +71,26 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	 */
 	@Override
 	public ETSample getSample() {
-		if(samplesIter.hasNext())
-			return samplesIter.next();
-		else
+		if(samplesIter.hasNext()) {
+			ETSample nextSample = samplesIter.next();
+			ETSample stabilizedSample = stabilizationStrategy.stabilize(nextSample);
+			return stabilizedSample;
+		}
+		else {
 			return null;
+		}
+	}
+	
+	/** Sets the sample stabilization strategy.
+	 * 
+	 *  Stabilization strategies correct the samples returned by applying a correcting 
+	 *  algorithm to the retrieved sample before returning it.
+	 * 
+	 *  @param strategy Sample stabilization strategy
+	 */
+	@Override
+	public void setStabilizationStrategy(ETSampleStabilizationStrategy strategy) {
+		stabilizationStrategy = strategy;
 	}
 	
 	/** Resets the SampleReceiver to the beginning of the sample list.

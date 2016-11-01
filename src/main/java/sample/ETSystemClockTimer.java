@@ -4,11 +4,11 @@ package sample;
  * 
  * @author Luca Fuelbier
  */
-public class ETSystemClockTimer implements ETTimer{
+public class ETSystemClockTimer implements ETTimer {
 
 	/** Returns the current system time in microseconds.
 	 * 
-	 *  @Return Current system time [us]
+	 *  @return Current system time [us]
 	 */
 	@Override
 	public long getTimeMicro() {

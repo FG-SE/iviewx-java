@@ -14,9 +14,9 @@ public interface ETSampleStabilizationStrategy {
 	
 	/** Returns a stabilized eyetracking sample, computed from the one provided.
 	 * 
-	 * @param sample Original eyetracking sample
-	 * @return Stabilized eyetracking sample
+	 *  @param sample Original eyetracking sample
+	 *  @return Stabilized eyetracking sample
 	 */
-	public ETSample getStabilizedSample(ETSample sample);
+	public ETSample stabilize(ETSample sample);
 	
 }
