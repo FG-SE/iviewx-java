@@ -18,9 +18,7 @@ dependencies {
 
 // Test configuration
 test {
-    testLogging {
-        showStandardStreams = true
-    }
+	testLogging.showStandardStreams = true
 }
 
 //Tasks
