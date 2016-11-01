@@ -3,7 +3,7 @@
 - Add missing links to mentioned classes
 
 [General]
-- Remove functionality that is not supported by the RED-m eyetracker (See section "Function and Device Overview" in the IView X SDK Manual)
+- Make a list of features that the SDK supports for the RED-m eyetracker, that have not yet been implemented in this library
 
 [Timed Data Retrieval]
 - Do we actually need the timed data receivers? Will they be used, or are they just making the library bigger?
@@ -12,9 +12,6 @@
 [Sorted Lists]
 - Refactor to remove code duplication
 
-[Events]
-- Do we need Event-Stabilization, or are they stable enough?
-
 [Sample/Event Loader, Sorted Sample/Event List]
 - How big will these lists get?
 - Do we have to stream them in/out of a file?
@@ -22,3 +19,7 @@
 
 [ConnectionManager]
 - Automatically disconnect from IView X Server if the class is garbage collected
+
+[ETErrorHandler]
+- Remove RET_ status codes from error handler
+- Give classes using the error handler their own handling for RET_ status codes and call the error handler in the default clause
