@@ -5,6 +5,7 @@ import eye.ETEyeData;
 import iviewxapi.IViewXAPILibrary;
 import iviewxapi.SampleStruct;
 import iviewxapi.EyeDataStruct;
+import static iviewxapi.IViewXAPILibrary.RET_NO_VALID_DATA;
 
 /** Receives eyetracking samples from the RED-m eyetracker.
  *  <p>
@@ -50,7 +51,11 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	@Override
 	public ETSample getSample() {
 		int status = iView.iV_GetSample(sampleStruct);
-		ETErrorHandler.handle(status);
+		
+		if(status == RET_NO_VALID_DATA)
+			return null;
+		else
+			ETErrorHandler.handle(status);
 		
 		ETSample nextSample = structToSample(sampleStruct);
 		ETSample stabilizedSample = stabilizationStrategy.stabilize(nextSample);

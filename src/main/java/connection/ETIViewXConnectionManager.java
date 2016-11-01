@@ -3,7 +3,7 @@ package connection;
 import java.nio.ByteBuffer;
 
 import iviewxapi.IViewXAPILibrary;
-import static iviewxapi.IViewXAPILibrary.*;
+import static iviewxapi.IViewXAPILibrary.RET_SUCCESS;
 import exception.ETErrorHandler;
 
 /** Manages a connection to a RED-m eyetracker.
@@ -37,6 +37,7 @@ public class ETIViewXConnectionManager implements ETConnectionManager {
 	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort) {
 		ByteBuffer sendIpBuffer = ByteBuffer.wrap(sendIp.getBytes());
 		ByteBuffer receiveIpBuffer = ByteBuffer.wrap(receiveIp.getBytes());
+		
 		int status = iView.iV_Connect(sendIpBuffer, sendPort, receiveIpBuffer, receivePort);
 		ETErrorHandler.handle(status);
 	}

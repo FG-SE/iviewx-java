@@ -4,6 +4,7 @@ import iviewxapi.IViewXAPILibrary;
 import exception.ETErrorHandler;
 import eye.ETEye;
 import iviewxapi.EventStruct;
+import static iviewxapi.IViewXAPILibrary.RET_NO_VALID_DATA;
 
 /** Receives eyetracking events from the RED-m eyetracker.
  *  <p>
@@ -36,7 +37,12 @@ public class ETIViewXEventReceiver implements ETEventReceiver {
 	@Override
 	public ETEvent getEvent() {
 		int status = iView.iV_GetEvent(eventStruct);
-		ETErrorHandler.handle(status);
+		
+		if(status == RET_NO_VALID_DATA)
+			return null;
+		else
+			ETErrorHandler.handle(status);
+		
 		return structToEvent(eventStruct);
 	}
 	
