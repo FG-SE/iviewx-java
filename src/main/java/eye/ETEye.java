@@ -31,7 +31,20 @@ public enum ETEye {
 		// Converts a byte (signed) to a char (unsigned)
 		char eyeCharacter = (char)(b & 0xFF);
 		
-		switch(eyeCharacter)
+		return ETEye.fromChar(eyeCharacter);
+	}
+	
+	/** Converts a character to the corresponding enum value.
+	 *  <p>
+	 *  Only the characters 'l' and 'r' are allowed.
+	 *  Other characters are invalid and will throw an exception.
+	 * 
+	 * @param c Character
+	 * @return {@link ETEye} enum value that corresponds to the provided character
+	 * @throws IllegalArgumentException If a invalid character was provided
+	 */
+	public static ETEye fromChar(char c) throws IllegalArgumentException {
+		switch(c)
 		{
 			case 'l':
 				return LEFT;
