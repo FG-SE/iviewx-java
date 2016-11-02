@@ -67,7 +67,7 @@ public final class IViewX {
 	 *  @param receiveIp IP adress of receiver
 	 *  @param receivePort Port of receiver
 	 */
-	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort) {
+	public static void connect(String sendIp, int sendPort, String receiveIp, int receivePort) {
 		connectionManager.connect(sendIp, sendPort, receiveIp, receivePort);
 	}
 	
@@ -75,7 +75,7 @@ public final class IViewX {
 	 * 
 	 *  @see connection.ETIViewXConnectionManager#connectLocal 
 	 */
-	public void connectLocal() {
+	public static void connectLocal() {
 		connectionManager.connectLocal();
 	}
 	
@@ -83,7 +83,7 @@ public final class IViewX {
 	 * 
 	 *  @see connection.ETIViewXConnectionManager#disconnect
 	 */
-	public void disconnect() {
+	public static void disconnect() {
 		connectionManager.disconnect();
 	}
 
@@ -93,7 +93,7 @@ public final class IViewX {
 	 *  
 	 *  @return <i>true</i> if a connection has been established, else <i>false</i>
 	 */
-	public boolean isConnected() {
+	public static boolean isConnected() {
 		return connectionManager.isConnected();
 	}
 
@@ -103,7 +103,7 @@ public final class IViewX {
 	 *  
 	 *  @param seconds Number of seconds before timeout will occur
 	 */
-	public void setConnectionTimeout(int seconds) {
+	public static void setConnectionTimeout(int seconds) {
 		connectionManager.setConnectionTimeout(seconds);
 	}
 	
@@ -111,7 +111,7 @@ public final class IViewX {
 	 * 
 	 *  @see calibration.ETIViewXCalibrationManager#calibrate 
 	 */
-	public void calibrate() {
+	public static void calibrate() {
 		calibrationManager.calibrate();
 	}
 	
@@ -119,7 +119,7 @@ public final class IViewX {
 	 * 
 	 *  @see validation.ETIViewXValidationManager#validate
 	 */
-	public void validate() {
+	public static void validate() {
 		validationManager.validate();
 	}
 	
