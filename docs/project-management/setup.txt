@@ -3,7 +3,8 @@ Environment Setup
 
 The following steps describe how to set up your environment for the SMI_EyeTracker library:
 
-1. Install the IView X SDK on your machine
-2. Add `PATH_TO_YOUR_SMI_SDK_INSTALLATION` to your PATH environment variable
+1. Install the latest version of Java 8.* on your machine
+2. Install the IView X SDK on your machine 
+3. Add `PATH_TO_YOUR_SMI_SDK_INSTALLATION` to your PATH environment variable
  ..* Make sure that your `bin` folder contains a file called `IViewXAPI.dll`
-3. Start the IView X eyetracking server and connect to it either locally or remotely using the SMI_EyeTracker library
+4. Start the IView X eyetracking server and connect to it either locally or remotely using the SMI_EyeTracker library
