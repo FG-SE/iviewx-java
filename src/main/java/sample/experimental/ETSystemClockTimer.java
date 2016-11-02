@@ -1,4 +1,4 @@
-package sample;
+package sample.experimental;
 
 /** Provides access to the current system time.
  * 

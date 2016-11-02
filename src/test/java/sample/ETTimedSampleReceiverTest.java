@@ -9,8 +9,8 @@ import static org.mockito.Mockito.*;
 
 import sample.ETSample;
 import sample.ETSortedSampleList;
-import sample.ETTimedSampleReceiver;
-import sample.ETTimer;
+import sample.experimental.ETTimedSampleReceiver;
+import sample.experimental.ETTimer;
 
 public class ETTimedSampleReceiverTest {
 	

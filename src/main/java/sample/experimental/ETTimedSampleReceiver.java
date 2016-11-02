@@ -1,6 +1,12 @@
-package sample;
+package sample.experimental;
 
 import java.util.Iterator;
+
+import sample.ETPassthroughSampleStabilizationStrategy;
+import sample.ETSample;
+import sample.ETSampleReceiver;
+import sample.ETSampleStabilizationStrategy;
+import sample.ETSortedSampleList;
 
 /** Receives eyetracking samples from a ETSortedSampleList while simulating 
  *  a realtime eyetracker.
@@ -28,6 +34,7 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 	private ETSortedSampleList samples;
 	private Iterator<ETSample> samplesIter;
 	private ETSample currentSample;
+	private ETSampleStabilizationStrategy stabilizationStrategy;
 	
 	private ETTimer timer;
 	private long startTime;
@@ -50,6 +57,8 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 	public ETTimedSampleReceiver(ETTimer timer, ETSortedSampleList samples) {
 		this.timer = timer;
 		this.samples = samples;
+		
+		stabilizationStrategy = new ETPassthroughSampleStabilizationStrategy();
 		
 		resetTimer();
 		resetSampleIteration();
@@ -86,7 +95,19 @@ public class ETTimedSampleReceiver implements ETSampleReceiver {
 			}
 		}
 		
-		return currentSample;
+		ETSample stabilizedSample = stabilizationStrategy.stabilize(currentSample);
+		return stabilizedSample;
+	}
+	
+	/** Sets the sample stabilization strategy.
+	 * 
+	 *  Stabilization strategies correct the samples returned by applying a correcting 
+	 *  algorithm to the retrieved sample before returning it.
+	 * 
+	 *  @param strategy Sample stabilization strategy
+	 */
+	public void setStabilizationStrategy(ETSampleStabilizationStrategy strategy) {
+		stabilizationStrategy = strategy;
 	}
 	
 	/** Resets the SampleReceiver. This includes a reset of the timer, aswell 

@@ -1,4 +1,4 @@
-package sample;
+package sample.experimental;
 
 /** Timer that returns timestamps.
  * 
