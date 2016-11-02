@@ -30,7 +30,7 @@ import validation.ETIViewXValidationManager;
  *    on the eyetracking server side and could break your application.
  *  - While server access from multiple applications (different processes) is 
  *    officially supported according to the IViewX SDK documentation 
- *    (IView X SDK >= 3.4.6, IView X Server >= 2.11.65), it has not been tested.
+ *    (IView X SDK &gt;= 3.4.6, IView X Server &gt;= 2.11.65), it has not been tested.
  *  - This library and its documentation will be updated as the development team 
  *    gains new insight into the functionality of the SMI IView X SDK and the 
  *    IView X Server. Make sure you have the most recent version of the library 
@@ -61,6 +61,11 @@ public final class IViewX {
 	/** Connects to an IView X Server.
 	 * 
 	 *  @see connection.ETIViewXConnectionManager#connect
+	 *  
+	 *  @param sendIp IP adress of sender
+	 *  @param sendPort Port of sender
+	 *  @param receiveIp IP adress of receiver
+	 *  @param receivePort Port of receiver
 	 */
 	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort) {
 		connectionManager.connect(sendIp, sendPort, receiveIp, receivePort);
@@ -85,6 +90,8 @@ public final class IViewX {
 	/** Returns <i>true</i> if a connection has been established.
 	 * 
 	 *  @see connection.ETIViewXConnectionManager#isConnected
+	 *  
+	 *  @return <i>true</i> if a connection has been established, else <i>false</i>
 	 */
 	public boolean isConnected() {
 		return connectionManager.isConnected();
@@ -93,6 +100,8 @@ public final class IViewX {
 	/** Sets the connection timeout in seconds.
 	 * 
 	 *  @see connection.ETIViewXConnectionManager#setConnectionTimeout
+	 *  
+	 *  @param seconds Number of seconds before timeout will occur
 	 */
 	public void setConnectionTimeout(int seconds) {
 		connectionManager.setConnectionTimeout(seconds);
