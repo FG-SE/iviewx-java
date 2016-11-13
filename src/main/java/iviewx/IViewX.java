@@ -14,27 +14,35 @@ import validation.ETIViewXValidationManager;
 
 /** The central access point to the part of the Eyetracking API which
  *  uses the SMI IView X Server for eyetracking data retrieval.
- *  
+ *  <p>
  *  The IViewX class provides methods for connecting to the server, calibrating the 
  *  eyetracking device and validating the calibration results. To receive 
  *  eyetracking samples and events there are methods for getting a 
  *  ETSampleReceiver and a ETEventReceiver.
- *  
+ *  <p>
  *  The interface of this class is completely static and should be used as the 
  *  sole access point to IViewX backed classes (indicated by the ETIViewX prefix).
- *  
+ *  <p>
  *  There are a couple things worth noting when working with this class:
- *  - Concurrent access to the methods of this class has not been tested.
- *    It is advised to restrict the access to this classes functionality to 
- *    one thread at a time. Concurrent calls may lead to unknown behavior 
- *    on the eyetracking server side and could break your application.
- *  - While server access from multiple applications (different processes) is 
- *    officially supported according to the IViewX SDK documentation 
- *    (IView X SDK &gt;= 3.4.6, IView X Server &gt;= 2.11.65), it has not been tested.
- *  - This library and its documentation will be updated as the development team 
- *    gains new insight into the functionality of the SMI IView X SDK and the 
- *    IView X Server. Make sure you have the most recent version of the library 
- *    installed and check its documentation - There might have been some updates!
+ *  <ul>
+ *  	<li> 
+ *  		Concurrent access to the methods of this class has not been tested.
+ *    		It is advised to restrict the access to this classes functionality to 
+ *    		one thread at a time. Concurrent calls may lead to unknown behavior
+ *    		on the eyetracking server side and could break your application.
+ *    	</li>
+ *    	<li>
+ *  		While server access from multiple applications (different processes) is 
+ *    		officially supported according to the IViewX SDK documentation 
+ *    		(IView X SDK &gt;= 3.4.6, IView X Server &gt;= 2.11.65), it has not been tested.
+ *    	</li>
+ *    	<li>
+ *  		This library and its documentation will be updated as the development team 
+ *    		gains new insight into the functionality of the SMI IView X SDK and the 
+ *    		IView X Server. Make sure you have the most recent version of the library 
+ *    		installed and check its documentation - There might have been some updates!
+ *    	</li>
+ *  </ul>
  * 
  *  @author Luca Fuelbier
  */
@@ -48,6 +56,7 @@ public final class IViewX {
 	private static final ETValidationManager validationManager;
 	
 	static {
+		// Statically initializes IViewX backed classes for singleton-like behavior
 		lib = IViewXAPILibrary.INSTANCE;
 		calibrationManager = new ETIViewXCalibrationManager(lib);
 		connectionManager = new ETIViewXConnectionManager(lib);
@@ -56,6 +65,12 @@ public final class IViewX {
 		validationManager = new ETIViewXValidationManager(lib);
 	}
 	
+	/** Constructs a new IViewX object.
+	 *  <p>
+	 *  This constructor is private to prohibit the user from creating an actual
+	 *  IViewX object. The IViewX class provides a completely static interface and
+	 *  is supposed to be used through the class interface alone.
+	 */
 	private IViewX() { }
 	
 	/** Connects to an IView X Server.

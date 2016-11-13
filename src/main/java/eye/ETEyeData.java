@@ -2,7 +2,7 @@ package eye;
 
 /** Eyetracking data for one eye.
  *  <p>
- *  Contains various fields for eyetracking data, the import ones being 
+ *  Contains various fields for eyetracking data, the important ones being 
  *  eye position and gaze coordinates.
  *  <p>
  *  It's important to note, that the eye position is a 3-dimensional coordinate 

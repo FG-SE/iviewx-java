@@ -5,7 +5,7 @@ import java.util.Iterator;
 /** Receives eyetracking samples from a ETSortedSampleList.
  *  <p>
  *  If you want to iterate the samples from the list again you will 
- *  have to call the reset() method before requesting a new sample.
+ *  have to call the {@link #reset() reset} method before requesting a new sample.
  *  <p>
  *  A sorted sample list is used to make sure, that samples are sorted 
  *  beforehand to reduce computation effort while receiving samples.
@@ -31,6 +31,8 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	 *  strategy.
 	 *  <p>
 	 *  The sample list will initially be empty and has to be set manually.
+	 *  
+	 *  @param strategy Sample stabilization strategy
 	 */
 	public ETPlaybackSampleReceiver(ETSampleStabilizationStrategy strategy) {
 		this(new ETSortedSampleList(), strategy);
@@ -64,8 +66,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	 *  null if the list is fully iterated or empty.
 	 *  <p>
 	 *  Note that this class does a full iteration of the sample list. 
-	 *  Timestamps do not matter. If you want a SampleReceiver that simulates 
-	 *  realtime sample access use ETTimedSampleReceiver instead. 
+	 *  Timestamps do not matter.
 	 * 
 	 *  @return Eyetracking sample
 	 */
@@ -82,7 +83,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	}
 	
 	/** Sets the sample stabilization strategy.
-	 * 
+	 *  <p>
 	 *  Stabilization strategies correct the samples returned by applying a correcting 
 	 *  algorithm to the retrieved sample before returning it.
 	 * 

@@ -1,7 +1,3 @@
-[Documentation]
-- Add @throws tags to methods of eyetracker dependent classes
-- Add missing links to mentioned classes
-
 [General]
 - Make a list of features that the SDK supports for the RED-m eyetracker, that have not yet been implemented in this library
 
@@ -21,3 +17,6 @@
 - Automatically disconnect from IView X Server if the class is garbage collected
  -> Socket and file handles should be freed by the OS on application shutdown
  -> java.lang.Runtime#addShutdownHook might be useful if there are still any problems with resource cleanup
+ 
+ [Sample-/EventReceiver]
+ - Add hasNext() method

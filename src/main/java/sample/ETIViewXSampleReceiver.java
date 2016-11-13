@@ -9,7 +9,7 @@ import static iviewxapi.IViewXAPILibrary.RET_NO_VALID_DATA;
 
 /** Receives eyetracking samples from the RED-m eyetracker.
  *  <p>
- *  Please use the IViewX class as a central access point.
+ *  Please use the {@link iviewx.IViewX} class as a central access point.
  * 
  *  @author Luca Fuelbier
  */
@@ -42,11 +42,25 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 		stabilizationStrategy = strategy;
 	}
 
-	/** Receives a single eyetracking sample from the RED-m eyetracker.
+	/** Retrieves a single eyetracking sample from the RED-m eyetracker.
 	 *  <p>
 	 *  The sample returned will be the one with the most current timestamp. 
+	 *  <p>
+	 *  This method can return <strong>null</strong>, which indicates one of the following scenarios:
+	 *  <ul>
+	 *    <li>There is no new data available because the eyetracker has not computed new data yet</li>
+	 *    <li>The users gaze is not in tracking range</li>
+	 *    <li>The user is not properly tracked by the eyetracker</li>
+	 *  </ul>
+	 *  <p>
+	 *  If your eyetracking environment is properly set up, a <strong>null</strong> most likely means that
+	 *  your application is polling faster than the eyetrackers refresh rate. Simply keep polling until
+	 *  a new sample is registered.
 	 * 
 	 *  @return Eyetracking sample
+	 *  
+	 *  @throws exception.ETException If an error occurred while retrieving a new sample
+	 *  @throws exception.ETConnectionException If no connection could be established to the eyetracker
 	 */
 	@Override
 	public ETSample getSample() {
@@ -63,7 +77,7 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	}
 	
 	/** Sets the sample stabilization strategy.
-	 * 
+	 *  <p>
 	 *  Stabilization strategies correct the samples returned by applying a correcting 
 	 *  algorithm to the retrieved sample before returning it.
 	 * 
@@ -74,10 +88,11 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 		stabilizationStrategy = strategy;
 	}
 	
-	/** Converts the information of a SampleStruct to a ETSample.
+	/** Converts the information of a SampleStruct to a {@link ETSample}.
 	 * 
-	 * @param struct SampleStruct containing sample information
-	 * @return Eyetracking sample
+	 *  @param struct SampleStruct containing sample information
+	 *  
+	 *  @return Eyetracking sample
 	 */
 	private ETSample structToSample(SampleStruct struct) {
 		EyeDataStruct leftEye = struct.leftEye;

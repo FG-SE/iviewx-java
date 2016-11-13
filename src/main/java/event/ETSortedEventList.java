@@ -6,14 +6,15 @@ import java.util.Collections;
 
 /** List of eyetracking events sorted by their start- and end-timestamps.
  *  <p>
- *  This container guarantees chronological correct order of held eyetracking events. 
+ *  This container guarantees a chronologically correct order of held eyetracking events.
+ *  <p>
  *  Only a subset of the typical Java list interface is provided to prevent the user 
  *  from issuing very performance heavy tasks. However a Iterable interface is implemented for 
  *  easy traversal through the list.
  *  <p>
- *  Make sure, that the eyetracking events, that you add to this container are already 
+ *  Make sure, that the eyetracking events that you add to this container are already 
  *  in order. This has to be because a very crude algorithm is used to maintain chronological 
- *  correctness. Eyetracking events, that do not match the chronological order of insertion are 
+ *  correctness. Eyetracking events that do not match the chronological order of insertion are 
  *  simply not inserted but ignored. This is very fast, but may be undesirable if you have a 
  *  unsorted collection of eyetracking events. In that case you will have to sort the eyetracking 
  *  events before adding them to the collection. Since eyetracking event datasets can become quite 
@@ -41,7 +42,7 @@ public class ETSortedEventList implements Iterable<ETEvent> {
 	 *  If the chronological order would be broken by inserting the event, it is ignored.
 	 *  <p>
 	 *  A event fits the chronological order, if the previously inserted event has a end timestamp 
-	 *  that comes before or at the same time as the start-timestamp of the event being inserted. 
+	 *  that comes before or at the same time as the start-timestamp of the event that is being inserted. 
 	 *  If it is greater, the event will not be inserted and the list will therefore not be altered.
 	 * 
 	 *  @param event Eyetracking event
@@ -68,7 +69,9 @@ public class ETSortedEventList implements Iterable<ETEvent> {
 	/** Returns the eyetracking event at the specified position in the list.
 	 * 
 	 * @param index Index of the element to return
+	 * 
 	 * @return Eyetracking event at the specified position in this list
+	 * 
 	 * @throws IndexOutOfBoundsException If the index is out of range
 	 */
 	public ETEvent get(int index) throws IndexOutOfBoundsException {
@@ -90,6 +93,8 @@ public class ETSortedEventList implements Iterable<ETEvent> {
 	 *  <p>
 	 *  The list can not be manipulated by using the iterator.
 	 *  If manipulation is performed, an exception will be thrown. 
+	 *  
+	 *  @return An iterator over the elements in this list in proper sequence
 	 */
 	@Override
 	public Iterator<ETEvent> iterator() {

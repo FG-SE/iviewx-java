@@ -11,8 +11,40 @@ import eye.ETEye;
 import event.ETEvent;
 import event.ETSortedEventList;
 
+/** Loads eyetracking events from persistent sources to be used with {@link event.ETPlaybackEventReceiver}.
+ *  <p>
+ *  Currently the following persistent formats are supported:
+ *  <ul>
+ *    <li><strong>Textfile</strong> (see {@link #fromTextFile(File) fromTextFile})
+ *  </ul>
+ *  <p>
+ *  See the respective load functions for further information.
+ * 
+ *  @author Luca Fuelbier
+ */
 public class ETSortedEventLoader {
 	
+	/** Loads eyetracking events from a text file.
+	 *  <p>
+	 *  A line in the text file has to contain all of the information of an eyetracking event.
+	 *  Each line has to contain the following values in order, separated by a single whitespace:
+	 *  <ol>
+	 *    <li>Start time, (long)</li>
+	 *    <li>End time, (long)</li>
+	 *    <li>Eye, (char, 'l' or 'r')</li>
+	 *    <li>Gaze position X, (double)</li>
+	 *    <li>Gaze position Y, (double)</li>
+	 *  </ol>
+	 *  <p>
+	 *  Events that are not stored in correct chronological order are ignored and not added to the
+	 *  resulting list.
+	 *  
+	 *  @param file Textfile containing the eyetracking event information
+	 *  @return Sorted event list generated from the text files content
+	 *  @throws FileNotFoundException If the file could not be found
+	 *  @throws IOException If an error occurred during I/O
+	 *  @throws ETBadFormatException If the text file is incorrectly formatted
+	 */
 	public static ETSortedEventList fromTextFile(File file) throws FileNotFoundException, IOException, ETBadFormatException
 	{
 		ETSortedEventList samples = new ETSortedEventList();
@@ -27,6 +59,14 @@ public class ETSortedEventLoader {
 		return samples;
 	}
 	
+	/** Parses a String containing eyetracking event data into a {@link event.ETEvent} object.
+	 *  <p>
+	 *  For the correct format of the String, see {@link #fromTextFile(File) fromTextFile}.
+	 *  
+	 *  @param rawData String containing eyetracking event data
+	 *  @return Eyetracking event
+	 *  @throws ETBadFormatException If the String is incorrectly formatted
+	 */
 	private static ETEvent parseEventFromText(String rawData) throws ETBadFormatException
 	{
 		try {

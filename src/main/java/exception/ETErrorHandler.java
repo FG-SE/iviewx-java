@@ -2,26 +2,40 @@ package exception;
 
 import static iviewxapi.IViewXAPILibrary.*;
 
-/** TODO
- * 
- *  Status codes which only indicate functional behavior 
- *  are not handled by this error handler (excluding RET_SUCCESS).
- *  These status codes begin with the prefix "RET_" (see IViewXAPILibrary).
+/** Translates status codes returned by the IView X SDK functions to exceptions.
+ *  <p>
+ *  The IView X SDK is implemented in C and returns a wide array of different
+ *  status and error codes. This class reduces code duplication in the library
+ *  by translating the error codes to corresponding exceptions derived from
+ *  {@link ETException}.
+ *  <p>
+ *  Status codes which only indicate functional behavior are not handled by
+ *  this error handler (excluding <em>RET_SUCCESS</em>). These status codes begin
+ *  with the prefix "RET_". See the IView X SDK Manual for a full list of status
+ *  and error codes.
+ *  <p>
  *  The correct usage of this error handler is to handle the status codes 
- *  that are not critical in the method that handles the SDK call and call this 
- *  error handler, if all possible non-critical status codes have been checked. */
+ *  that are not critical in the method that calls the IView X SDK and call this 
+ *  error handler if all possible non-critical status codes have been checked.
+ *  As a convenience the error handler performs a no-op when handling the
+ *  <em>RET_SUCCESS</em> status code, so status codes for functions which either
+ *  execute successfully or throw a critical error can be handled by a single call
+ *  to {@link #handle}.
+ */
 public class ETErrorHandler {
 	
-	/** TODO
+	/** Translates the status code to an exception, or no-ops when the execution
+	 *  was successful.
 	 * 
-	 *  @param status
+	 *  @param status Status code to be handled
 	 */
 	public static void handle(int status) {
 		switch(status) {
 			// All status codes besides RET_SUCCESS have to be handled manually
 			case RET_SUCCESS:
 				return;
-			// Error codes that have been commented out are not documented in the SDK Manual
+			/* Error codes that have been commented out are not documented in the SDK Manual,
+			 * but are still part of the IView X SDK header file */
 			case ERR_COULD_NOT_CONNECT :
 				throw new ETConnectionException("Failed to establish connection.");
 			case ERR_NOT_CONNECTED :
@@ -41,7 +55,7 @@ public class ETErrorHandler {
 			case ERR_WRONG_CALIBRATION_METHOD :
 				throw new ETCalibrationException("Eyetracking device required for this calibration method is not connected.");
 			case ERR_CALIBRATION_TIMEOUT :
-				throw new ETCalibrationException("Calibration timeout occured.");
+				throw new ETCalibrationException("Calibration timeout occurred.");
 			case ERR_TRACKING_NOT_STABLE :
 				throw new ETException("Eyetracking is not stable.");
 			case ERR_INSUFFICIENT_BUFFER_SIZE :

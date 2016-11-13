@@ -5,6 +5,7 @@ import eye.ETEye;
 /** Stores eyetracking event information.
  *  <p>
  *  Eyetracking events are fixation events.
+ *  <br>
  *  Fixation means a fixation of a screen coordinate for a given timeframe.
  * 
  *  @author Luca Fuelbier

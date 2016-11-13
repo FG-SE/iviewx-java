@@ -4,14 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-/*  Possible improvements:
- *  - Refactor to interface to be able to provide implementations with different performance advantages
- *  - Refactor to shared solution for Samples and Events using Generics and the Comparable interface
- */
-
 /** List of eyetracking samples sorted by their timestamp.
  *  <p>
- *  This container guarantees chronological correct order of held eyetracking samples. 
+ *  This container guarantees a chronologically correct order of held eyetracking samples. 
  *  Only a subset of the typical Java list interface is provided to prevent the user 
  *  from issuing very performance heavy tasks. However a Iterable interface is implemented for 
  *  easy traversal through the list.
@@ -73,7 +68,9 @@ public class ETSortedSampleList implements Iterable<ETSample>{
 	/** Returns the eyetracking sample at the specified position in the list.
 	 * 
 	 * @param index Index of the element to return
+	 * 
 	 * @return Eyetracking sample at the specified position in this list
+	 * 
 	 * @throws IndexOutOfBoundsException If the index is out of range
 	 */
 	public ETSample get(int index) throws IndexOutOfBoundsException {
@@ -94,7 +91,9 @@ public class ETSortedSampleList implements Iterable<ETSample>{
 	/** Returns an iterator over the elements in this list in proper sequence.
 	 *  <p>
 	 *  The list can not be manipulated by using the iterator.
-	 *  If manipulation is performed, an exception will be thrown. 
+	 *  If manipulation is performed, an exception will be thrown.
+	 *  
+	 *  @return An iterator over the elements in this list in proper sequence
 	 */
 	@Override
 	public Iterator<ETSample> iterator() {

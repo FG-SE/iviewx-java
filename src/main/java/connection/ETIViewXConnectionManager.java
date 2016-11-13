@@ -9,8 +9,10 @@ import exception.ETErrorHandler;
 /** Manages a connection to a RED-m eyetracker.
  *  <p>
  *  There can only be one active connection at a time.
+ *  <br>
  *  Having multiple instances of this class will result in unintuitive behavior 
- *  because of shared state. Please use the IViewX class as a central access point.
+ *  because of shared internal state. Please use the {@link iviewx.IViewX} class
+ *  as a central access point.
  * 
  *  @author Luca Fuelbier
  */
@@ -32,6 +34,11 @@ public class ETIViewXConnectionManager implements ETConnectionManager {
 	 *  @param sendPort Port on which messages will be send to the server
 	 *  @param receiveIp IP on which messages will be received from the server
 	 *  @param receivePort Port on which messages will be received from the server
+	 *  
+	 *  @throws exception.ETException If an error occurred while connecting
+	 *  @throws exception.ETServerException If the IView X Server could not be found
+	 *  @throws exception.ETParameterException If one or more parameter values are invalid
+	 *  @throws exception.ETConnectionException If no connection could be established
 	 */
 	@Override
 	public void connect(String sendIp, int sendPort, String receiveIp, int receivePort) {
@@ -42,14 +49,23 @@ public class ETIViewXConnectionManager implements ETConnectionManager {
 		ETErrorHandler.handle(status);
 	}
 
-	/** Connects to locally running IView X Server that manages a RED-m eyetracker. */
+	/** Connects to locally running IView X Server that manages a RED-m eyetracker.
+	 * 
+ 	 *  @throws exception.ETException If an error occurred while connecting
+	 *  @throws exception.ETServerException If the IView X Server could not be found
+	 *  @throws exception.ETConnectionException If no connection could be established
+	 */
 	@Override
 	public void connectLocal() {
 		int status = iView.iV_ConnectLocal();
 		ETErrorHandler.handle(status);
 	}
 
-	/** Disconnects from the currently connected server. */
+	/** Disconnects from the currently connected server.
+	 * 
+	 *  @throws exception.ETException If an error occurred while disconnecting
+	 *  @throws exception.ETSocketException If the used sockets could not be deleted
+	 */
 	@Override
 	public void disconnect() {
 		int status = iView.iV_Disconnect();
@@ -69,6 +85,9 @@ public class ETIViewXConnectionManager implements ETConnectionManager {
 	/** Sets the connection timeout in seconds.
 	 * 
 	 *  @param seconds Number of seconds before timeout will occur
+	 *  
+	 *  @throws exception.ETException If an error occurred while setting the new timeout
+	 *  @throws exception.ETParameterException If the new timeout value is out of range
 	 */
 	@Override
 	public void setConnectionTimeout(int seconds) {

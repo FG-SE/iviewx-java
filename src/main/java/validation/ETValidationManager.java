@@ -6,7 +6,10 @@ package validation;
  */
 public interface ETValidationManager {
 	
-	/** Starts the automatic validation. */
+	/** Starts the automatic validation.
+	 * 
+	 *  @throws exception.ETException If an error occurred during the validation process
+	 */
 	public void validate();
 	
 }

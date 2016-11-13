@@ -6,7 +6,10 @@ package calibration;
  */
 public interface ETCalibrationManager {
 	
-	/** Starts the automatic calibration. */
+	/** Starts the automatic calibration.
+	 * 
+	 *  @throws exception.ETException If an error occurred during the calibration process
+	 */
 	public void calibrate();
 	
 }

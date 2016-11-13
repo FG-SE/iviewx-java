@@ -5,12 +5,15 @@ import iviewxapi.IViewXAPILibrary;
 
 /** Manages the calibration process for the RED-m eyetracker.
  *  <p>
- *  Currently only supports automatic calibration.
- *  Custom calibration and advanced calibration settings might get added in the future.
+ *  Currently only automatic calibration is supported.
+ *  <br>
+ *  Manipulating the calibration settings is not supported yet.
  *  <p>
- *  There can only be one active calibration at a time. 
+ *  There can be only one active calibration at a time.
+ *  <br>
  *  Having multiple instances of this class will result in unintuitive behavior 
- *  because of shared state. Please use the IViewX class as a central access point.
+ *  because of shared internal state. Please use the {@link iviewx.IViewX} class
+ *  as a central access point.
  * 
  *  @author Luca Fuelbier
  */
@@ -29,12 +32,11 @@ public class ETIViewXCalibrationManager implements ETCalibrationManager {
 	/** Starts the automatic calibration.
 	 *  <p>
 	 *  A new window will open, which will present the user with points to fixate on.
-	 *  The user might be required to hit the Spacebar button when fixating the first point.
-	 *  <p>
-	 *  Manipulating the calibration settings is not supported yet, but might be added in 
-	 *  a future version.
+	 *  The user might be required to hit the Spacebar button when fixating the first point 
+	 *  to start the calibration process.
 	 *  
-	 *  @throws exception.ETException If there was a problem with the EyeTracker, or the IView X Server
+	 *  @throws exception.ETException If an error occurred during the calibration process
+	 *  @throws exception.ETConnectionException If no connection could be established to the eyetracker
 	 */
 	@Override
 	public void calibrate() {

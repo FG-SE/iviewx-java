@@ -6,10 +6,10 @@ import eye.ETEyeData;
  *  <p>
  *  Eyetracking samples are snapshots of the information about each eye at
  *  a specific point in time (specified by the timestamp). 
- *  Eyetracking samples provide very detailed information about the eyes 
+ *  They provide very detailed information about the eyes 
  *  current state, including desktop gaze and spatial position.
  *  <p>
- *  See ETEyeData for more detail on the available information.
+ *  See {@link eye.ETEyeData} for more detail on the information available for each eye.
  * 
  *  @author Luca Fuelbier
  */
