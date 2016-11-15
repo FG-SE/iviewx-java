@@ -1,25 +1,23 @@
 [General]
 - Make a list of features that the SDK supports for the RED-m eyetracker, that have not yet been implemented in this library
 
-[Timed Data Retrieval]
-- Do we actually need the timed data receivers? Will they be used, or are they just making the library bigger?
-- System time can only be measured in milliseconds, is that okay, or do we need a more fine-grained timer?
-
 [Sorted Lists]
 - Refactor to remove code duplication
+ -> Make ETSample and ETEvent implement Comparable interface
+ -> Implement SortedList<T> that uses Comparable methods to ensure sorting and intelligently append already sorted entries (like before)
 
 [Sample/Event Loader, Sorted Sample/Event List]
 - How big will these lists get?
 - Do we have to stream them in/out of a file?
 - Do we have to increase the maximum heap size of the JVM at startup?
 
+[Sample/Event Loader]
+- Ignore comment lines (lines starting with a '#')
+
 [ConnectionManager]
-- Automatically disconnect from IView X Server if the class is garbage collected
+- Automatically disconnect from IView X Server if the class is garbage collected (probably not needed)
  -> Socket and file handles should be freed by the OS on application shutdown
  -> java.lang.Runtime#addShutdownHook might be useful if there are still any problems with resource cleanup
- 
- [Sample-/EventReceiver]
- - Add hasNext() method
  
  [Idea]
  - Add startEyetracking() and stopEyetracking() to IViewX
