@@ -60,7 +60,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 		stabilizationStrategy = strategy;
 	}
 
-	/** Retrieves a single eyetracking sample from the sample list.
+	/** Retrieves the next eyetracking sample from the sample list.
 	 * 
 	 *  @return Eyetracking sample
 	 *  
@@ -73,7 +73,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 		return stabilizedSample;
 	}
 	
-	/** Returns <em>true</em> if the sample receiver has more elements.
+	/** Returns <em>true</em> if the sample receiver has more samples.
 	 * 
 	 *  @return <em>true</em> if the receiver has more elements
 	 */
@@ -94,7 +94,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 		stabilizationStrategy = strategy;
 	}
 	
-	/** Resets the SampleReceiver to the beginning of the sample list.
+	/** Resets the SampleReceiver iteration to the beginning of the sample list.
 	 *  <p>
 	 *  Resetting essentially means, that you will iterate the sample list again. 
 	 *  This can be very helpful if you want to analyze the same set of data multiple times.
@@ -105,7 +105,7 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	
 	/** Sets the sample list that will be used for sample retrieval.
 	 *  <p>
-	 *  This will also reset the iterator of the receiver for the new list.
+	 *  This will also reset the iteration of the receiver for the new list.
 	 * 
 	 *  @param samples Sample list
 	 */

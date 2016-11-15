@@ -5,7 +5,7 @@ import java.util.Iterator;
 /** Receives eyetracking samples.
  *  <p>
  *  This interface extends the {@link java.util.Iterator} interface.
- *  Its implementation can therefore be used like any other iterator.
+ *  Its implementations can therefore be used like any other iterator.
  * 
  *  @author Luca Fuelbier
  */

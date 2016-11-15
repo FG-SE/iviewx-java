@@ -87,7 +87,7 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	 *  This behavior might change in a later release of the eyetracking library, for example by 
 	 *  supporting pausing and resuming the eyetracking process.
 	 * 
-	 *  @return <em>true</em> if the receiver has more elements
+	 *  @return <em>true</em> if the receiver has more samples
 	 */
 	@Override
 	public boolean hasNext() {
