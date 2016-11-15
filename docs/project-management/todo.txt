@@ -20,3 +20,7 @@
  
  [Sample-/EventReceiver]
  - Add hasNext() method
+ 
+ [Idea]
+ - Add startEyetracking() and stopEyetracking() to IViewX
+ - Make hasNext() return false from IViewX receivers if the eyetracker is not tracking

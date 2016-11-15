@@ -56,6 +56,8 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	 *  If your eyetracking environment is properly set up, a <strong>null</strong> most likely means that
 	 *  your application is polling faster than the eyetrackers refresh rate. Simply keep polling until
 	 *  a new sample is registered.
+	 *  <p>
+	 *  To check if there are still samples available, call {@link #hasNext() hasNext}.
 	 * 
 	 *  @return Eyetracking sample
 	 *  
@@ -63,7 +65,7 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	 *  @throws exception.ETConnectionException If no connection could be established to the eyetracker
 	 */
 	@Override
-	public ETSample getSample() {
+	public ETSample next() {
 		int status = iView.iV_GetSample(sampleStruct);
 		
 		if(status == RET_NO_VALID_DATA)
@@ -74,6 +76,22 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 		ETSample nextSample = structToSample(sampleStruct);
 		ETSample stabilizedSample = stabilizationStrategy.stabilize(nextSample);
 		return stabilizedSample;
+	}
+	
+	/** Returns <em>true</em> if the sample receiver has more samples.
+	 *  <p>
+	 *  Since the eyetracker can produce samples endlessly, this method will always return true.
+	 *  A return of <em>true</em> does not however indicate that new data is available.
+	 *  It only indicates that the eyetracker is trying to retrieve a new sample at the moment.
+	 *  <p>
+	 *  This behavior might change in a later release of the eyetracking library, for example by 
+	 *  supporting pausing and resuming the eyetracking process.
+	 * 
+	 *  @return <em>true</em> if the receiver has more elements
+	 */
+	@Override
+	public boolean hasNext() {
+		return true;
 	}
 	
 	/** Sets the sample stabilization strategy.

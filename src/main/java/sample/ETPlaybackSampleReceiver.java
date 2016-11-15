@@ -61,25 +61,25 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	}
 
 	/** Retrieves a single eyetracking sample from the sample list.
-	 *  <p>
-	 *  The sample returned will be the next one in the list, or 
-	 *  null if the list is fully iterated or empty.
-	 *  <p>
-	 *  Note that this class does a full iteration of the sample list. 
-	 *  Timestamps do not matter.
 	 * 
 	 *  @return Eyetracking sample
+	 *  
+	 *  @throws java.util.NoSuchElementException If the receiver has no more samples
 	 */
 	@Override
-	public ETSample getSample() {
-		if(samplesIter.hasNext()) {
-			ETSample nextSample = samplesIter.next();
-			ETSample stabilizedSample = stabilizationStrategy.stabilize(nextSample);
-			return stabilizedSample;
-		}
-		else {
-			return null;
-		}
+	public ETSample next() {
+		ETSample nextSample = samplesIter.next();
+		ETSample stabilizedSample = stabilizationStrategy.stabilize(nextSample);
+		return stabilizedSample;
+	}
+	
+	/** Returns <em>true</em> if the sample receiver has more elements.
+	 * 
+	 *  @return <em>true</em> if the receiver has more elements
+	 */
+	@Override
+	public boolean hasNext() {
+		return samplesIter.hasNext();
 	}
 	
 	/** Sets the sample stabilization strategy.
@@ -104,6 +104,8 @@ public class ETPlaybackSampleReceiver implements ETSampleReceiver {
 	}
 	
 	/** Sets the sample list that will be used for sample retrieval.
+	 *  <p>
+	 *  This will also reset the iterator of the receiver for the new list.
 	 * 
 	 *  @param samples Sample list
 	 */

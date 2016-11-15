@@ -1,10 +1,13 @@
 package sample;
 
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.Rule;
+import static org.junit.Assert.*;
+
+import java.util.NoSuchElementException;
 
 import eye.ETEyeData;
-
-import static org.junit.Assert.*;
 
 import sample.ETPlaybackSampleReceiver;
 import sample.ETSample;
@@ -12,87 +15,71 @@ import sample.ETSortedSampleList;
 
 public class ETPlaybackSampleReceiverTest {
 	
+	@Rule
+	public final ExpectedException thrown = ExpectedException.none();
+	
 	@Test
-	public void getSample_noSampleBatch_returnsNull() {
+	public void next_noSampleBatch_throwsException() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
 		
-		assertNull(sampleReceiver.getSample());
+		thrown.expect(NoSuchElementException.class);
+		sampleReceiver.next();
 	}
 
 	@Test
-	public void getSample_emptySampleBatch_returnsNull() {
+	public void next_emptySampleBatch_throwsException() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
 		ETSortedSampleList emptySampleList = new ETSortedSampleList();
 		sampleReceiver.setSamples(emptySampleList);
 		
-		assertNull(sampleReceiver.getSample());
+		thrown.expect(NoSuchElementException.class);
+		sampleReceiver.next();
 	}
 	
 	@Test
-	public void getSample_emptySampleBatch_subsequentCallsReturnNull() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList emptySampleList = new ETSortedSampleList();
-		sampleReceiver.setSamples(emptySampleList);
-		
-		assertNull(sampleReceiver.getSample());
-		assertNull(sampleReceiver.getSample());
-	}
-	
-	@Test
-	public void getSample_orderedSampleBatch_returnsEverySample() {
+	public void next_orderedSampleBatch_returnsEverySample() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
 		
-		assertSame(sampleReceiver.getSample(), sampleList.get(0));
-		assertSame(sampleReceiver.getSample(), sampleList.get(1));
-		assertSame(sampleReceiver.getSample(), sampleList.get(2));
+		assertSame(sampleReceiver.next(), sampleList.get(0));
+		assertSame(sampleReceiver.next(), sampleList.get(1));
+		assertSame(sampleReceiver.next(), sampleList.get(2));
 	}
 	
 	@Test
-	public void getSample_orderedSampleBatch_returnsNullAfterBatchDepleted() {
+	public void next_orderedSampleBatch_throwsExceptionAfterBatchDepleted() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
 		
-		assertNotNull(sampleReceiver.getSample());
-		assertNotNull(sampleReceiver.getSample());
-		assertNotNull(sampleReceiver.getSample());
+		assertNotNull(sampleReceiver.next());
+		assertNotNull(sampleReceiver.next());
+		assertNotNull(sampleReceiver.next());
 		
-		assertNull(sampleReceiver.getSample());
+		thrown.expect(NoSuchElementException.class);
+		sampleReceiver.next();
 	}
 	
 	@Test
-	public void getSample_orderedSampleBatchDepletedResetCalled_returnsEverySample() {
+	public void next_orderedSampleBatchDepletedResetCalled_returnsEverySample() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
 		
 		for(int i = 0; i < 3; ++i) {
-			sampleReceiver.getSample();
+			sampleReceiver.next();
 		}
 		
 		sampleReceiver.reset();
 		
-		assertSame(sampleReceiver.getSample(), sampleList.get(0));
-		assertSame(sampleReceiver.getSample(), sampleList.get(1));
-		assertSame(sampleReceiver.getSample(), sampleList.get(2));
+		assertSame(sampleReceiver.next(), sampleList.get(0));
+		assertSame(sampleReceiver.next(), sampleList.get(1));
+		assertSame(sampleReceiver.next(), sampleList.get(2));
 	}
 	
 	@Test
-	public void getSample_setNewEmptySampleBatch_returnsNull() {
-		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
-		
-		ETSortedSampleList emptySampleList = new ETSortedSampleList();
-		sampleReceiver.setSamples(emptySampleList);
-		
-		assertNull(sampleReceiver.getSample());
-	}
-	
-	@Test
-	public void getSample_setNewOrderedSampleBatch_returnsEverySample() {
+	public void next_setNewOrderedSampleBatch_returnsEverySample() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
 		ETSortedSampleList sampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(sampleList);
@@ -100,9 +87,74 @@ public class ETPlaybackSampleReceiverTest {
 		ETSortedSampleList newSampleList = createTestSampleBatch();
 		sampleReceiver.setSamples(newSampleList);
 		
-		assertSame(sampleReceiver.getSample(), newSampleList.get(0));
-		assertSame(sampleReceiver.getSample(), newSampleList.get(1));
-		assertSame(sampleReceiver.getSample(), newSampleList.get(2));
+		assertSame(sampleReceiver.next(), newSampleList.get(0));
+		assertSame(sampleReceiver.next(), newSampleList.get(1));
+		assertSame(sampleReceiver.next(), newSampleList.get(2));
+	}
+	
+	@Test
+	public void hasNext_noSampleBatch_returnsFalse() {
+		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		
+		assertFalse(sampleReceiver.hasNext());
+	}
+	
+	@Test
+	public void hasNext_emptySampleBatch_returnsFalse() {
+		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETSortedSampleList emptySampleList = new ETSortedSampleList();
+		sampleReceiver.setSamples(emptySampleList);
+		
+		assertFalse(sampleReceiver.hasNext());
+	}
+	
+	@Test
+	public void hasNext_orderedSampleBatch_returnsTrue() {
+		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETSortedSampleList sampleList = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleList);
+		
+		assertTrue(sampleReceiver.hasNext());
+	}
+	
+	@Test
+	public void next_orderedSampleBatch_returnsFalseAfterBatchDepleted() {
+		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETSortedSampleList sampleList = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleList);
+		
+		assertNotNull(sampleReceiver.next());
+		assertNotNull(sampleReceiver.next());
+		assertNotNull(sampleReceiver.next());
+		
+		assertFalse(sampleReceiver.hasNext());
+	}
+	
+	@Test
+	public void hasNext_orderedSampleBatchDepletedResetCalled_returnsTrue() {
+		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETSortedSampleList sampleList = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleList);
+		
+		for(int i = 0; i < 3; ++i) {
+			sampleReceiver.next();
+		}
+		
+		sampleReceiver.reset();
+		
+		assertTrue(sampleReceiver.hasNext());
+	}
+	
+	@Test
+	public void hasNext_setNewOrderedSampleBatch_returnsTrue() {
+		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
+		ETSortedSampleList sampleList = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleList);
+		
+		ETSortedSampleList newSampleList = createTestSampleBatch();
+		sampleReceiver.setSamples(newSampleList);
+		
+		assertTrue(sampleReceiver.hasNext());
 	}
 	
 	private ETSortedSampleList createTestSampleBatch() {

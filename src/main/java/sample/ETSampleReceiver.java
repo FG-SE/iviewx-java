@@ -1,18 +1,15 @@
 package sample;
 
+import java.util.Iterator;
+
 /** Receives eyetracking samples.
+ *  <p>
+ *  This interface extends the {@link java.util.Iterator} interface.
+ *  Its implementation can therefore be used like any other iterator.
  * 
  *  @author Luca Fuelbier
  */
-public interface ETSampleReceiver {
-	
-	/** Retrieves a single eyetracking sample.
-	 * 
-	 *  @return Eyetracking sample
-	 *  
-	 *  @throws exception.ETException If an error occurred while retrieving a new sample
-	 */
-	public ETSample getSample();
+public interface ETSampleReceiver extends Iterator<ETSample> {
 	
 	/** Sets the sample stabilization strategy.
 	 *  <p>
