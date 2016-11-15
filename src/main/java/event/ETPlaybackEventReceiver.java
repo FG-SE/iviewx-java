@@ -35,25 +35,27 @@ public class ETPlaybackEventReceiver implements ETEventReceiver {
 		eventsIter = events.iterator();
 	}
 
-	/** Retrieves a single eyetracking event from the event list.
-	 *  <p>
-	 *  The event returned will be the next one in the list, or 
-	 *  null if the list is fully iterated or empty.
-	 *  <p>
-	 *  Note that this class does a full iteration of the event list. 
-	 *  Timestamps do not matter.
+	/** Retrieves the next eyetracking event from the event list.
 	 * 
 	 *  @return Eyetracking event
+	 *  
+	 *  @throws java.util.NoSuchElementException If the receiver has no more events
 	 */
 	@Override
-	public ETEvent getEvent() {
-		if(eventsIter.hasNext())
-			return eventsIter.next();
-		else
-			return null;
+	public ETEvent next() {
+		return eventsIter.next();
 	}
 	
-	/** Resets the EventReceiver to the beginning of the event list.
+	/** Returns <em>true</em> if the event receiver has more events.
+	 * 
+	 *  @return <em>true</em> if the receiver has more events
+	 */
+	@Override
+	public boolean hasNext() {
+		return eventsIter.hasNext();
+	}
+	
+	/** Resets the EventReceiver iteration to the beginning of the event list.
 	 *  <p>
 	 *  Resetting essentially means, that you will iterate the event list again. 
 	 *  This can be very helpful if you want to analyze the same set of data multiple times.
@@ -63,6 +65,8 @@ public class ETPlaybackEventReceiver implements ETEventReceiver {
 	}
 	
 	/** Sets the event list that will be used for sample retrieval.
+	 *  <p>
+	 *  This will also reset the iteration of the receiver for the new list.
 	 * 
 	 *  @param events Event list
 	 */

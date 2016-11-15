@@ -41,6 +41,8 @@ public class ETIViewXEventReceiver implements ETEventReceiver {
 	 *  If your eyetracking environment is properly set up, a <strong>null</strong> most likely means that
 	 *  your application is polling faster than the eyetrackers refresh rate. Simply keep polling
 	 *  until a new event is registered.
+	 *  <p>
+	 *  To check if there are still events available, call {@link #hasNext() hasNext}.
 	 * 
 	 *  @return Eyetracking event
 	 *  
@@ -48,7 +50,7 @@ public class ETIViewXEventReceiver implements ETEventReceiver {
 	 *  @throws exception.ETConnectionException If no connection could be established to the eyetracker
 	 */
 	@Override
-	public ETEvent getEvent() {
+	public ETEvent next() {
 		int status = iView.iV_GetEvent(eventStruct);
 		
 		if(status == RET_NO_VALID_DATA)
@@ -57,6 +59,22 @@ public class ETIViewXEventReceiver implements ETEventReceiver {
 			ETErrorHandler.handle(status);
 		
 		return structToEvent(eventStruct);
+	}
+	
+	/** Returns <em>true</em> if the event receiver has more samples.
+	 *  <p>
+	 *  Since the eyetracker can produce events endlessly, this method will always return true.
+	 *  A return of <em>true</em> does not however indicate that new data is available.
+	 *  It only indicates that the eyetracker is trying to retrieve a new event at the moment.
+	 *  <p>
+	 *  This behavior might change in a later release of the eyetracking library, for example by 
+	 *  supporting pausing and resuming the eyetracking process.
+	 * 
+	 *  @return <em>true</em> if the receiver has more events
+	 */
+	@Override
+	public boolean hasNext() {
+		return true;
 	}
 	
 	/** Converts the information of an EventStruct to an ETEvent.
