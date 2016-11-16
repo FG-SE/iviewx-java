@@ -2,7 +2,6 @@ package sample;
 
 import java.util.Iterator;
 
-import event.ETEvent;
 import generic.ETChronologicCollection;
 
 /** Receives eyetracking samples from a {@link generic.ETChronologicCollection}.
