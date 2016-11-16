@@ -38,6 +38,8 @@ public class ETSortedEventLoader {
 	 *  <p>
 	 *  Events that are not stored in correct chronological order are ignored and not added to the
 	 *  resulting list.
+	 *  <p>
+	 *  Lines starting with <strong>#</strong> are considered comments and are ignored.
 	 *  
 	 *  @param file Textfile containing the eyetracking event information
 	 *  @return Sorted event list generated from the text files content
@@ -51,6 +53,8 @@ public class ETSortedEventLoader {
 		
 		try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			for(String line = reader.readLine(); line != null; line = reader.readLine()) {
+				if(line.startsWith("#"))
+					continue;
 				ETEvent sample = parseEventFromText(line);
 				samples.addIgnore(sample);
 			}

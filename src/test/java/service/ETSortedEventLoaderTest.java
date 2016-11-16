@@ -59,4 +59,12 @@ public class ETSortedEventLoaderTest {
 		ETSortedSampleLoader.fromTextFile(eventFile);
 	}
 	
+	@Test
+	public void fromTextFile_comments_commentsAreIgnored() throws Exception {
+		File eventFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testevents_comments.txt").toURI());
+		ETSortedEventList events = ETSortedEventLoader.fromTextFile(eventFile);
+		
+		assertEquals(2, events.size());
+	}
+	
 }

@@ -2,6 +2,7 @@ package service;
 
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import org.junit.Rule;
 import static org.junit.Assert.*;
 
@@ -76,6 +77,14 @@ public class ETSortedSampleLoaderTest {
 		exception.expect(ETBadFormatException.class);
 		
 		ETSortedSampleLoader.fromTextFile(sampleFile);
+	}
+	
+	@Test
+	public void fromTextFile_comments_commentsAreIgnored() throws Exception {
+		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testsamples_comments.txt").toURI());
+		ETSortedSampleList samples = ETSortedSampleLoader.fromTextFile(sampleFile);
+		
+		assertEquals(2, samples.size());
 	}
 	
 }
