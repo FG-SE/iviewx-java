@@ -1,6 +1,6 @@
 package event;
 
-import generic.TimeComparable;
+import generic.ChronologicComparable;
 import eye.ETEye;
 
 /** Stores eyetracking event information.
@@ -11,7 +11,7 @@ import eye.ETEye;
  * 
  *  @author Luca Fuelbier
  */
-public class ETEvent implements TimeComparable<ETEvent> {
+public class ETEvent implements ChronologicComparable<ETEvent> {
 	
 	private long startTime;
 	private long endTime;
@@ -98,7 +98,7 @@ public class ETEvent implements TimeComparable<ETEvent> {
 	 *          than the other events start timestamp
 	 */
 	@Override
-	public int compareTo(ETEvent other) {
+	public int chrCompareTo(ETEvent other) {
 		return Long.compare(startTime, other.startTime);
 	}
 	

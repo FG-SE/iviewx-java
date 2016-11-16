@@ -13,7 +13,7 @@ public class ETSampleTest {
 		ETSample sampleEarly = createSample(0);
 		ETSample sampleLate = createSample(10);
 		
-		assertTrue(sampleEarly.compareTo(sampleLate) < 0);
+		assertTrue(sampleEarly.chrCompareTo(sampleLate) < 0);
 	}
 	
 	@Test
@@ -21,7 +21,7 @@ public class ETSampleTest {
 		ETSample sample1 = createSample(10);
 		ETSample sample2 = createSample(10);
 		
-		assertTrue(sample1.compareTo(sample2) == 0);
+		assertTrue(sample1.chrCompareTo(sample2) == 0);
 	}
 	
 	@Test
@@ -29,7 +29,7 @@ public class ETSampleTest {
 		ETSample sampleLate = createSample(10);
 		ETSample sampleEarly = createSample(0);
 		
-		assertTrue(sampleLate.compareTo(sampleEarly) > 0);
+		assertTrue(sampleLate.chrCompareTo(sampleEarly) > 0);
 	}
 	
 	private ETSample createSample(long timestamp) {

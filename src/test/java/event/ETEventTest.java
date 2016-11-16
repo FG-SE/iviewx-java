@@ -14,7 +14,7 @@ public class ETEventTest {
 		ETEvent eventEarly = createEvent(0);
 		ETEvent eventLate = createEvent(10);
 		
-		assertTrue(eventEarly.compareTo(eventLate) < 0);
+		assertTrue(eventEarly.chrCompareTo(eventLate) < 0);
 	}
 	
 	@Test
@@ -22,7 +22,7 @@ public class ETEventTest {
 		ETEvent event1 = createEvent(10);
 		ETEvent event2 = createEvent(10);
 		
-		assertTrue(event1.compareTo(event2) == 0);
+		assertTrue(event1.chrCompareTo(event2) == 0);
 	}
 	
 	@Test
@@ -30,7 +30,7 @@ public class ETEventTest {
 		ETEvent eventLate = createEvent(10);
 		ETEvent eventEarly = createEvent(0);
 		
-		assertTrue(eventLate.compareTo(eventEarly) > 0);
+		assertTrue(eventLate.chrCompareTo(eventEarly) > 0);
 	}
 	
 	private ETEvent createEvent(long startTimestamp) {
