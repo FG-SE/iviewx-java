@@ -2,15 +2,16 @@ package service;
 
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.junit.Rule;
 import static org.junit.Assert.*;
 
 import sample.ETSample;
-import sample.ETSortedSampleList;
 import exception.ETBadFormatException;
+import generic.ETChronologicCollection;
 
 import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ETSortedSampleLoaderTest {
 	
@@ -20,12 +21,13 @@ public class ETSortedSampleLoaderTest {
 	@Test
 	public void fromTextFile_correctFormatting_loadsAllSamples() throws Exception {
 		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testsamples_goodformat.txt").toURI());
-		ETSortedSampleList samples = ETSortedSampleLoader.fromTextFile(sampleFile);
+		ETChronologicCollection<ETSample> sampleCollection = ETSortedSampleLoader.fromTextFile(sampleFile);
+		List<ETSample> sampleList = new ArrayList<>(sampleCollection);
 
-		assertEquals(2, samples.size());
+		assertEquals(2, sampleCollection.size());
 		
-		ETSample sample1 = samples.get(0);
-		ETSample sample2 = samples.get(1);
+		ETSample sample1 = sampleList.get(0);
+		ETSample sample2 = sampleList.get(1);
 		final double DELTA = 1e-9;
 		
 		assertEquals(1.1, sample1.getLeftEye().getDiameter(), 		DELTA);
@@ -82,7 +84,7 @@ public class ETSortedSampleLoaderTest {
 	@Test
 	public void fromTextFile_comments_commentsAreIgnored() throws Exception {
 		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testsamples_comments.txt").toURI());
-		ETSortedSampleList samples = ETSortedSampleLoader.fromTextFile(sampleFile);
+		ETChronologicCollection<ETSample> samples = ETSortedSampleLoader.fromTextFile(sampleFile);
 		
 		assertEquals(2, samples.size());
 	}

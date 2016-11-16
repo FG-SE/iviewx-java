@@ -6,10 +6,12 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.*;
 
 import java.util.NoSuchElementException;
+import java.util.List;
+import java.util.ArrayList;
 
 import event.ETEvent;
-import event.ETSortedEventList;
 import eye.ETEye;
+import generic.ETChronologicCollection;
 import event.ETPlaybackEventReceiver;
 
 public class ETPlackbackEventReceiverTest {
@@ -28,8 +30,8 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void next_emptyEventBatch_throwsException() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList emptyEventList = new ETSortedEventList();
-		eventReceiver.setEvents(emptyEventList);
+		ETChronologicCollection<ETEvent> emptyEventCollection = new ETChronologicCollection<>();
+		eventReceiver.setEvents(emptyEventCollection);
 		
 		thrown.expect(NoSuchElementException.class);
 		eventReceiver.next();
@@ -38,8 +40,9 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void next_orderedEventBatch_returnsEveryEvent() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList eventList = createTestEventBatch();
-		eventReceiver.setEvents(eventList);
+		ETChronologicCollection<ETEvent> eventCollection = createTestEventBatch();
+		List<ETEvent> eventList = new ArrayList<>(eventCollection);
+		eventReceiver.setEvents(eventCollection);
 		
 		assertSame(eventReceiver.next(), eventList.get(0));
 		assertSame(eventReceiver.next(), eventList.get(1));
@@ -49,8 +52,8 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void next_orderedEventBatch_throwsExceptionAfterBatchDepleted() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList eventList = createTestEventBatch();
-		eventReceiver.setEvents(eventList);
+		ETChronologicCollection<ETEvent> eventCollection = createTestEventBatch();
+		eventReceiver.setEvents(eventCollection);
 		
 		assertNotNull(eventReceiver.next());
 		assertNotNull(eventReceiver.next());
@@ -63,8 +66,9 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void next_orderedEventBatchDepletedResetCalled_returnsEveryEvent() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList eventList = createTestEventBatch();
-		eventReceiver.setEvents(eventList);
+		ETChronologicCollection<ETEvent> eventCollection = createTestEventBatch();
+		List<ETEvent> eventList = new ArrayList<>(eventCollection);
+		eventReceiver.setEvents(eventCollection);
 		
 		for(int i = 0; i < 3; ++i) {
 			eventReceiver.next();
@@ -80,11 +84,11 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void next_setNewEmptyEventBatch_throwsException() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList eventList = createTestEventBatch();
-		eventReceiver.setEvents(eventList);
+		ETChronologicCollection<ETEvent> eventCollection = createTestEventBatch();
+		eventReceiver.setEvents(eventCollection);
 		
-		ETSortedEventList emptyeventList = new ETSortedEventList();
-		eventReceiver.setEvents(emptyeventList);
+		ETChronologicCollection<ETEvent> emptyEventCollection = new ETChronologicCollection<>();
+		eventReceiver.setEvents(emptyEventCollection);
 		
 		thrown.expect(NoSuchElementException.class);
 		eventReceiver.next();
@@ -100,8 +104,8 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void hasNext_emptyEventBatch_returnsFalse() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList emptyEventList = new ETSortedEventList();
-		eventReceiver.setEvents(emptyEventList);
+		ETChronologicCollection<ETEvent> emptyEventCollection = new ETChronologicCollection<>();
+		eventReceiver.setEvents(emptyEventCollection);
 		
 		assertFalse(eventReceiver.hasNext());
 	}
@@ -109,8 +113,8 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void hasNext_orderedEventBatch_returnsTrue() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList eventList = createTestEventBatch();
-		eventReceiver.setEvents(eventList);
+		ETChronologicCollection<ETEvent> eventCollection = createTestEventBatch();
+		eventReceiver.setEvents(eventCollection);
 		
 		assertTrue(eventReceiver.hasNext());
 	}
@@ -118,8 +122,8 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void hasNext_orderedEventBatch_returnsFalseAfterBatchDepleted() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList eventList = createTestEventBatch();
-		eventReceiver.setEvents(eventList);
+		ETChronologicCollection<ETEvent> eventCollection = createTestEventBatch();
+		eventReceiver.setEvents(eventCollection);
 		
 		assertNotNull(eventReceiver.next());
 		assertNotNull(eventReceiver.next());
@@ -131,8 +135,8 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void hasNext_orderedEventBatchDepletedResetCalled_returnsTrue() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList eventList = createTestEventBatch();
-		eventReceiver.setEvents(eventList);
+		ETChronologicCollection<ETEvent> eventCollection = createTestEventBatch();
+		eventReceiver.setEvents(eventCollection);
 		
 		for(int i = 0; i < 3; ++i) {
 			eventReceiver.next();
@@ -146,23 +150,23 @@ public class ETPlackbackEventReceiverTest {
 	@Test
 	public void hasNext_setNewEmptyEventBatch_returnsFalse() {
 		ETPlaybackEventReceiver eventReceiver = new ETPlaybackEventReceiver();
-		ETSortedEventList eventList = createTestEventBatch();
-		eventReceiver.setEvents(eventList);
+		ETChronologicCollection<ETEvent> eventCollection = createTestEventBatch();
+		eventReceiver.setEvents(eventCollection);
 		
-		ETSortedEventList emptyeventList = new ETSortedEventList();
-		eventReceiver.setEvents(emptyeventList);
+		ETChronologicCollection<ETEvent> emptyEventCollection = new ETChronologicCollection<>();
+		eventReceiver.setEvents(emptyEventCollection);
 		
 		assertFalse(eventReceiver.hasNext());
 	}
 	
-	private ETSortedEventList createTestEventBatch() {
-		ETSortedEventList events = new ETSortedEventList();
+	private ETChronologicCollection<ETEvent> createTestEventBatch() {
+		ETChronologicCollection<ETEvent> events = new ETChronologicCollection<>();
 		ETEvent event1 = new ETEvent(0, 1, ETEye.LEFT, 0, 0);
 		ETEvent event2 = new ETEvent(1, 2, ETEye.LEFT, 1, 1);
 		ETEvent event3 = new ETEvent(2, 3, ETEye.LEFT, 2, 2);
-		events.addIgnore(event1);
-		events.addIgnore(event2);
-		events.addIgnore(event3);
+		events.add(event1);
+		events.add(event2);
+		events.add(event3);
 		return events;
 	}
 }

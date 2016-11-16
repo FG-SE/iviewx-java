@@ -6,12 +6,13 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.*;
 
 import java.util.NoSuchElementException;
+import java.util.List;
+import java.util.ArrayList;
 
 import eye.ETEyeData;
-
+import generic.ETChronologicCollection;
 import sample.ETPlaybackSampleReceiver;
 import sample.ETSample;
-import sample.ETSortedSampleList;
 
 public class ETPlaybackSampleReceiverTest {
 	
@@ -29,8 +30,8 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void next_emptySampleBatch_throwsException() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList emptySampleList = new ETSortedSampleList();
-		sampleReceiver.setSamples(emptySampleList);
+		ETChronologicCollection<ETSample> sampleCollection = new ETChronologicCollection<>();
+		sampleReceiver.setSamples(sampleCollection);
 		
 		thrown.expect(NoSuchElementException.class);
 		sampleReceiver.next();
@@ -39,8 +40,9 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void next_orderedSampleBatch_returnsEverySample() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
+		ETChronologicCollection<ETSample> sampleCollection = createTestSampleBatch();
+		List<ETSample> sampleList = new ArrayList<>(sampleCollection);
+		sampleReceiver.setSamples(sampleCollection);
 		
 		assertSame(sampleReceiver.next(), sampleList.get(0));
 		assertSame(sampleReceiver.next(), sampleList.get(1));
@@ -50,8 +52,8 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void next_orderedSampleBatch_throwsExceptionAfterBatchDepleted() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
+		ETChronologicCollection<ETSample> sampleCollection = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleCollection);
 		
 		assertNotNull(sampleReceiver.next());
 		assertNotNull(sampleReceiver.next());
@@ -64,8 +66,9 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void next_orderedSampleBatchDepletedResetCalled_returnsEverySample() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
+		ETChronologicCollection<ETSample> sampleCollection = createTestSampleBatch();
+		List<ETSample> sampleList = new ArrayList<>(sampleCollection);		
+		sampleReceiver.setSamples(sampleCollection);
 		
 		for(int i = 0; i < 3; ++i) {
 			sampleReceiver.next();
@@ -81,11 +84,12 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void next_setNewOrderedSampleBatch_returnsEverySample() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
+		ETChronologicCollection<ETSample> sampleCollection = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleCollection);
 		
-		ETSortedSampleList newSampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(newSampleList);
+		ETChronologicCollection<ETSample> newSampleCollection = createTestSampleBatch();
+		List<ETSample> newSampleList = new ArrayList<>(newSampleCollection);
+		sampleReceiver.setSamples(newSampleCollection);
 		
 		assertSame(sampleReceiver.next(), newSampleList.get(0));
 		assertSame(sampleReceiver.next(), newSampleList.get(1));
@@ -102,8 +106,8 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void hasNext_emptySampleBatch_returnsFalse() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList emptySampleList = new ETSortedSampleList();
-		sampleReceiver.setSamples(emptySampleList);
+		ETChronologicCollection<ETSample> emptySampleCollection = new ETChronologicCollection<>();
+		sampleReceiver.setSamples(emptySampleCollection);
 		
 		assertFalse(sampleReceiver.hasNext());
 	}
@@ -111,8 +115,8 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void hasNext_orderedSampleBatch_returnsTrue() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
+		ETChronologicCollection<ETSample> sampleCollection = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleCollection);
 		
 		assertTrue(sampleReceiver.hasNext());
 	}
@@ -120,8 +124,8 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void next_orderedSampleBatch_returnsFalseAfterBatchDepleted() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
+		ETChronologicCollection<ETSample> sampleCollection = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleCollection);
 		
 		assertNotNull(sampleReceiver.next());
 		assertNotNull(sampleReceiver.next());
@@ -133,8 +137,8 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void hasNext_orderedSampleBatchDepletedResetCalled_returnsTrue() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
+		ETChronologicCollection<ETSample> sampleCollection = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleCollection);
 		
 		for(int i = 0; i < 3; ++i) {
 			sampleReceiver.next();
@@ -148,23 +152,23 @@ public class ETPlaybackSampleReceiverTest {
 	@Test
 	public void hasNext_setNewOrderedSampleBatch_returnsTrue() {
 		ETPlaybackSampleReceiver sampleReceiver = new ETPlaybackSampleReceiver();
-		ETSortedSampleList sampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(sampleList);
+		ETChronologicCollection<ETSample> sampleCollection = createTestSampleBatch();
+		sampleReceiver.setSamples(sampleCollection);
 		
-		ETSortedSampleList newSampleList = createTestSampleBatch();
-		sampleReceiver.setSamples(newSampleList);
+		ETChronologicCollection<ETSample> newSampleCollection = createTestSampleBatch();
+		sampleReceiver.setSamples(newSampleCollection);
 		
 		assertTrue(sampleReceiver.hasNext());
 	}
 	
-	private ETSortedSampleList createTestSampleBatch() {
-		ETSortedSampleList samples = new ETSortedSampleList();
+	private ETChronologicCollection<ETSample> createTestSampleBatch() {
+		ETChronologicCollection<ETSample> samples = new ETChronologicCollection<>();
 		ETSample sample1 = new ETSample(new ETEyeData(0,0,0,0,0,0), new ETEyeData(0,0,0,0,0,0), 0);
 		ETSample sample2 = new ETSample(new ETEyeData(1,1,1,1,1,1), new ETEyeData(1,1,1,1,1,1), 1);
 		ETSample sample3 = new ETSample(new ETEyeData(2,2,2,2,2,2), new ETEyeData(2,2,2,2,2,2), 2);
-		samples.addIgnore(sample1);
-		samples.addIgnore(sample2);
-		samples.addIgnore(sample3);
+		samples.add(sample1);
+		samples.add(sample2);
+		samples.add(sample3);
 		return samples;
 	}
 }

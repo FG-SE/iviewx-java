@@ -7,8 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import eye.ETEyeData;
+import generic.ETChronologicCollection;
 import sample.ETSample;
-import sample.ETSortedSampleList;
 import exception.ETBadFormatException;
 
 /** Loads eyetracking samples from persistent sources to be used with {@link sample.ETPlaybackSampleReceiver}.
@@ -55,16 +55,17 @@ public class ETSortedSampleLoader {
 	 *  @throws IOException If an error occured during I/O
 	 *  @throws ETBadFormatException If the text file is incorrectly formatted
 	 */
-	public static ETSortedSampleList fromTextFile(File file) throws FileNotFoundException, IOException, ETBadFormatException
+	public static ETChronologicCollection<ETSample> fromTextFile(File file) 
+			throws FileNotFoundException, IOException, ETBadFormatException
 	{
-		ETSortedSampleList samples = new ETSortedSampleList();
+		ETChronologicCollection<ETSample> samples = new ETChronologicCollection<>();
 		
 		try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			for(String line = reader.readLine(); line != null; line = reader.readLine()) {
 				if(line.startsWith("#"))
 					continue;
 				ETSample sample = parseSampleFromText(line);
-				samples.addIgnore(sample);
+				samples.add(sample);
 			}
 		}
 		

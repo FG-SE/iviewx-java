@@ -6,11 +6,13 @@ import org.junit.Rule;
 import static org.junit.Assert.*;
 
 import event.ETEvent;
-import event.ETSortedEventList;
 import eye.ETEye;
+import generic.ETChronologicCollection;
 import exception.ETBadFormatException;
 
 import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ETSortedEventLoaderTest {
 
@@ -20,12 +22,13 @@ public class ETSortedEventLoaderTest {
 	@Test
 	public void fromTextFile_correctFormatting_loadsAllEvents() throws Exception {
 		File eventFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testevents_goodformat.txt").toURI());
-		ETSortedEventList events = ETSortedEventLoader.fromTextFile(eventFile);
+		ETChronologicCollection<ETEvent> eventCollection = ETSortedEventLoader.fromTextFile(eventFile);
+		List<ETEvent> eventList = new ArrayList<>(eventCollection);
 
-		assertEquals(2, events.size());
+		assertEquals(2, eventCollection.size());
 		
-		ETEvent event1 = events.get(0);
-		ETEvent event2 = events.get(1);
+		ETEvent event1 = eventList.get(0);
+		ETEvent event2 = eventList.get(1);
 		final double DELTA = 1e-9;
 		
 		assertEquals(1, event1.getStartTime());
@@ -62,7 +65,7 @@ public class ETSortedEventLoaderTest {
 	@Test
 	public void fromTextFile_comments_commentsAreIgnored() throws Exception {
 		File eventFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testevents_comments.txt").toURI());
-		ETSortedEventList events = ETSortedEventLoader.fromTextFile(eventFile);
+		ETChronologicCollection<ETEvent> events = ETSortedEventLoader.fromTextFile(eventFile);
 		
 		assertEquals(2, events.size());
 	}

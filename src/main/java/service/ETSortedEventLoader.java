@@ -8,8 +8,8 @@ import java.io.IOException;
 
 import exception.ETBadFormatException;
 import eye.ETEye;
+import generic.ETChronologicCollection;
 import event.ETEvent;
-import event.ETSortedEventList;
 
 /** Loads eyetracking events from persistent sources to be used with {@link event.ETPlaybackEventReceiver}.
  *  <p>
@@ -47,16 +47,17 @@ public class ETSortedEventLoader {
 	 *  @throws IOException If an error occurred during I/O
 	 *  @throws ETBadFormatException If the text file is incorrectly formatted
 	 */
-	public static ETSortedEventList fromTextFile(File file) throws FileNotFoundException, IOException, ETBadFormatException
+	public static ETChronologicCollection<ETEvent> fromTextFile(File file) 
+			throws FileNotFoundException, IOException, ETBadFormatException
 	{
-		ETSortedEventList samples = new ETSortedEventList();
+		ETChronologicCollection<ETEvent> samples = new ETChronologicCollection<>();
 		
 		try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			for(String line = reader.readLine(); line != null; line = reader.readLine()) {
 				if(line.startsWith("#"))
 					continue;
 				ETEvent sample = parseEventFromText(line);
-				samples.addIgnore(sample);
+				samples.add(sample);
 			}
 		}
 		
