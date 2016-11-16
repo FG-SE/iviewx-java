@@ -140,7 +140,7 @@ public final class IViewX {
 	
 	/** Returns a ETEventReceiver that receives eyetracking events from the connected
 	 *  IView X Server.
-	 *  
+	 *  <p>
 	 *  Note that the returned ETEventReceiver instance is the same for every call to 
 	 *  this method.
 	 * 
@@ -152,7 +152,7 @@ public final class IViewX {
 	
 	/** Returns a ETSampleReceiver that receives eyetracking samples from the connected
 	 *  IView X Server.
-	 *  
+	 *  <p>
 	 *  Note that the returned ETSampleReceiver instance is the same for every call to 
 	 *  this method. This also means, that you only have to set a stabilization strategy 
 	 *  once during application startup.
