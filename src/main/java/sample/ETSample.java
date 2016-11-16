@@ -1,5 +1,6 @@
 package sample;
 
+import generic.TimeComparable;
 import eye.ETEyeData;
 
 /** Stores eyetracking sample information.
@@ -13,7 +14,7 @@ import eye.ETEyeData;
  * 
  *  @author Luca Fuelbier
  */
-public class ETSample {
+public class ETSample implements TimeComparable<ETSample> {
 	
 	private ETEyeData leftEye;
 	private ETEyeData rightEye;
@@ -53,5 +54,19 @@ public class ETSample {
 	 */
 	public long getTimestamp() {
 		return timestamp;
-	}	
+	}
+	
+	/** Compares this sample with the other for chronological order.
+	 *  Returns a negative integer, zero, or a positive integer as this
+	 *  samples timestamp is less than, equal to, or greater than the
+	 *  other samples timestamp.
+	 *  
+	 *  @return A negative integer, zero, or a positive integer as this
+	 *          samples timestamp is less than, equal to, or greater than the
+	 *          other samples timestamp
+	 */
+	@Override
+	public int compareTo(ETSample other) {
+		return Long.compare(timestamp, other.timestamp);
+	}
 }

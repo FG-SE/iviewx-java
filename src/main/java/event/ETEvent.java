@@ -1,5 +1,6 @@
 package event;
 
+import generic.TimeComparable;
 import eye.ETEye;
 
 /** Stores eyetracking event information.
@@ -10,7 +11,7 @@ import eye.ETEye;
  * 
  *  @author Luca Fuelbier
  */
-public class ETEvent {
+public class ETEvent implements TimeComparable<ETEvent> {
 	
 	private long startTime;
 	private long endTime;
@@ -82,6 +83,23 @@ public class ETEvent {
 	 */
 	public double getPositionY() {
 		return posY;
+	}
+	
+	/** Compares this event with the other for chronological order.
+	 *  Returns a negative integer, zero, or a positive integer as this
+	 *  events start timestamp is less than, equal to, or greater than the
+	 *  other events start timestamp.
+	 *  <p>
+	 *  <strong>Note:</strong> This imposes a chronological order based on
+	 *  when the events started, not when they ended or how long they lasted.
+	 *  
+	 *  @return A negative integer, zero, or a positive integer as this
+	 *          events start timestamp is less than, equal to, or greater
+	 *          than the other events start timestamp
+	 */
+	@Override
+	public int compareTo(ETEvent other) {
+		return Long.compare(startTime, other.startTime);
 	}
 	
 }
