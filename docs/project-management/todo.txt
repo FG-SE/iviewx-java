@@ -1,10 +1,6 @@
 [General]
 - Make a list of features that the SDK supports for the RED-m eyetracker, that have not yet been implemented in this library
 
-[Sorted Lists]
-- Refactor to remove code duplication
- -> Implement SortedList<T> that uses Comparable methods to ensure sorting and intelligently append already sorted entries (like before)
-
 [Sample/Event Loader, Sorted Sample/Event List]
 - How big will these lists get?
 - Do we have to stream them in/out of a file?
