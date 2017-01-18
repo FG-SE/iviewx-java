@@ -1,4 +1,4 @@
-package service;
+package persistence;
 
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -6,22 +6,23 @@ import org.junit.Rule;
 import static org.junit.Assert.*;
 
 import sample.ETSample;
-import exception.ETBadFormatException;
+import exception.ETFileFormatException;
 import generic.ETChronologicCollection;
+import persistence.ETSampleLoader;
 
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ETSortedSampleLoaderTest {
+public class ETSampleLoaderTest {
 	
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();
 
 	@Test
-	public void fromTextFile_correctFormatting_loadsAllSamples() throws Exception {
-		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testsamples_goodformat.txt").toURI());
-		ETChronologicCollection<ETSample> sampleCollection = ETSortedSampleLoader.fromTextFile(sampleFile);
+	public void fromEyetrackingSampleFile_correctFormatting_loadsAllSamples() throws Exception {
+		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./persistence/testsamples_goodformat.ets").toURI());
+		ETChronologicCollection<ETSample> sampleCollection = ETSampleLoader.fromEyetrackingSampleFile(sampleFile);
 		List<ETSample> sampleList = new ArrayList<>(sampleCollection);
 
 		assertEquals(2, sampleCollection.size());
@@ -64,27 +65,39 @@ public class ETSortedSampleLoaderTest {
 	}
 	
 	@Test
-	public void fromTextFile_notEnoughFields_throwsException() throws Exception {
-		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testsamples_not_enough_fields.txt").toURI());
+	public void fromEyetrackingSampleFile_notEnoughFields_throwsException() throws Exception {
+		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./persistence/testsamples_not_enough_fields.ets").toURI());
 		
-		exception.expect(ETBadFormatException.class);
+		exception.expect(ETFileFormatException.class);
+		exception.expectMessage("badly formatted");
 		
-		ETSortedSampleLoader.fromTextFile(sampleFile);
+		ETSampleLoader.fromEyetrackingSampleFile(sampleFile);
 	}
 	
 	@Test
-	public void fromTextFile_unparsableFields_throwsException() throws Exception {
-		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testsamples_unparsable_fields.txt").toURI());
+	public void fromEyetrackingSampleFile_unparsableFields_throwsException() throws Exception {
+		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./persistence/testsamples_unparsable_fields.ets").toURI());
 		
-		exception.expect(ETBadFormatException.class);
+		exception.expect(ETFileFormatException.class);
+		exception.expectMessage("badly formatted");
 		
-		ETSortedSampleLoader.fromTextFile(sampleFile);
+		ETSampleLoader.fromEyetrackingSampleFile(sampleFile);
 	}
 	
 	@Test
-	public void fromTextFile_comments_commentsAreIgnored() throws Exception {
-		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./service/testsamples_comments.txt").toURI());
-		ETChronologicCollection<ETSample> samples = ETSortedSampleLoader.fromTextFile(sampleFile);
+	public void fromEyetrackingSampleFile_badFileExtension_throwsException() throws Exception {
+		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./persistence/testsamples_bad_extension.badext").toURI());
+		
+		exception.expect(ETFileFormatException.class);
+		exception.expectMessage("Wrong file extension");
+		
+		ETSampleLoader.fromEyetrackingSampleFile(sampleFile);
+	}
+	
+	@Test
+	public void fromEyetrackingSampleFile_comments_commentsAreIgnored() throws Exception {
+		File sampleFile = new File(ClassLoader.getSystemClassLoader().getResource("./persistence/testsamples_comments.ets").toURI());
+		ETChronologicCollection<ETSample> samples = ETSampleLoader.fromEyetrackingSampleFile(sampleFile);
 		
 		assertEquals(2, samples.size());
 	}

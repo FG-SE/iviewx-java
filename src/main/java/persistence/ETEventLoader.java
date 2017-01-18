@@ -1,4 +1,4 @@
-package service;
+package persistence;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import exception.ETBadFormatException;
+import com.google.common.io.Files;
+
+import exception.ETFileFormatException;
 import eye.ETEye;
 import generic.ETChronologicCollection;
 import event.ETEvent;
@@ -15,19 +17,23 @@ import event.ETEvent;
  *  <p>
  *  Currently the following persistent formats are supported:
  *  <ul>
- *    <li><strong>Textfile</strong> (see {@link #fromTextFile(File) fromTextFile})
+ *    <li>
+ *    	<strong>Eyetracking Event File (<em>*.ete</em>)</strong> (see {@link #fromEyetrackingEventFile(File) fromEyetrackingEventFile})
+ *    </li>
  *  </ul>
  *  <p>
  *  See the respective load functions for further information.
  * 
  *  @author Luca Fuelbier
  */
-public class ETSortedEventLoader {
+public class ETEventLoader {
 	
-	/** Loads eyetracking events from a text file.
+	/** Loads eyetracking events from a eyetracking even file.
 	 *  <p>
-	 *  A line in the text file has to contain all of the information of an eyetracking event.
-	 *  Each line has to contain the following values in order, separated by a single whitespace:
+	 *  Eyetracking event files are indicated by the <em>*.ete</em> file extension.
+	 *  <p>
+	 *  Each line in the event file has to contain all the values of a single event in order,
+	 *  separated by a single whitespace:
 	 *  <ol>
 	 *    <li>Start time, (long)</li>
 	 *    <li>End time, (long)</li>
@@ -36,43 +42,52 @@ public class ETSortedEventLoader {
 	 *    <li>Gaze position Y, (double)</li>
 	 *  </ol>
 	 *  <p>
-	 *  Events that are not stored in correct chronological order are ignored and not added to the
-	 *  resulting list.
+	 *  The events are parsed and stored in a {@link generic.ETChronologicCollection}.
+	 *  Events that are not in chronological order are inserted as specified by
+	 *  {@link generic.ETChronologicCollection#add}.
 	 *  <p>
-	 *  Lines starting with <strong>#</strong> are considered comments and are ignored.
+	 *  Lines starting with a <strong>#</strong> are considered comments and are ignored.
 	 *  
 	 *  @param file Textfile containing the eyetracking event information
 	 *  @return Sorted event list generated from the text files content
 	 *  @throws FileNotFoundException If the file could not be found
 	 *  @throws IOException If an error occurred during I/O
-	 *  @throws ETBadFormatException If the text file is incorrectly formatted
+	 *  @throws ETFileFormatException If the text file is incorrectly formatted or has an invalid file extension
 	 */
-	public static ETChronologicCollection<ETEvent> fromTextFile(File file) 
-			throws FileNotFoundException, IOException, ETBadFormatException
+	public static ETChronologicCollection<ETEvent> fromEyetrackingEventFile(File file) 
+			throws FileNotFoundException, IOException, ETFileFormatException
 	{
-		ETChronologicCollection<ETEvent> samples = new ETChronologicCollection<>();
+		String extension = Files.getFileExtension(file.getPath());
+		
+		if(!extension.equals("ete")) {
+			throw new ETFileFormatException(
+				String.format("Wrong file extension. Expected \"file.ete\" - Got \"file.%s\".", extension)
+			);
+		}
+		
+		ETChronologicCollection<ETEvent> events = new ETChronologicCollection<>();
 		
 		try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			for(String line = reader.readLine(); line != null; line = reader.readLine()) {
 				if(line.startsWith("#"))
 					continue;
-				ETEvent sample = parseEventFromText(line);
-				samples.add(sample);
+				ETEvent sample = parseEventFromEventData(line);
+				events.add(sample);
 			}
 		}
 		
-		return samples;
+		return events;
 	}
 	
 	/** Parses a String containing eyetracking event data into a {@link event.ETEvent} object.
 	 *  <p>
-	 *  For the correct format of the String, see {@link #fromTextFile(File) fromTextFile}.
+	 *  For the correct format of the String, see {@link #fromEyetrackingEventFile}.
 	 *  
 	 *  @param rawData String containing eyetracking event data
 	 *  @return Eyetracking event
-	 *  @throws ETBadFormatException If the String is incorrectly formatted
+	 *  @throws ETFileFormatException If the data is incorrectly formatted
 	 */
-	private static ETEvent parseEventFromText(String rawData) throws ETBadFormatException
+	private static ETEvent parseEventFromEventData(String rawData) throws ETFileFormatException
 	{
 		try {
 			String[] eventData = rawData.split(" ");
@@ -88,7 +103,7 @@ public class ETSortedEventLoader {
 			return event;
 		}
 		catch(Exception e) {
-			throw new ETBadFormatException(
+			throw new ETFileFormatException(
 					"The event file is badly formatted.\r\n" 											+
 					"The row with content \""															+
 					rawData																				+

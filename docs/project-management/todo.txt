@@ -1,16 +1,8 @@
 [General]
 - Make a list of features that the SDK supports for the RED-m eyetracker, that have not yet been implemented in this library
-
-[Sample/Event Loader, Sorted Sample/Event List]
-- How big will these lists get?
-- Do we have to stream them in/out of a file?
-- Do we have to increase the maximum heap size of the JVM at startup?
-
-[ConnectionManager]
-- Automatically disconnect from IView X Server if the class is garbage collected (probably not needed)
- -> Socket and file handles should be freed by the OS on application shutdown
- -> java.lang.Runtime#addShutdownHook might be useful if there are still any problems with resource cleanup
  
- [Idea]
- - Add startEyetracking() and stopEyetracking() to IViewX
- - Make hasNext() return false from IViewX receivers if the eyetracker is not tracking
+ [TODO]
+ - Add interrupt to the receivers
+ - Rename ETSorted(Sample/Event)Loader to ET(Sample/Event)Loader
+ - Rename ChronologicListTest to ChronologicCollectionTest
+ - Move Loaders into their respective package (event/sample)

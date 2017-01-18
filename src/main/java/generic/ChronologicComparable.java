@@ -15,6 +15,7 @@ public interface ChronologicComparable<T> {
 	 *  Returns a negative integer, zero, or a positive integer as this
 	 *  object originated before, at the same time, or after the other object.
 	 *  
+	 *  @param other The Object to be compared
 	 *  @return A negative integer, zero, or a positive integer as this
 	 *          object originated before, at the same time, or after the
 	 *          other object.

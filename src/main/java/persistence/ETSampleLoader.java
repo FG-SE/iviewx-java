@@ -1,4 +1,4 @@
-package service;
+package persistence;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,28 +6,34 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.google.common.io.Files;
+
 import eye.ETEyeData;
 import generic.ETChronologicCollection;
 import sample.ETSample;
-import exception.ETBadFormatException;
+import exception.ETFileFormatException;;
 
 /** Loads eyetracking samples from persistent sources to be used with {@link sample.ETPlaybackSampleReceiver}.
  *  <p>
  *  Currently the following persistent formats are supported:
  *  <ul>
- *    <li><strong>Textfile</strong> (see {@link #fromTextFile(File) fromTextFile})
+ *    <li>
+ *    	<strong>Eyetracking Sample File (<em>*.ets</em>)</strong> (see {@link #fromEyetrackingSampleFile(File) fromEyetrackingSampleFile})
+ *    </li>
  *  </ul>
  *  <p>
  *  See the respective load functions for further information.
  * 
  *  @author Luca Fuelbier
  */
-public class ETSortedSampleLoader {
+public class ETSampleLoader {
 
-	/** Loads eyetracking samples from a text file.
+	/** Loads eyetracking samples from a eyetracking sample file.
 	 *  <p>
-	 *  A line in the text file has to contain all of the information of an eyetracking sample.
-	 *  Each line has to contain the following values in order, separated by a single whitespace:
+	 *  Eyetracking sample files are indicated by the <em>*.ets</em> file extension.
+	 *  <p>
+	 *  Each line in the text file has to contain all the values of a single sample in order,
+	 *  separated by a single whitespace:
 	 *  <ol>
 	 *    <li>Pupil diameter, left eye, (double)</li>
 	 *    <li>Position X, left eye, (double)</li>
@@ -44,27 +50,36 @@ public class ETSortedSampleLoader {
 	 *    <li>Timestamp, microseconds, (long)</li>
 	 *  </ol>
 	 *  <p>
-	 *  Samples that are not stored in correct chronological order are ignored and not added to the
-	 *  resulting list.
+	 *  The samples are parsed and stored in a {@link generic.ETChronologicCollection}.
+	 *  Samples that are not in chronological order are inserted as specified by
+	 *  {@link generic.ETChronologicCollection#add}.
 	 *  <p>
-	 *  Lines starting with <strong>#</strong> are considered comments and are ignored.
+	 *  Lines starting with a <strong>#</strong> are considered comments and are ignored.
 	 *  
 	 *  @param file Textfile containing the eyetracking sample information
 	 *  @return Sorted sample list generated from the text files content
 	 *  @throws FileNotFoundException If the file could not be found
 	 *  @throws IOException If an error occured during I/O
-	 *  @throws ETBadFormatException If the text file is incorrectly formatted
+	 *  @throws ETFileFormatException If the text file is incorrectly formatted or has an invalid file extension
 	 */
-	public static ETChronologicCollection<ETSample> fromTextFile(File file) 
-			throws FileNotFoundException, IOException, ETBadFormatException
+	public static ETChronologicCollection<ETSample> fromEyetrackingSampleFile(File file) 
+			throws FileNotFoundException, IOException, ETFileFormatException
 	{
+		String extension = Files.getFileExtension(file.getPath());
+		
+		if(!extension.equals("ets")) {
+			throw new ETFileFormatException(
+				String.format("Wrong file extension. Expected \"file.ets\" - Got \"file.%s\".", extension)
+			);
+		}
+		
 		ETChronologicCollection<ETSample> samples = new ETChronologicCollection<>();
 		
 		try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			for(String line = reader.readLine(); line != null; line = reader.readLine()) {
 				if(line.startsWith("#"))
 					continue;
-				ETSample sample = parseSampleFromText(line);
+				ETSample sample = parseSampleFromSampleData(line);
 				samples.add(sample);
 			}
 		}
@@ -74,13 +89,13 @@ public class ETSortedSampleLoader {
 	
 	/** Parses a String containing eyetracking sample data into a {@link sample.ETSample} object.
 	 *  <p>
-	 *  For the correct format of the String, see {@link #fromTextFile(File) fromTextFile}.
+	 *  For the correct format of the String, see {@link #fromEyetrackingSampleFile}.
 	 *  
 	 *  @param rawData String containing eyetracking sample data
 	 *  @return Eyetracking sample
-	 *  @throws ETBadFormatException If the String is incorrectly formatted
+	 *  @throws ETFileFormatException If the data is incorrectly formatted
 	 */
-	private static ETSample parseSampleFromText(String rawData) throws ETBadFormatException
+	private static ETSample parseSampleFromSampleData(String rawData) throws ETFileFormatException
 	{
 		try {
 			String[] sampleData = rawData.split(" ");
@@ -108,7 +123,7 @@ public class ETSortedSampleLoader {
 			return sample;
 		}
 		catch(Exception e) {
-			throw new ETBadFormatException(
+			throw new ETFileFormatException(
 					"The sample file is badly formatted.\r\n" 											+
 					"The row with content \""															+
 					rawData																				+
