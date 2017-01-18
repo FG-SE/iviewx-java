@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import generic.ChronologicComparable;
 import generic.ETChronologicCollection;
 
-public class ETChronologicListTest {
+public class ETChronologicCollectionTest {
 	
 	private interface Element extends ChronologicComparable<Element> {}
 	

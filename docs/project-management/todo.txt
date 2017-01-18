@@ -3,6 +3,3 @@
  
  [TODO]
  - Add interrupt to the receivers
- - Rename ETSorted(Sample/Event)Loader to ET(Sample/Event)Loader
- - Rename ChronologicListTest to ChronologicCollectionTest
- - Move Loaders into their respective package (event/sample)
