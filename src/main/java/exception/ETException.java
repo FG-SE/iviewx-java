@@ -29,4 +29,14 @@ public class ETException extends RuntimeException {
 		super(reason);
 	}
 	
+	/** Constructs a new ETException with a given reason and cause.
+	 *  
+	 *  @param reason A description of the exception 
+	 *  @param cause The cause. (A <strong>null</strong> value is permitted,
+	 *               and indicates that the cause is nonexistent or unknown.)
+	 */
+	public ETException(String reason, Throwable cause) {
+		super(reason, cause);
+	}
+	
 }

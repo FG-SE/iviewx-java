@@ -3,3 +3,7 @@
  
  [TODO]
  - Add interrupt to the receivers
+ 
+ [Documentation]
+ - ETEventRecorder (Concurrency disclaimers, exceptions, getRecordedEvents is a blocking call)
+ - ETRecordingException
