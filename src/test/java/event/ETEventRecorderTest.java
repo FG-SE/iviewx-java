@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,28 +49,6 @@ public class ETEventRecorderTest {
 		assertEquals(0, eventList.get(0).getStartTime());
 		assertEquals(1, eventList.get(1).getStartTime());
 		assertEquals(2, eventList.get(2).getStartTime());
-	}
-	
-	@Test
-	public void getRecordedEvents_noStop_infiniteReceiverCollection_producesTimeout() {
-		ETEventReceiver receiver = new InfiniteCollectionReceiver();
-		ETEventRecorder recorder = new ETEventRecorder(receiver);
-		
-		thrown.expect(ETRecordingException.class);
-		
-		recorder.startRecording();
-		recorder.getRecordedEvents(50);
-	}
-	
-	@Test
-	public void getRecordedEvents_fixedPollrate_noStop_infiniteReceiverCollection_producesTimeout() {
-		ETEventReceiver receiver = new InfiniteCollectionReceiver();
-		ETEventRecorder recorder = new ETEventRecorder(receiver);
-		
-		thrown.expect(ETRecordingException.class);
-		
-		recorder.startRecording(10);
-		recorder.getRecordedEvents(50);
 	}
 	
 	@Test

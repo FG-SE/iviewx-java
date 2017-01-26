@@ -1,22 +1,13 @@
 package event;
 
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import exception.ETRecordingException;
 import generic.ETChronologicCollection;
 
 public class ETEventRecorder {
 	
 	private ETEventReceiver receiver;
-	private ExecutorService executor;
 	private ETChronologicCollection<ETEvent> accumulatorCollection;
-	private Future<?> pollProcess;
+	private Thread recordingThread;
 	
 	private class ETEventRecordingRunnable implements Runnable {	
 		private ETEventReceiver receiver;
@@ -34,10 +25,9 @@ public class ETEventRecorder {
 			while(!Thread.currentThread().isInterrupted() && receiver.hasNext()) {
 				ETEvent ev = receiver.next();
 				if(ev != null) {
-					accumulatorCollection.add(ev);
+					synchronized (accumulatorCollection) { accumulatorCollection.add(ev); }
 				}
 			}
-			System.out.println("Finished.");
 		}
 		
 	}
@@ -61,7 +51,7 @@ public class ETEventRecorder {
 			while(!Thread.currentThread().isInterrupted() && receiver.hasNext()) {
 				ETEvent ev = receiver.next();
 				if(ev != null) {
-					accumulatorCollection.add(ev);
+					synchronized (accumulatorCollection) { accumulatorCollection.add(ev); }
 				}
 				try {
 					Thread.sleep(pollrate);
@@ -69,36 +59,36 @@ public class ETEventRecorder {
 					Thread.currentThread().interrupt();
 				}
 			}
-			System.out.println("Finished2.");
 		}
 		
 	}
 	
 	public ETEventRecorder(ETEventReceiver receiver) {
 		this.receiver = receiver;
-		this.executor = Executors.newSingleThreadExecutor();
 	}
 	
 	public void startRecording() {
-		if(pollProcess != null && !pollProcess.isDone()) {
+		if(recordingThread != null && recordingThread.getState() != Thread.State.TERMINATED) {
 			throw new ETRecordingException("Can not start new recording while previous recording is still running.");
 		}
 		
 		accumulatorCollection = new ETChronologicCollection<>();
-		pollProcess = executor.submit(new ETEventRecordingRunnable(receiver, accumulatorCollection));
+		recordingThread = new Thread(new ETEventRecordingRunnable(receiver, accumulatorCollection));
+		recordingThread.start();
 	}
 	
 	public void startRecording(long pollrate) {
-		if(pollProcess != null && !pollProcess.isDone()) {
+		if(recordingThread != null && recordingThread.getState() != Thread.State.TERMINATED) {
 			throw new ETRecordingException("Can not start new recording while previous recording has not finished.");
 		}
 		
 		accumulatorCollection = new ETChronologicCollection<>();
-		pollProcess = executor.submit(new ETEventFixedPollrateRecordingRunnable(receiver, accumulatorCollection, pollrate));
+		recordingThread = new Thread(new ETEventFixedPollrateRecordingRunnable(receiver, accumulatorCollection, pollrate));
+		recordingThread.start();
 	}
 	
 	public void stopRecording() {
-		pollProcess.cancel(true);
+		recordingThread.interrupt();
 	}
 	
 	public ETChronologicCollection<ETEvent> getRecordedEvents() {
@@ -107,18 +97,12 @@ public class ETEventRecorder {
 	
 	public ETChronologicCollection<ETEvent> getRecordedEvents(long timeout) {
 		try {
-			pollProcess.get(timeout, TimeUnit.MILLISECONDS);
-		} catch (CancellationException e) {
-			// This is expected, the thread will cleanup itself
-		} catch (TimeoutException e) {
-			throw new ETRecordingException("A timeout occurred while waiting for the recording thread to return.", e);
-		} catch (ExecutionException e) {
-			throw new ETRecordingException("An error occurred while polling events to record.", e);
+			recordingThread.join();
 		} catch (InterruptedException e) {
 			throw new ETRecordingException("Got interrupted while waiting for the recording thread to return.", e);
 		}
 		
-		return accumulatorCollection;
+		synchronized(accumulatorCollection) { return accumulatorCollection; }
 	}
 	
 }
