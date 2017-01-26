@@ -52,6 +52,28 @@ public class ETEventRecorderTest {
 	}
 	
 	@Test
+	public void getRecordedEvents_noStop_infiniteReceiverCollection_producesTimeout() {
+		ETEventReceiver receiver = new InfiniteCollectionReceiver();
+		ETEventRecorder recorder = new ETEventRecorder(receiver);
+		
+		thrown.expect(ETRecordingException.class);
+		
+		recorder.startRecording();
+		recorder.getRecordedEvents(50);
+	}
+	
+	@Test
+	public void getRecordedEvents_fixedPollrate_noStop_infiniteReceiverCollection_producesTimeout() {
+		ETEventReceiver receiver = new InfiniteCollectionReceiver();
+		ETEventRecorder recorder = new ETEventRecorder(receiver);
+		
+		thrown.expect(ETRecordingException.class);
+		
+		recorder.startRecording(10);
+		recorder.getRecordedEvents(50);
+	}
+	
+	@Test
 	public void getRecordedEvents_stop_infiniteReceiverCollection_stopsRecording() throws Exception {
 		ETEventReceiver receiver = new InfiniteCollectionReceiver();
 		ETEventRecorder recorder = new ETEventRecorder(receiver);

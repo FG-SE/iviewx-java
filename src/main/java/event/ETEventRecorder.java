@@ -96,9 +96,15 @@ public class ETEventRecorder {
 	}
 	
 	public ETChronologicCollection<ETEvent> getRecordedEvents(long timeout) {
-		try {
-			recordingThread.join();
-		} catch (InterruptedException e) {
+		try
+		{
+			recordingThread.join(timeout);
+			if(recordingThread.isAlive()) {
+				throw new ETRecordingException("Timeout while waiting for the recording thread to return.");
+			}
+		}
+		catch (InterruptedException e)
+		{
 			throw new ETRecordingException("Got interrupted while waiting for the recording thread to return.", e);
 		}
 		
