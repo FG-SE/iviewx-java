@@ -2,10 +2,21 @@
 - Make a list of features that the SDK supports for the RED-m eyetracker, that have not yet been implemented in this library
  
  [TODO]
- - Add interrupt to the receivers
- - Refactor receivers and recorders to use generics to reduce code duplication (?)
- - Rename package "generic" to "chronologic" or similar
+ - Refactor receivers and recorders to use generics to reduce code duplication
+ - Split package "generic"
+ - Add tests for ETIViewXEventReceiver / ETIViewXSampleReceiver
+ - Remove old classes after new generic ones are implemented, tested and documented
  
  [Documentation]
- - ETEventRecorder (Concurrency disclaimers, exceptions, getRecordedEvents is a blocking call)
+ - ETReceiver
+ - ETPlaybackReceiver
+ - ETStabilizationStrategy
+ - ETDefaultStabilizationStrategy
+ - ETRecorder
+ - ETRecordingException
+ 
+ [Tests]
+ - ETStabilizationStrategy
+ - ETDefaultStabilizationStrategy
+ - ETRecorder
  - ETRecordingException

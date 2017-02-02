@@ -2,8 +2,6 @@ package generic;
 
 import java.util.Iterator;
 
-import event.ETEvent;
-
 public class ETPlaybackReceiver<E extends ChronologicComparable<E>> implements ETReceiver<E> {
 
 	ETChronologicCollection<E> elements;
