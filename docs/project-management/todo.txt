@@ -3,6 +3,8 @@
  
  [TODO]
  - Add interrupt to the receivers
+ - Refactor receivers and recorders to use generics to reduce code duplication (?)
+ - Rename package "generic" to "chronologic" or similar
  
  [Documentation]
  - ETEventRecorder (Concurrency disclaimers, exceptions, getRecordedEvents is a blocking call)
