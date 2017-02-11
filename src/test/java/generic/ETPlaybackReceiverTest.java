@@ -14,6 +14,9 @@ import java.util.NoSuchElementException;
 
 import generic.ChronologicComparable;
 import generic.ETChronologicCollection;
+import generic.ETResponse;
+
+import static generic.ETResponseType.*;
 
 public class ETPlaybackReceiverTest {
 
@@ -37,63 +40,77 @@ public class ETPlaybackReceiverTest {
 	}
 	
 	@Test
-	public void next_emptyElementCollection_throwsException() {
+	public void getNext_emptyElementCollection_returnsDepletedResponse() {
 		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
 		ETChronologicCollection<Element> elementCollection = new ETChronologicCollection<>();
 		receiver.setElements(elementCollection);
 
-		thrown.expect(NoSuchElementException.class);
-		receiver.next();
+		ETResponse<Element> response = receiver.getNext();
+		
+		assertEquals(SOURCE_DEPLETED, response.getType());
+		assertNull(response.getData());
 	}
 	
 	@Test
-	public void next_elementCollection_returnsEveryElement() {
+	public void getNext_elementCollection_returnsEveryElement() {
 		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
 		ETChronologicCollection<Element> elementCollection = createTestCollection();
 		receiver.setElements(elementCollection);
 		
 		List<Element> expectedList = new ArrayList<>(elementCollection);
-
-		assertSame(receiver.next(), expectedList.get(0));
-		assertSame(receiver.next(), expectedList.get(1));
-		assertSame(receiver.next(), expectedList.get(2));
+		
+		for(Element expectedElement : expectedList) {
+			ETResponse<Element> response = receiver.getNext();
+			
+			assertEquals(NEW_DATA, response.getType());
+			assertSame(expectedElement, response.getData());
+		}
 	}
 	
 	@Test
-	public void next_elementCollection_throwsExceptionAfterCollectionDepleted() {
+	public void getNext_elementCollection_returnsDepletedResponseAfterCollectionDepleted() {
+		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
+		ETChronologicCollection<Element> elementCollection = createTestCollection();
+		receiver.setElements(elementCollection);
+		
+		for(int i = 0; i < 3; i++) {
+			ETResponse<Element> response = receiver.getNext();
+			assertEquals(NEW_DATA, response.getType());
+			assertNotNull(response.getData());
+		}
+
+		ETResponse<Element> depletedResponse = receiver.getNext();
+		
+		assertEquals(SOURCE_DEPLETED, depletedResponse.getType());
+		assertNull(depletedResponse.getData());
+	}
+	
+	@Test
+	public void getNext_elementCollectionDepletedResetCalled_returnsEveryElement() {
 		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
 		ETChronologicCollection<Element> elementCollection = createTestCollection();
 		receiver.setElements(elementCollection);
 
-		assertNotNull(receiver.next());
-		assertNotNull(receiver.next());
-		assertNotNull(receiver.next());
-
-		thrown.expect(NoSuchElementException.class);
-		receiver.next();
-	}
-	
-	@Test
-	public void next_elementCollectionDepletedResetCalled_returnsEveryElement() {
-		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
-		ETChronologicCollection<Element> elementCollection = createTestCollection();
-		receiver.setElements(elementCollection);
-
-		assertNotNull(receiver.next());
-		assertNotNull(receiver.next());
-		assertNotNull(receiver.next());
+		for(int i = 0; i < 3; i++) {
+			ETResponse<Element> response = receiver.getNext();
+			assertEquals(NEW_DATA, response.getType());
+			assertNotNull(response.getData());
+		}
 
 		receiver.reset();
 
 		List<Element> expectedList = new ArrayList<>(elementCollection);
 		
-		assertSame(receiver.next(), expectedList.get(0));
-		assertSame(receiver.next(), expectedList.get(1));
-		assertSame(receiver.next(), expectedList.get(2));
+		for(Element expectedElement : expectedList) {
+			ETResponse<Element> response = receiver.getNext();
+			
+			assertEquals(NEW_DATA, response.getType());
+			assertSame(expectedElement, response.getData());
+		}
 	}
 	
 	@Test
-	public void next_setNewElementCollection_returnsEveryElement() {
+	public void getNext_setNewElementCollection_returnsEveryElement() {
 		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
 		ETChronologicCollection<Element> elementCollection = createTestCollection();
 		receiver.setElements(elementCollection);
@@ -102,68 +119,13 @@ public class ETPlaybackReceiverTest {
 		receiver.setElements(newElementCollection);
 		
 		List<Element> expectedList = new ArrayList<>(newElementCollection);
-
-		assertSame(receiver.next(), expectedList.get(0));
-		assertSame(receiver.next(), expectedList.get(1));
-		assertSame(receiver.next(), expectedList.get(2));
-	}
-	
-	@Test
-	public void hasNext_emptyElementCollection_returnsFalse() {
-		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
-		ETChronologicCollection<Element> elementCollection = new ETChronologicCollection<>();
-		receiver.setElements(elementCollection);
-
-		assertFalse(receiver.hasNext());
-	}
-	
-	@Test
-	public void hasNext_elementCollection_returnsTrue() {
-		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
-		ETChronologicCollection<Element> elementCollection = createTestCollection();
-		receiver.setElements(elementCollection);
-
-		assertTrue(receiver.hasNext());
-	}
-	
-	@Test
-	public void next_elementCollection_returnsFalseAfterCollectionDepleted() {
-		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
-		ETChronologicCollection<Element> elementCollection = createTestCollection();
-		receiver.setElements(elementCollection);
-
-		assertNotNull(receiver.next());
-		assertNotNull(receiver.next());
-		assertNotNull(receiver.next());
-
-		assertFalse(receiver.hasNext());
-	}
-	
-	@Test
-	public void hasNext_elementCollectionDepletedResetCalled_returnsTrue() {
-		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
-		ETChronologicCollection<Element> elementCollection = createTestCollection();
-		receiver.setElements(elementCollection);
-
-		assertNotNull(receiver.next());
-		assertNotNull(receiver.next());
-		assertNotNull(receiver.next());
 		
-		receiver.reset();
-
-		assertTrue(receiver.hasNext());
-	}
-	
-	@Test
-	public void hasNext_setNewElementCollection_returnsTrue() {
-		ETPlaybackReceiver<Element> receiver = new ETPlaybackReceiver<>();
-		ETChronologicCollection<Element> elementCollection = createTestCollection();
-		receiver.setElements(elementCollection);
-
-		ETChronologicCollection<Element> newElementCollection = createTestCollection();
-		receiver.setElements(newElementCollection);
-
-		assertTrue(receiver.hasNext());
+		for(Element expectedElement : expectedList) {
+			ETResponse<Element> response = receiver.getNext();
+			
+			assertEquals(NEW_DATA, response.getType());
+			assertSame(expectedElement, response.getData());
+		}
 	}
 
 	private ETChronologicCollection<Element> createTestCollection() {

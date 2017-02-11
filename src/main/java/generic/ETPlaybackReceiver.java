@@ -2,7 +2,7 @@ package generic;
 
 import java.util.Iterator;
 
-public class ETPlaybackReceiver<E extends ChronologicComparable<E>> implements ETReceiver<E> {
+public class ETPlaybackReceiver<E extends ChronologicComparable<E>> extends ETReceiver<E> {
 
 	ETChronologicCollection<E> elements;
 	Iterator<E> elementsIter;
@@ -17,20 +17,15 @@ public class ETPlaybackReceiver<E extends ChronologicComparable<E>> implements E
 		elementsIter = elements.iterator();
 		this.stabilizationStrategy = strategy;
 	}
-
-	@Override
-	public E next() {
-		return elementsIter.next();
-	}
 	
 	@Override
-	public boolean hasNext() {
-		return elementsIter.hasNext();
-	}
-	
-	@Override
-	public void setStabilizationStrategy(ETStabilizationStrategy<E> strategy) {
-		this.stabilizationStrategy = strategy;
+	protected ETResponse<E> getNextFromSource() {
+		if(elementsIter.hasNext()) {
+			return new ETResponse<E>(ETResponseType.NEW_DATA, elementsIter.next());
+		}
+		else {
+			return new ETResponse<E>(ETResponseType.SOURCE_DEPLETED, null);
+		}
 	}
 	
 	public void reset() {

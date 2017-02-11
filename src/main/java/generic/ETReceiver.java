@@ -1,15 +1,32 @@
 package generic;
 
-import java.util.Iterator;
-
-public interface ETReceiver<E extends ChronologicComparable<E>> extends Iterator<E> {
+public abstract class ETReceiver<E extends ChronologicComparable<E>> {
 	
-	@Override
-	public boolean hasNext();
+	private ETStabilizationStrategy<E> stabilizationStrategy;
 	
-	@Override
-	public E next();
+	public ETReceiver() {
+		this.stabilizationStrategy = new ETDefaultStabilizationStrategy<>();
+	}
 	
-	public void setStabilizationStrategy(ETStabilizationStrategy<E> strategy);
+	public ETReceiver(ETStabilizationStrategy<E> strategy) {
+		this.stabilizationStrategy = strategy;
+	}
+	
+	protected abstract ETResponse<E> getNextFromSource();
+	
+	public ETResponse<E> getNext() {
+		ETResponse<E> response = getNextFromSource();
+		
+		if(response.getData() == null) {
+			return response;
+		}
+		
+		E stabilizedData = stabilizationStrategy.stabilize(response.getData());
+		return new ETResponse<E>(response.getType(), stabilizedData);
+	}
+	
+	public void setStabilizationStrategy(ETStabilizationStrategy<E> strategy) {
+		this.stabilizationStrategy = strategy;
+	}
 	
 }

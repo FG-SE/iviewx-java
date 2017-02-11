@@ -22,10 +22,10 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 
 		@Override
 		public void run() {
-			while(!Thread.currentThread().isInterrupted() && receiver.hasNext()) {
-				E element = receiver.next();
-				if(element != null) {
-					synchronized (accumulatorCollection) { accumulatorCollection.add(element); }
+			while(!Thread.currentThread().isInterrupted()) {
+				ETResponse<E> response = receiver.getNext();
+				if(response.getType() == ETResponseType.NEW_DATA) {
+					synchronized (accumulatorCollection) { accumulatorCollection.add(response.getData()); }
 				}
 			}
 		}
@@ -48,10 +48,10 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 
 		@Override
 		public void run() {
-			while(!Thread.currentThread().isInterrupted() && receiver.hasNext()) {
-				E element = receiver.next();
-				if(element != null) {
-					synchronized (accumulatorCollection) { accumulatorCollection.add(element); }
+			while(!Thread.currentThread().isInterrupted()) {
+				ETResponse<E> response = receiver.getNext();
+				if(response.getType() == ETResponseType.NEW_DATA) {
+					synchronized (accumulatorCollection) { accumulatorCollection.add(response.getData()); }
 				}
 				try {
 					Thread.sleep(pollrate);
