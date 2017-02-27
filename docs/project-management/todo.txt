@@ -14,9 +14,7 @@
  - ETDefaultStabilizationStrategy
  - ETRecorder
  - ETRecordingException
+ - ETStreamService
  
  [Tests]
- - ETStabilizationStrategy
- - ETDefaultStabilizationStrategy
  - ETRecorder
- - ETRecordingException
