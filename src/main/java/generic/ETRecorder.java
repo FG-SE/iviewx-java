@@ -12,34 +12,11 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 	private class ETRecordingRunnable implements Runnable {	
 		private ETReceiver<E> receiver;
 		private ETChronologicCollection<E> accumulatorCollection;
-		
-		public ETRecordingRunnable(ETReceiver<E> receiver,
-								   ETChronologicCollection<E> accumulatorCollection)
-		{
-			this.receiver = receiver;
-			this.accumulatorCollection = accumulatorCollection;
-		}
-
-		@Override
-		public void run() {
-			while(!Thread.currentThread().isInterrupted()) {
-				ETResponse<E> response = receiver.getNext();
-				if(response.getType() == ETResponseType.NEW_DATA) {
-					synchronized (accumulatorCollection) { accumulatorCollection.add(response.getData()); }
-				}
-			}
-		}
-		
-	}
-	
-	private class ETFixedPollrateRecordingRunnable implements Runnable {
-		private ETReceiver<E> receiver;
-		private ETChronologicCollection<E> accumulatorCollection;
 		private long pollrate;
 		
-		public ETFixedPollrateRecordingRunnable(ETReceiver<E> receiver,
-												ETChronologicCollection<E> accumulatorCollection,
-												long pollrate)
+		public ETRecordingRunnable(ETReceiver<E> receiver,
+								   ETChronologicCollection<E> accumulatorCollection,
+								   long pollrate)
 		{
 			this.receiver = receiver;
 			this.accumulatorCollection = accumulatorCollection;
@@ -50,13 +27,24 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 		public void run() {
 			while(!Thread.currentThread().isInterrupted()) {
 				ETResponse<E> response = receiver.getNext();
-				if(response.getType() == ETResponseType.NEW_DATA) {
+				
+				switch(response.getType()) {
+				case NEW_DATA:
 					synchronized (accumulatorCollection) { accumulatorCollection.add(response.getData()); }
-				}
-				try {
-					Thread.sleep(pollrate);
-				} catch (InterruptedException e) {
+					break;
+				case NO_NEW_DATA_AVAILABLE:
+					break;
+				case SOURCE_DEPLETED:
 					Thread.currentThread().interrupt();
+					break;
+				}
+				
+				if(pollrate > 0) {
+					try {
+						Thread.sleep(pollrate);
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
 				}
 			}
 		}
@@ -68,27 +56,36 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 	}
 	
 	public void startRecording() {
-		if(recordingThread != null && recordingThread.getState() != Thread.State.TERMINATED) {
+		if(recordingThread != null && recordingThread.isAlive()) {
 			throw new ETRecordingException("Can not start new recording while previous recording is still running.");
 		}
 		
 		accumulatorCollection = new ETChronologicCollection<>();
-		recordingThread = new Thread(new ETRecordingRunnable(receiver, accumulatorCollection));
+		recordingThread = new Thread(new ETRecordingRunnable(receiver, accumulatorCollection, 0));
 		recordingThread.start();
 	}
 	
 	public void startRecording(long pollrate) {
-		if(recordingThread != null && recordingThread.getState() != Thread.State.TERMINATED) {
+		if(recordingThread != null && recordingThread.isAlive()) {
 			throw new ETRecordingException("Can not start new recording while previous recording has not finished.");
 		}
 		
 		accumulatorCollection = new ETChronologicCollection<>();
-		recordingThread = new Thread(new ETFixedPollrateRecordingRunnable(receiver, accumulatorCollection, pollrate));
+		recordingThread = new Thread(new ETRecordingRunnable(receiver, accumulatorCollection, pollrate));
 		recordingThread.start();
 	}
 	
 	public void stopRecording() {
-		recordingThread.interrupt();
+		stopRecordingThread();
+	}
+	
+	public boolean isRunning() {
+		if(recordingThread == null) {
+			return false;
+		}
+		else {
+			return recordingThread.isAlive();
+		}
 	}
 	
 	public ETChronologicCollection<E> getRecordedData() {
@@ -96,9 +93,20 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 	}
 	
 	public ETChronologicCollection<E> getRecordedData(long timeout) {
+		stopRecordingThread();
+		
+		synchronized(accumulatorCollection) { return accumulatorCollection; }
+	}
+	
+	private void stopRecordingThread() {
+		if(recordingThread == null) {
+			return;
+		}
+		
 		try
 		{
-			recordingThread.join(timeout);
+			recordingThread.interrupt();
+			recordingThread.join(2000);
 			if(recordingThread.isAlive()) {
 				throw new ETRecordingException("Timeout while waiting for the recording thread to return.");
 			}
@@ -107,8 +115,6 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 		{
 			throw new ETRecordingException("Got interrupted while waiting for the recording thread to return.", e);
 		}
-		
-		synchronized(accumulatorCollection) { return accumulatorCollection; }
 	}
 	
 }

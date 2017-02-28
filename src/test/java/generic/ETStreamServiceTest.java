@@ -2,7 +2,6 @@ package generic;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import io.reactivex.Flowable;
 import io.reactivex.subscribers.TestSubscriber;

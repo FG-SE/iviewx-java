@@ -2,7 +2,6 @@ package generic;
 
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
-import exception.ETRecordingException;
 import exception.ETStreamException;
 import io.reactivex.Flowable;
 
@@ -60,31 +59,46 @@ public class ETStreamService<E extends ChronologicComparable<E>> {
 	}
 	
 	public void start() {
-		stopRecordingThread();
+		if(streamThread != null && streamThread.isAlive()) {
+			return;
+		}
+		
 		streamThread = new Thread(new ETStreamRunnable(receiver, publisher, 0));
 		streamThread.start();
 	}
 	
 	public void start(long pollrate) {
-		stopRecordingThread();
+		if(streamThread != null && streamThread.isAlive()) {
+			return;
+		}
+		
 		streamThread = new Thread(new ETStreamRunnable(receiver, publisher, pollrate));
 		streamThread.start();
 	}
 	
 	public void stop() {
-		stopRecordingThread();
+		stopStreamThread();
 	}
 	
 	public void shutdown() {
-		stopRecordingThread();
+		stopStreamThread();
 		publisher.onComplete();
+	}
+	
+	public boolean isRunning() {
+		if(streamThread == null) {
+			return false;
+		}
+		else {
+			return streamThread.isAlive();
+		}
 	}
 	
 	public Flowable<E> getStream() {
 		return publisher;
 	}
 	
-	private void stopRecordingThread() {
+	private void stopStreamThread() {
 		if(streamThread == null) {
 			return;
 		}

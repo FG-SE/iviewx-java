@@ -6,6 +6,7 @@
  - Split package "generic"
  - Add tests for ETIViewXEventReceiver / ETIViewXSampleReceiver
  - Remove old classes after new generic ones are implemented, tested and documented
+ - Refactor ETRecorder and ETStreamService to use ExecutorService instead of raw threads
  
  [Documentation]
  - ETReceiver
@@ -14,6 +15,7 @@
  - ETDefaultStabilizationStrategy
  - ETRecorder
  - ETRecordingException
+ - ETStreamException
  - ETStreamService
  
  [Tests]
