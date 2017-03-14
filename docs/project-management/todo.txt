@@ -17,6 +17,3 @@
  - ETRecordingException
  - ETStreamException
  - ETStreamService
- 
- [Tests]
- - ETRecorder
