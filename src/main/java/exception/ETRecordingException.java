@@ -1,11 +1,21 @@
 package exception;
 
+/** The subclass of {@link ETException} that is thrown when a
+ *  recording related exception occurred.
+ *  
+ *  @author Luca Fuelbier
+ */
 public class ETRecordingException extends ETException {
 	
+	/** Constructs a new ETRecordingException object. */
 	public ETRecordingException() {
 		super();
 	}
 	
+	/** Constructs a new ETRecordingException with a given reason.
+	 * 
+	 *  @param reason A description of the exception
+	 */
 	public ETRecordingException(String reason) {
 		super(reason);
 	}
