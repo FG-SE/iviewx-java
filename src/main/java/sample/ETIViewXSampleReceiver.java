@@ -2,10 +2,13 @@ package sample;
 
 import exception.ETErrorHandler;
 import eye.ETEyeData;
+import generic.ETReceiver;
+import generic.ETResponse;
+import generic.ETResponseType;
+import generic.ETStabilizationStrategy;
 import iviewxapi.IViewXAPILibrary;
 import iviewxapi.SampleStruct;
 import iviewxapi.EyeDataStruct;
-import static iviewxapi.IViewXAPILibrary.RET_NO_VALID_DATA;
 
 /** Receives eyetracking samples from the RED-m eyetracker.
  *  <p>
@@ -13,21 +16,20 @@ import static iviewxapi.IViewXAPILibrary.RET_NO_VALID_DATA;
  * 
  *  @author Luca Fuelbier
  */
-public class ETIViewXSampleReceiver implements ETSampleReceiver {
+public class ETIViewXSampleReceiver extends ETReceiver<ETSample> {
 	
 	private IViewXAPILibrary iView;
 	
 	private SampleStruct sampleStruct;
-	private ETSampleStabilizationStrategy stabilizationStrategy;
 	
 	/** Constructs a new IView X SampleReceiver that uses the provided IView X SDK binding.
 	 * 
 	 * @param lib IView X SDK binding for eyetracker communication
 	 */
 	public ETIViewXSampleReceiver(IViewXAPILibrary lib) {
+		super();
 		iView = lib;
 		sampleStruct = new SampleStruct();
-		stabilizationStrategy = new ETPassthroughSampleStabilizationStrategy();
 	}
 	
 	/** Constructs a new IView X SampleReceiver that uses the provided IView X SDK binding 
@@ -36,28 +38,29 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	 * @param lib IView X SDK binding for eyetracker communication
 	 * @param strategy Sample stabilization strategy
 	 */
-	public ETIViewXSampleReceiver(IViewXAPILibrary lib, ETSampleStabilizationStrategy strategy) {
+	public ETIViewXSampleReceiver(IViewXAPILibrary lib, ETStabilizationStrategy<ETSample> strategy) {
+		super(strategy);
 		iView = lib;
 		sampleStruct = new SampleStruct();
-		stabilizationStrategy = strategy;
 	}
-
-	/** Retrieves a single eyetracking sample from the RED-m eyetracker.
+	
+	/** Retrieves a single eyetracking sample from the RED-m eyetracke,
+	 *  wrapped in a {@link generic.ETResponse}.
 	 *  <p>
-	 *  The sample returned will be the one with the most current timestamp. 
-	 *  <p>
-	 *  This method can return <strong>null</strong>, which indicates one of the following scenarios:
+	 *  If no new data is available, this method will return <strong>null</strong>
+	 *  as the responses data.
+	 *  {@link generic.ETResponseType#NO_NEW_DATA_AVAILABLE NO_NEW_DATA_AVAILABLE}
+	 *  indicates one of the following scenarios:
 	 *  <ul>
 	 *    <li>There is no new data available because the eyetracker has not computed new data yet</li>
 	 *    <li>The users gaze is not in tracking range</li>
 	 *    <li>The user is not properly tracked by the eyetracker</li>
 	 *  </ul>
 	 *  <p>
-	 *  If your eyetracking environment is properly set up, a <strong>null</strong> most likely means that
-	 *  your application is polling faster than the eyetrackers refresh rate. Simply keep polling until
-	 *  a new sample is registered.
-	 *  <p>
-	 *  To check if there are still samples available, call {@link #hasNext() hasNext}.
+	 *  If your eyetracking environment is properly set up, the most likely reason is that
+	 *  your application is polling faster than the eyetrackers refresh rate.
+	 *  Simply keep polling until a new sample is registered, or introduce wait times
+	 *  between consecutive polls.
 	 * 
 	 *  @return Eyetracking sample
 	 *  
@@ -65,48 +68,19 @@ public class ETIViewXSampleReceiver implements ETSampleReceiver {
 	 *  @throws exception.ETConnectionException If no connection could be established to the eyetracker
 	 */
 	@Override
-	public ETSample next() {
+	protected ETResponse<ETSample> getNextFromSource() {
 		int status = iView.iV_GetSample(sampleStruct);
 		
-		if(status == RET_NO_VALID_DATA)
-			return null;
+		if(status == IViewXAPILibrary.RET_NO_VALID_DATA)
+			return new ETResponse<ETSample>(ETResponseType.NO_NEW_DATA_AVAILABLE, null);
 		else
 			ETErrorHandler.handle(status);
 		
-		ETSample nextSample = structToSample(sampleStruct);
-		ETSample stabilizedSample = stabilizationStrategy.stabilize(nextSample);
-		return stabilizedSample;
+		ETSample receivedSample = structToSample(sampleStruct);
+		return new ETResponse<ETSample>(ETResponseType.NEW_DATA, receivedSample);
 	}
 	
-	/** Returns <em>true</em> if the sample receiver has more samples.
-	 *  <p>
-	 *  Since the eyetracker can produce samples endlessly, this method will always return true.
-	 *  A return of <em>true</em> does not however indicate that new data is available.
-	 *  It only indicates that the eyetracker is trying to retrieve a new sample at the moment.
-	 *  <p>
-	 *  This behavior might change in a later release of the eyetracking library, for example by 
-	 *  supporting pausing and resuming the eyetracking process.
-	 * 
-	 *  @return <em>true</em> if the receiver has more samples
-	 */
-	@Override
-	public boolean hasNext() {
-		return true;
-	}
-	
-	/** Sets the sample stabilization strategy.
-	 *  <p>
-	 *  Stabilization strategies correct the samples returned by applying a correcting 
-	 *  algorithm to the retrieved sample before returning it.
-	 * 
-	 *  @param strategy Sample stabilization strategy
-	 */
-	@Override
-	public void setStabilizationStrategy(ETSampleStabilizationStrategy strategy) {
-		stabilizationStrategy = strategy;
-	}
-	
-	/** Converts the information of a SampleStruct to a {@link ETSample}.
+	/** Converts the information of a SampleStruct to a ETSample.
 	 * 
 	 *  @param struct SampleStruct containing sample information
 	 *  
