@@ -4,7 +4,10 @@ import iviewxapi.IViewXAPILibrary;
 import exception.ETErrorHandler;
 import eye.ETEye;
 import iviewxapi.EventStruct;
-import static iviewxapi.IViewXAPILibrary.RET_NO_VALID_DATA;
+import generic.ETReceiver;
+import generic.ETResponse;
+import generic.ETResponseType;
+import generic.ETStabilizationStrategy;
 
 /** Receives eyetracking events from the RED-m eyetracker.
  *  <p>
@@ -12,7 +15,7 @@ import static iviewxapi.IViewXAPILibrary.RET_NO_VALID_DATA;
  * 
  *  @author Luca Fuelbier
  */
-public class ETIViewXEventReceiver implements ETEventReceiver {
+public class ETIViewXEventReceiver extends ETReceiver<ETEvent> {
 	
 	private IViewXAPILibrary iView;
 	
@@ -23,13 +26,30 @@ public class ETIViewXEventReceiver implements ETEventReceiver {
 	 *  @param lib IView X SDK binding for eyetracker communication
 	 */
 	public ETIViewXEventReceiver(IViewXAPILibrary lib) {
+		super();
 		iView = lib;
 		eventStruct = new EventStruct();
 	}
-
-	/** Retrieves a single eyetracking event from the RED-m eyetracker.
+	
+	/** Constructs a new IView X SampleReceiver that uses the provided IView X SDK binding 
+	 *  and the provided stabilization strategy.
+	 * 
+	 * @param lib IView X SDK binding for eyetracker communication
+	 * @param strategy Sample stabilization strategy
+	 */
+	public ETIViewXEventReceiver(IViewXAPILibrary lib, ETStabilizationStrategy<ETEvent> strategy) {
+		super(strategy);
+		iView = lib;
+		eventStruct = new EventStruct();
+	}
+	
+	/** Retrieves a single eyetracking event from the RED-m eyetracker,
+	 *  wrapped in a {@link generic.ETResponse}.
 	 *  <p>
-	 *  This method can return <strong>null</strong>, which indicates one of the following scenarios:
+	 *  If no new data is available, this method will return <strong>null</strong>
+	 *  as the responses data.
+	 *  {@link generic.ETResponseType#NO_NEW_DATA_AVAILABLE NO_NEW_DATA_AVAILABLE}
+	 *  indicates one of the following scenarios:
 	 *  <ul>
 	 *    <li>There is no new data available because the eyetracker has not computed new data yet</li>
 	 *    <li>There is no new data available because a currently occurring fixation has not yet ended</li>
@@ -38,11 +58,10 @@ public class ETIViewXEventReceiver implements ETEventReceiver {
 	 *    <li>The user is not properly tracked by the eyetracker</li>
 	 *  </ul>
 	 *  <p>
-	 *  If your eyetracking environment is properly set up, a <strong>null</strong> most likely means that
-	 *  your application is polling faster than the eyetrackers refresh rate. Simply keep polling
-	 *  until a new event is registered.
-	 *  <p>
-	 *  To check if there are still events available, call {@link #hasNext() hasNext}.
+	 *  If your eyetracking environment is properly set up, the most likely reason is that
+	 *  your application is polling faster than the eyetrackers refresh rate.
+	 *  Simply keep polling until a new event is registered, or introduce wait times
+	 *  between consecutive polls.
 	 * 
 	 *  @return Eyetracking event
 	 *  
@@ -50,36 +69,22 @@ public class ETIViewXEventReceiver implements ETEventReceiver {
 	 *  @throws exception.ETConnectionException If no connection could be established to the eyetracker
 	 */
 	@Override
-	public ETEvent next() {
+	protected ETResponse<ETEvent> getNextFromSource() {
 		int status = iView.iV_GetEvent(eventStruct);
 		
-		if(status == RET_NO_VALID_DATA)
-			return null;
+		if(status == IViewXAPILibrary.RET_NO_VALID_DATA)
+			return new ETResponse<ETEvent>(ETResponseType.NO_NEW_DATA_AVAILABLE, null);
 		else
 			ETErrorHandler.handle(status);
 		
-		return structToEvent(eventStruct);
-	}
-	
-	/** Returns <em>true</em> if the event receiver has more samples.
-	 *  <p>
-	 *  Since the eyetracker can produce events endlessly, this method will always return true.
-	 *  A return of <em>true</em> does not however indicate that new data is available.
-	 *  It only indicates that the eyetracker is trying to retrieve a new event at the moment.
-	 *  <p>
-	 *  This behavior might change in a later release of the eyetracking library, for example by 
-	 *  supporting pausing and resuming the eyetracking process.
-	 * 
-	 *  @return <em>true</em> if the receiver has more events
-	 */
-	@Override
-	public boolean hasNext() {
-		return true;
+		ETEvent receivedEvent = structToEvent(eventStruct);
+		return new ETResponse<ETEvent>(ETResponseType.NEW_DATA, receivedEvent);
 	}
 	
 	/** Converts the information of an EventStruct to an ETEvent.
 	 * 
 	 *  @param struct EventStruct containing event information
+	 *  
 	 *  @return Eyetracking event
 	 */
 	private ETEvent structToEvent(EventStruct struct) {
