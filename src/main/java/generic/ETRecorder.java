@@ -3,17 +3,55 @@ package generic;
 import exception.ETRecordingException;
 import generic.ETChronologicCollection;
 
+/** Records data from a {@link generic.ETReceiver}.
+ *  The recording is run asynchronously in another thread.
+ *  <p>
+ *  Calling {@link #startRecording() startRecording} will start the
+ *  recording. If no fixed pollrate is specified, the recorder will
+ *  retrieve data as fast as possible from the receiver.
+ *  <p>
+ *  Calling {@link #stopRecording() stopRecording} will stop the
+ *  currently running recording thread.
+ *  <p>
+ *  Calling {@link #getRecordedData() getRecordedData will return the
+ *  recorded data in a {@link generic.ETChronologicCollection}. If the
+ *  recording thread is still running, this will stop the thread before
+ *  returning the data.
+ *  <p>
+ *  Only new data will be added to the recorded collection.
+ *  If the source is depleted, {@link #stopRecording() stopRecording}
+ *  will return all recorded data up until that point.
+ * 
+ *  @author Luca Fuelbier
+ */
 public class ETRecorder<E extends ChronologicComparable<E>> {
 	
 	private ETReceiver<E> receiver;
 	private ETChronologicCollection<E> accumulatorCollection;
 	private Thread recordingThread;
 	
+	/** Runnable that manages the data recording. */
 	private class ETRecordingRunnable implements Runnable {	
 		private ETReceiver<E> receiver;
 		private ETChronologicCollection<E> accumulatorCollection;
 		private long pollrate;
 		
+		/** Constructs a new ETRecordingRunnable with the given
+		 *  receiver, accumulator collection and pollrate.
+		 *  <p>
+		 *  The accumulator collection will be used to store the
+		 *  recorded data. The collection access is synchronized,
+		 *  so the collection can be used by another thread, after
+		 *  this Runnable has finished its work.
+		 *  <p>
+		 *  The pollrate is the delay (in milliseconds) between each
+		 *  request to the receiver. A pollrate of 0 will record data
+		 *  as fast as possible.
+		 * 
+		 *  @param receiver Data receiver
+		 *  @param accumulatorCollection Accumulator collection
+		 *  @param pollrate Pollrate [ms]
+		 */
 		public ETRecordingRunnable(ETReceiver<E> receiver,
 								   ETChronologicCollection<E> accumulatorCollection,
 								   long pollrate)
@@ -23,6 +61,12 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 			this.pollrate = pollrate;
 		}
 
+		/** Runs the recording.
+		 *  <p>
+		 *  Only new data will be added to the accumulator collection.
+		 *  If the source is depleted, or the current thread is
+		 *  interrupted, the recording will finish.
+		 */
 		@Override
 		public void run() {
 			while(!Thread.currentThread().isInterrupted()) {
@@ -51,10 +95,21 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 		
 	}
 	
+	/** Constructs a new ETRecorder with the given receiver.
+	 * 
+	 *  @param receiver Data receiver
+	 */
 	public ETRecorder(ETReceiver<E> receiver) {
 		this.receiver = receiver;
 	}
 	
+	/** Starts the asynchronous recording.
+	 *  <p>
+	 *  The recorder will record as much data as possible.
+	 *  Beware that this will use a lot of processing power.
+	 *  
+	 *  @throws exception.ETRecordingException if there is already a recording thread running
+	 */
 	public void startRecording() {
 		if(recordingThread != null && recordingThread.isAlive()) {
 			throw new ETRecordingException("Can not start new recording while previous recording is still running.");
@@ -65,6 +120,18 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 		recordingThread.start();
 	}
 	
+	/** Start the asynchronous recording.
+	 *  <p>
+	 *  The recorder will pause for the specified time
+	 *  between each request to the receiver. This will
+	 *  reduce the stress on your CPU for sources, that
+	 *  often respond with {@link generic.ETResponseType#NO_NEW_DATA_AVAILABLE}
+	 *  when requesting new data without a time delay.
+	 * 
+	 *  @param pollrate Time delay between each request to the receiver
+	 *  
+	 *  @throws exception.ETRecordingException if there is already a recording thread running
+	 */
 	public void startRecording(long pollrate) {
 		if(recordingThread != null && recordingThread.isAlive()) {
 			throw new ETRecordingException("Can not start new recording while previous recording has not finished.");
@@ -75,10 +142,30 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 		recordingThread.start();
 	}
 	
+	/** Stops the recording.
+	 *  <p>
+	 *  The default timeout for this method is 2 seconds.
+	 *  
+	 *  @throws exception.ETRecordingException if a timeout occurred
+	 */
 	public void stopRecording() {
-		stopRecordingThread();
+		stopRecordingThread(2000);
 	}
 	
+	/** Stops the recording with the given timeout.
+	 * 
+	 *  @param timeout Timeout [ms]
+	 *  
+	 *  @throws exception.ETRecordingException if a timeout occurred
+	 */
+	public void stopRecording(long timeout) {
+		stopRecordingThread(timeout);
+	}
+	
+	/** Returns if the recorder is currently recording.
+	 * 
+	 *  @return <em>true</em>, if the recorder is recording, else <em>false</em>
+	 */
 	public boolean isRunning() {
 		if(recordingThread == null) {
 			return false;
@@ -88,17 +175,45 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 		}
 	}
 	
+	/** Returns the recorded data.
+	 *  <p>
+	 *  The default timeout for this method is 2 seconds.
+	 *  <p>
+	 *  If the recording is still running, the recording will
+	 *  be stopped before returning the data.
+	 * 
+	 *  @return Recorded data
+	 *  
+	 *  @throws exception.ETRecordingException if a timeout occurred
+	 */
 	public ETChronologicCollection<E> getRecordedData() {
 		return getRecordedData(2000);
 	}
 	
+	/** Returns the recorded data with the given timeout.
+	 *  <p>
+	 *  If the recording is still running, the recording will
+	 *  be stopped before returning the data.
+	 *  
+	 *  @param timeout Timeout [ms]
+	 * 
+	 *  @return Recorded data
+	 *  
+	 *  @throws exception.ETRecordingException if a timeout occurred
+	 */
 	public ETChronologicCollection<E> getRecordedData(long timeout) {
-		stopRecordingThread();
+		stopRecordingThread(timeout);
 		
 		synchronized(accumulatorCollection) { return accumulatorCollection; }
 	}
 	
-	private void stopRecordingThread() {
+	/** Stops the recording thread with the given timeout.
+	 * 
+	 *  @param timeout Timeout [ms]
+	 *  
+	 *  @throws exception.ETRecordingException if a timeout occurred
+	 */
+	private void stopRecordingThread(long timeout) {
 		if(recordingThread == null) {
 			return;
 		}
@@ -106,7 +221,7 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 		try
 		{
 			recordingThread.interrupt();
-			recordingThread.join(2000);
+			recordingThread.join(timeout);
 			if(recordingThread.isAlive()) {
 				throw new ETRecordingException("Timeout while waiting for the recording thread to return.");
 			}
