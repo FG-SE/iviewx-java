@@ -5,9 +5,10 @@ import calibration.ETCalibrationManager;
 import calibration.ETIViewXCalibrationManager;
 import connection.ETConnectionManager;
 import connection.ETIViewXConnectionManager;
-import event.ETEventReceiver;
+import generic.ETReceiver;
+import event.ETEvent;
+import sample.ETSample;
 import event.ETIViewXEventReceiver;
-import sample.ETSampleReceiver;
 import sample.ETIViewXSampleReceiver;
 import validation.ETValidationManager;
 import validation.ETIViewXValidationManager;
@@ -26,10 +27,13 @@ import validation.ETIViewXValidationManager;
  *  There are a couple things worth noting when working with this class:
  *  <ul>
  *  	<li> 
- *  		Concurrent access to the methods of this class has not been tested.
- *    		It is advised to restrict the access to this classes functionality to 
- *    		one thread at a time. Concurrent calls may lead to unknown behavior
- *    		on the eyetracking server side and could break your application.
+ *  		The services provided by this class should only be used by
+ *  		a single thread at a time. The SMI eyetracking library provides
+ *  		a couple of abstractions that make it possible to work
+ *  		concurrently with these services, but they too will only
+ *  		use a single service on a single thread. If you pass any
+ *  		of these services to multiple abstractions, or use it concurrently
+ *  		from multiple threads, correct behavior is not guaranteed.
  *    	</li>
  *    	<li>
  *  		While server access from multiple applications (different processes) is 
@@ -51,8 +55,8 @@ public final class IViewX {
 	private static final IViewXAPILibrary lib;
 	private static final ETCalibrationManager calibrationManager;
 	private static final ETConnectionManager connectionManager;
-	private static final ETEventReceiver eventReceiver;
-	private static final ETSampleReceiver sampleReceiver;
+	private static final ETReceiver<ETEvent> eventReceiver;
+	private static final ETReceiver<ETSample> sampleReceiver;
 	private static final ETValidationManager validationManager;
 	
 	static {
@@ -146,7 +150,7 @@ public final class IViewX {
 	 * 
 	 *  @return ETEventReceiver for the connected IView X Server
 	 */
-	public static ETEventReceiver getEventReceiver() {
+	public static ETReceiver<ETEvent> getEventReceiver() {
 		return eventReceiver;
 	}
 	
@@ -159,7 +163,7 @@ public final class IViewX {
 	 * 
 	 *  @return ETSampleReceiver for the connected IView X Server
 	 */
-	public static ETSampleReceiver getSampleReceiver() {
+	public static ETReceiver<ETSample> getSampleReceiver() {
 		return sampleReceiver;
 	}
 
