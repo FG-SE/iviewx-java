@@ -1,17 +1,14 @@
 package iviewx;
 
 import iviewxapi.IViewXAPILibrary;
-import calibration.ETCalibrationManager;
-import calibration.ETIViewXCalibrationManager;
-import connection.ETConnectionManager;
-import connection.ETIViewXConnectionManager;
-import generic.ETReceiver;
-import event.ETEvent;
-import sample.ETSample;
-import event.ETIViewXEventReceiver;
-import sample.ETIViewXSampleReceiver;
-import validation.ETValidationManager;
-import validation.ETIViewXValidationManager;
+import iviewx.eyetracker.ETCalibrationManager;
+import iviewx.eyetracker.ETConnectionManager;
+import iviewx.eyetracker.ETValidationManager;
+import core.receiver.ETReceiver;
+import iviewx.event.ETEvent;
+import iviewx.sample.ETSample;
+import iviewx.event.ETEventReceiver;
+import iviewx.sample.ETSampleReceiver;
 
 /** The central access point to the part of the Eyetracking API which
  *  uses the SMI IView X Server for eyetracking data retrieval.
@@ -62,11 +59,11 @@ public final class IViewX {
 	static {
 		// Statically initializes IViewX backed classes for singleton-like behavior
 		lib = IViewXAPILibrary.INSTANCE;
-		calibrationManager = new ETIViewXCalibrationManager(lib);
-		connectionManager = new ETIViewXConnectionManager(lib);
-		eventReceiver = new ETIViewXEventReceiver(lib);
-		sampleReceiver = new ETIViewXSampleReceiver(lib);
-		validationManager = new ETIViewXValidationManager(lib);
+		calibrationManager = new ETCalibrationManager(lib);
+		connectionManager = new ETConnectionManager(lib);
+		eventReceiver = new ETEventReceiver(lib);
+		sampleReceiver = new ETSampleReceiver(lib);
+		validationManager = new ETValidationManager(lib);
 	}
 	
 	/** Constructs a new IViewX object.
@@ -79,7 +76,7 @@ public final class IViewX {
 	
 	/** Connects to an IView X Server.
 	 * 
-	 *  @see connection.ETIViewXConnectionManager#connect
+	 *  @see iviewx.eyetracker.ETConnectionManager#connect
 	 *  
 	 *  @param sendIp IP adress of sender
 	 *  @param sendPort Port of sender
@@ -92,7 +89,7 @@ public final class IViewX {
 	
 	/** Connect to a locally running IView X Server.
 	 * 
-	 *  @see connection.ETIViewXConnectionManager#connectLocal 
+	 *  @see iviewx.eyetracker.ETConnectionManager#connectLocal 
 	 */
 	public static void connectLocal() {
 		connectionManager.connectLocal();
@@ -100,7 +97,7 @@ public final class IViewX {
 	
 	/** Disconnects from the currently connected server.
 	 * 
-	 *  @see connection.ETIViewXConnectionManager#disconnect
+	 *  @see iviewx.eyetracker.ETConnectionManager#disconnect
 	 */
 	public static void disconnect() {
 		connectionManager.disconnect();
@@ -108,7 +105,7 @@ public final class IViewX {
 
 	/** Returns <i>true</i> if a connection has been established.
 	 * 
-	 *  @see connection.ETIViewXConnectionManager#isConnected
+	 *  @see iviewx.eyetracker.ETConnectionManager#isConnected
 	 *  
 	 *  @return <i>true</i> if a connection has been established, else <i>false</i>
 	 */
@@ -118,7 +115,7 @@ public final class IViewX {
 
 	/** Sets the connection timeout in seconds.
 	 * 
-	 *  @see connection.ETIViewXConnectionManager#setConnectionTimeout
+	 *  @see iviewx.eyetracker.ETConnectionManager#setConnectionTimeout
 	 *  
 	 *  @param seconds Number of seconds before timeout will occur
 	 */
@@ -128,7 +125,7 @@ public final class IViewX {
 	
 	/** Starts the automatic calibration.
 	 * 
-	 *  @see calibration.ETIViewXCalibrationManager#calibrate 
+	 *  @see iviewx.eyetracker.ETCalibrationManager#calibrate 
 	 */
 	public static void calibrate() {
 		calibrationManager.calibrate();
@@ -136,7 +133,7 @@ public final class IViewX {
 	
 	/** Starts the automatic validation.
 	 * 
-	 *  @see validation.ETIViewXValidationManager#validate
+	 *  @see iviewx.eyetracker.ETValidationManager#validate
 	 */
 	public static void validate() {
 		validationManager.validate();

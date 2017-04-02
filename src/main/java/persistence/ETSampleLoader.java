@@ -8,9 +8,9 @@ import java.io.IOException;
 
 import com.google.common.io.Files;
 
-import eye.ETEyeData;
-import generic.ETChronologicCollection;
-import sample.ETSample;
+import core.chronologic.ETChronologicCollection;
+import iviewx.eye.ETEyeData;
+import iviewx.sample.ETSample;
 import exception.ETFileFormatException;;
 
 /** Loads eyetracking samples from persistent sources to be used with {@link sample.ETPlaybackSampleReceiver}.
@@ -50,9 +50,9 @@ public class ETSampleLoader {
 	 *    <li>Timestamp, microseconds, (long)</li>
 	 *  </ol>
 	 *  <p>
-	 *  The samples are parsed and stored in a {@link generic.ETChronologicCollection}.
+	 *  The samples are parsed and stored in a {@link core.chronologic.ETChronologicCollection}.
 	 *  Samples that are not in chronological order are inserted as specified by
-	 *  {@link generic.ETChronologicCollection#add}.
+	 *  {@link core.chronologic.ETChronologicCollection#add}.
 	 *  <p>
 	 *  Lines starting with a <strong>#</strong> are considered comments and are ignored.
 	 *  

@@ -2,12 +2,14 @@ package persistence;
 
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import core.chronologic.ETChronologicCollection;
+
 import org.junit.Rule;
 import static org.junit.Assert.*;
 
-import event.ETEvent;
-import eye.ETEye;
-import generic.ETChronologicCollection;
+import iviewx.event.ETEvent;
+import iviewx.eye.ETEye;
 import persistence.ETEventLoader;
 import exception.ETFileFormatException;
 

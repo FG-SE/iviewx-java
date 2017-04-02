@@ -3,6 +3,8 @@
  
  [TODO]
  - Add tests for ETIViewXEventReceiver / ETIViewXSampleReceiver
+ - Rework project structure (?)
+ - Add generic interfaces for persistence related classes
  - Sort imports
  
  [Future Improvements]

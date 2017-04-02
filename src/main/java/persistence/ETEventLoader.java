@@ -8,10 +8,10 @@ import java.io.IOException;
 
 import com.google.common.io.Files;
 
+import core.chronologic.ETChronologicCollection;
 import exception.ETFileFormatException;
-import eye.ETEye;
-import generic.ETChronologicCollection;
-import event.ETEvent;
+import iviewx.eye.ETEye;
+import iviewx.event.ETEvent;
 
 /** Loads eyetracking events from persistent sources to be used with {@link event.ETPlaybackEventReceiver}.
  *  <p>
@@ -42,9 +42,9 @@ public class ETEventLoader {
 	 *    <li>Gaze position Y, (double)</li>
 	 *  </ol>
 	 *  <p>
-	 *  The events are parsed and stored in a {@link generic.ETChronologicCollection}.
+	 *  The events are parsed and stored in a {@link core.chronologic.ETChronologicCollection}.
 	 *  Events that are not in chronological order are inserted as specified by
-	 *  {@link generic.ETChronologicCollection#add}.
+	 *  {@link core.chronologic.ETChronologicCollection#add}.
 	 *  <p>
 	 *  Lines starting with a <strong>#</strong> are considered comments and are ignored.
 	 *  

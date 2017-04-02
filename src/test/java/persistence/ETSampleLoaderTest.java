@@ -2,12 +2,14 @@ package persistence;
 
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import core.chronologic.ETChronologicCollection;
+
 import org.junit.Rule;
 import static org.junit.Assert.*;
 
-import sample.ETSample;
+import iviewx.sample.ETSample;
 import exception.ETFileFormatException;
-import generic.ETChronologicCollection;
 import persistence.ETSampleLoader;
 
 import java.io.File;
