@@ -2,7 +2,10 @@
 - Make a list of features that the SDK supports for the RED-m eyetracker, that have not yet been implemented in this library
  
  [TODO]
- - Add tests for ETIViewXEventReceiver / ETIViewXSampleReceiver
+ - Add JSON Serializers for ETEvent and ETSample (using GSON)
+ - Add Java Serializers for ETEvent and ETSample (?)
+ - Add package-info for the subpackages of core and iviewx
+ - Add tests for ETEventReceiver / ETSampleReceiver
  - Sort imports
  
  [Future Improvements]

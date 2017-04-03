@@ -1,6 +1,8 @@
 # Notes for the Eyetracking Library Tutorial #
 
-## Eyetracking as a concurrent action ##
+## Prerequisites ##
+
+ * Java 8
 
 ## Receiver based mechanisms ##
 
