@@ -8,9 +8,9 @@ import core.chronologic.ETChronologicCollection;
 import org.junit.Rule;
 import static org.junit.Assert.*;
 
-import iviewx.sample.ETSample;
-import exception.ETFileFormatException;
 import persistence.ETSampleLoader;
+import exception.ETFileFormatException;
+import iviewx.data.ETSample;
 
 import java.io.File;
 import java.util.List;

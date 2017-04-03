@@ -3,8 +3,8 @@ package iviewx.sample;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import iviewx.sample.ETSample;
-import iviewx.eye.ETEyeData;
+import iviewx.data.ETEyeData;
+import iviewx.data.ETSample;
 
 public class ETSampleTest {
 

@@ -1,11 +1,12 @@
-package iviewx.sample;
+package iviewx.eyetracker;
 
 import core.receiver.ETReceiver;
 import core.receiver.response.ETResponse;
 import core.receiver.response.ETResponseType;
 import core.receiver.stabilization.ETStabilizationStrategy;
 import exception.ETErrorHandler;
-import iviewx.eye.ETEyeData;
+import iviewx.data.ETEyeData;
+import iviewx.data.ETSample;
 import iviewxapi.IViewXAPILibrary;
 import iviewxapi.SampleStruct;
 import iviewxapi.EyeDataStruct;

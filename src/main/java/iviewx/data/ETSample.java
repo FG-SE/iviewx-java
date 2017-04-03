@@ -1,7 +1,6 @@
-package iviewx.sample;
+package iviewx.data;
 
 import core.chronologic.ChronologicComparable;
-import iviewx.eye.ETEyeData;
 
 /** Stores eyetracking sample information.
  *  <p>

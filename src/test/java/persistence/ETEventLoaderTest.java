@@ -8,8 +8,8 @@ import core.chronologic.ETChronologicCollection;
 import org.junit.Rule;
 import static org.junit.Assert.*;
 
-import iviewx.event.ETEvent;
-import iviewx.eye.ETEye;
+import iviewx.data.ETEvent;
+import iviewx.data.ETEye;
 import persistence.ETEventLoader;
 import exception.ETFileFormatException;
 

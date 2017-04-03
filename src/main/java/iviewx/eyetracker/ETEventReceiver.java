@@ -1,4 +1,4 @@
-package iviewx.event;
+package iviewx.eyetracker;
 
 import iviewxapi.IViewXAPILibrary;
 import core.receiver.ETReceiver;
@@ -6,7 +6,8 @@ import core.receiver.response.ETResponse;
 import core.receiver.response.ETResponseType;
 import core.receiver.stabilization.ETStabilizationStrategy;
 import exception.ETErrorHandler;
-import iviewx.eye.ETEye;
+import iviewx.data.ETEvent;
+import iviewx.data.ETEye;
 import iviewxapi.EventStruct;
 
 /** Receives eyetracking events from the RED-m eyetracker.

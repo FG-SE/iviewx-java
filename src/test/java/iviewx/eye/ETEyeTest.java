@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-import iviewx.eye.ETEye;
+import iviewx.data.ETEye;
 
 import static org.junit.Assert.*;
 

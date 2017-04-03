@@ -1,7 +1,6 @@
-package iviewx.event;
+package iviewx.data;
 
 import core.chronologic.ChronologicComparable;
-import iviewx.eye.ETEye;
 
 /** Stores eyetracking event information.
  *  <p>

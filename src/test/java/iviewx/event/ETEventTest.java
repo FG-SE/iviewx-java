@@ -3,8 +3,8 @@ package iviewx.event;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import iviewx.event.ETEvent;
-import iviewx.eye.ETEye;
+import iviewx.data.ETEvent;
+import iviewx.data.ETEye;
 
 public class ETEventTest {
 

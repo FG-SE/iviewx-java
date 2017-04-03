@@ -1,4 +1,4 @@
-package iviewx.eye;
+package iviewx.data;
 
 /** Eye of one side of the face.
  *  <ul>

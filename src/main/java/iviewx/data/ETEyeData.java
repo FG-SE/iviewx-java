@@ -1,4 +1,4 @@
-package iviewx.eye;
+package iviewx.data;
 
 /** Eyetracking data for one eye.
  *  <p>
