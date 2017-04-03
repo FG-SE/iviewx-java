@@ -10,8 +10,8 @@ import com.google.common.io.Files;
 
 import core.chronologic.ETChronologicCollection;
 import exception.ETFileFormatException;
-import iviewx.eye.ETEye;
-import iviewx.event.ETEvent;
+import iviewx.data.ETEye;
+import iviewx.data.ETEvent;
 
 /** Loads eyetracking events from persistent sources to be used with {@link event.ETPlaybackEventReceiver}.
  *  <p>

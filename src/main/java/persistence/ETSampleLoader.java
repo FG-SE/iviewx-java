@@ -9,8 +9,8 @@ import java.io.IOException;
 import com.google.common.io.Files;
 
 import core.chronologic.ETChronologicCollection;
-import iviewx.eye.ETEyeData;
-import iviewx.sample.ETSample;
+import iviewx.data.ETEyeData;
+import iviewx.data.ETSample;
 import exception.ETFileFormatException;;
 
 /** Loads eyetracking samples from persistent sources to be used with {@link sample.ETPlaybackSampleReceiver}.
