@@ -1,14 +1,14 @@
 package iviewx;
 
 import iviewxapi.IViewXAPILibrary;
+import iviewx.data.ETEvent;
+import iviewx.data.ETSample;
 import iviewx.eyetracker.ETCalibrationManager;
 import iviewx.eyetracker.ETConnectionManager;
+import iviewx.eyetracker.ETEventReceiver;
+import iviewx.eyetracker.ETSampleReceiver;
 import iviewx.eyetracker.ETValidationManager;
 import core.receiver.ETReceiver;
-import iviewx.event.ETEvent;
-import iviewx.sample.ETSample;
-import iviewx.event.ETEventReceiver;
-import iviewx.sample.ETSampleReceiver;
 
 /** The central access point to the part of the Eyetracking API which
  *  uses the SMI IView X Server for eyetracking data retrieval.

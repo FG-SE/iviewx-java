@@ -4,7 +4,6 @@ import core.chronologic.ChronologicComparable;
 import core.chronologic.ETChronologicCollection;
 import core.receiver.ETReceiver;
 import core.receiver.response.ETResponse;
-import core.receiver.response.ETResponseType;
 import exception.ETRecordingException;
 
 /** Records data from a {@link core.receiver.ETReceiver}.
