@@ -1,8 +1,5 @@
+// TODO: Documentation for json package
 /**
- * 
- */
-/**
- * @author Luca Fuelbier
- *
+ *  @author Luca Fuelbier
  */
 package iviewx.serialization.json;

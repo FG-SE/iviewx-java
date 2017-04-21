@@ -1,5 +1,5 @@
 /** Contains the generic core classes of the eyetracking library.
- *  
+ *  <p>
  *  The core package provides a couple of work classes that are more
  *  or less suited, depending on the kind of application you are building.
  *  The following table gives a short overview of the available options:

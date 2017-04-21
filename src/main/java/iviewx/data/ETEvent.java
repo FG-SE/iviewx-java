@@ -6,7 +6,7 @@ import core.chronologic.ChronologicComparable;
  *  <p>
  *  Eyetracking events are fixation events.
  *  <br>
- *  Fixation means a fixation of a screen coordinate for a given timeframe.
+ *  Fixation means a fixation of a screen coordinate for a given time period.
  * 
  *  @author Luca Fuelbier
  */
