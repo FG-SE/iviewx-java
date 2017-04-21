@@ -13,7 +13,7 @@ import exception.ETFileFormatException;
 import iviewx.data.ETEye;
 import iviewx.data.ETEvent;
 
-/** Loads eyetracking events from persistent sources to be used with {@link event.ETPlaybackEventReceiver}.
+/** Loads eyetracking events from persistent sources to be used with {@link core.receiver.ETPlaybackReceiver}.
  *  <p>
  *  Currently the following persistent formats are supported:
  *  <ul>
@@ -79,7 +79,7 @@ public class ETEventLoader {
 		return events;
 	}
 	
-	/** Parses a String containing eyetracking event data into a {@link event.ETEvent} object.
+	/** Parses a String containing eyetracking event data into a {@link iviewx.data.ETEvent} object.
 	 *  <p>
 	 *  For the correct format of the String, see {@link #fromEyetrackingEventFile}.
 	 *  

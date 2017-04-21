@@ -59,7 +59,7 @@ public abstract class ETReceiver<E extends ChronologicComparable<E>> {
 		}
 		
 		E stabilizedData = stabilizationStrategy.stabilize(response.getData());
-		return new ETResponse<E>(response.getType(), stabilizedData);
+		return new ETResponse<>(response.getType(), stabilizedData);
 	}
 	
 	/** Sets the stabilization strategy.

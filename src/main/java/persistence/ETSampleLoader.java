@@ -13,7 +13,7 @@ import iviewx.data.ETEyeData;
 import iviewx.data.ETSample;
 import exception.ETFileFormatException;;
 
-/** Loads eyetracking samples from persistent sources to be used with {@link sample.ETPlaybackSampleReceiver}.
+/** Loads eyetracking samples from persistent sources to be used with {@link core.receiver.ETPlaybackReceiver}.
  *  <p>
  *  Currently the following persistent formats are supported:
  *  <ul>
@@ -87,7 +87,7 @@ public class ETSampleLoader {
 		return samples;
 	}
 	
-	/** Parses a String containing eyetracking sample data into a {@link sample.ETSample} object.
+	/** Parses a String containing eyetracking sample data into a {@link iviewx.data.ETSample} object.
 	 *  <p>
 	 *  For the correct format of the String, see {@link #fromEyetrackingSampleFile}.
 	 *  

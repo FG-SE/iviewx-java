@@ -21,9 +21,8 @@ import core.receiver.stabilization.ETStabilizationStrategy;
  */
 public class ETPlaybackReceiver<E extends ChronologicComparable<E>> extends ETReceiver<E> {
 
-	ETChronologicCollection<E> elements;
-	Iterator<E> elementsIter;
-	ETStabilizationStrategy<E> stabilizationStrategy;
+	private ETChronologicCollection<E> elements;
+	private Iterator<E> elementsIter;
 	
 	/** Constructs a new ETPlaybackReceiver with a empty collection and a
 	 *  default stabilization strategy.
@@ -53,10 +52,10 @@ public class ETPlaybackReceiver<E extends ChronologicComparable<E>> extends ETRe
 	@Override
 	protected ETResponse<E> getNextFromSource() {
 		if(elementsIter.hasNext()) {
-			return new ETResponse<E>(ETResponseType.NEW_DATA, elementsIter.next());
+			return new ETResponse<>(ETResponseType.NEW_DATA, elementsIter.next());
 		}
 		else {
-			return new ETResponse<E>(ETResponseType.SOURCE_DEPLETED, null);
+			return new ETResponse<>(ETResponseType.SOURCE_DEPLETED, null);
 		}
 	}
 	
