@@ -1,6 +1,8 @@
-/** Contains the SMI IViewX SDK specific manager classes for
- *  connecting and configuring the eyetracking server. This
- *  package also includes the receiver implementations for
+/** Contains the SMI IViewX SDK specific configuration and receiver
+ *  classes.
+ *  <p>
+ *  The manager classes handle connecting and configuring the eyetracking
+ *  server. This package also includes the receiver implementations for
  *  use with the eyetracking core library.
  *  <p>
  *  Note that none of these classes should be created by the

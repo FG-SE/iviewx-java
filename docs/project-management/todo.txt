@@ -4,7 +4,7 @@
  [TODO]
  - Add JSON Serializers for ETEvent and ETSample (using GSON)
  - Add Java Serializers for ETEvent and ETSample (?)
- - Add package-info for the subpackages of core and iviewx
+ - Add package-info for serialization package
  - Add tests for ETEventReceiver / ETSampleReceiver
  - Sort imports
  

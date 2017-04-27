@@ -9,7 +9,7 @@ import core.chronologic.ChronologicComparable;
  *  They provide very detailed information about the eyes 
  *  current state, including desktop gaze and spatial position.
  *  <p>
- *  See {@link eye.ETEyeData} for more detail on the information available for each eye.
+ *  See {@link iviewx.data.ETEyeData} for more detail on the information available for each eye.
  * 
  *  @author Luca Fuelbier
  */

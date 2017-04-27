@@ -25,7 +25,7 @@
  *      </td>
  *    </tr>
  *    <tr>
- *      <td>{@link core.receiver.recorder.ETRecorder}</td>
+ *      <td>{@link core.recorder.ETRecorder}</td>
  *      <td>
  *        Records data from a receiver and stores the data in a collection for posthoc
  *        analysis. The returned collection supports Java 8 streams, making it easy to
@@ -35,7 +35,7 @@
  *      </td>
  *    </tr>
  *    <tr>
- *      <td>{@link core.receiver.reactive.ETStreamService}</td>
+ *      <td>{@link core.reactive.ETStreamService}</td>
  *      <td>
  *        Provides a reactive stream based on a receiver, powered by the RxJava 2 library.
  *        This is the most advanced work class in the eyetracking library. The reactive

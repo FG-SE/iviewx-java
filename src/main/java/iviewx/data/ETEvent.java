@@ -22,7 +22,7 @@ public class ETEvent implements ChronologicComparable<ETEvent> {
 	 * 
 	 * @param startTime Start time of the event [us]
 	 * @param endTime End time of the event [us]
-	 * @param eye Related eye ({@link eye.ETEye#LEFT}/{@link eye.ETEye#RIGHT})
+	 * @param eye Related eye ({@link iviewx.data.ETEye#LEFT}/{@link iviewx.data.ETEye#RIGHT})
 	 * @param posX Horizontal position of the fixation [px]
 	 * @param posY Vertical position of the fixation [px]
 	 */
@@ -60,7 +60,7 @@ public class ETEvent implements ChronologicComparable<ETEvent> {
 	
 	/** Returns the eye related to the event.
 	 *  <p>
-	 *  Possible values are {@link eye.ETEye#LEFT} and {@link eye.ETEye#RIGHT}.
+	 *  Possible values are {@link iviewx.data.ETEye#LEFT} and {@link iviewx.data.ETEye#RIGHT}.
 	 * 
 	 *  @return Eye related to the event
 	 */
