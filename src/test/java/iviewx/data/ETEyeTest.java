@@ -1,4 +1,4 @@
-package iviewx.eye;
+package iviewx.data;
 
 import org.junit.Test;
 import org.junit.Rule;

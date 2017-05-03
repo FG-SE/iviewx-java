@@ -1,4 +1,4 @@
-package iviewx.sample;
+package iviewx.data;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -9,7 +9,7 @@ import iviewx.data.ETSample;
 public class ETSampleTest {
 
 	@Test
-	public void compareTo_otherSampleLater_returnsNegativeInt() {
+	public void chrCompareTo_otherSampleLater_returnsNegativeInt() {
 		ETSample sampleEarly = createSample(0);
 		ETSample sampleLate = createSample(10);
 		
@@ -17,7 +17,7 @@ public class ETSampleTest {
 	}
 	
 	@Test
-	public void compareTo_otherSampleSameTime_returnsZero() {
+	public void chrCompareTo_otherSampleSameTime_returnsZero() {
 		ETSample sample1 = createSample(10);
 		ETSample sample2 = createSample(10);
 		
@@ -25,7 +25,7 @@ public class ETSampleTest {
 	}
 	
 	@Test
-	public void compareTo_otherSampleEarlier_returnsPositiveInt() {
+	public void chrCompareTo_otherSampleEarlier_returnsPositiveInt() {
 		ETSample sampleLate = createSample(10);
 		ETSample sampleEarly = createSample(0);
 		
