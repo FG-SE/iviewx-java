@@ -1,14 +1,17 @@
 [General]
 - Make a list of features that the SDK supports for the RED-m eyetracker, that have not yet been implemented in this library
  
- [TODO]
+[TODO]
  - Add package-info for serialization package
  - Add package-info for serialization.json package
  - Add tests for ETEventReceiver / ETSampleReceiver
  - Sort imports
  
- [Future Improvements]
+[Future Improvements]
  - Refactor ETRecorder and ETStreamService to use ExecutorService instead of raw threads
 
- [Possible Future Features]
+[Possible Future Features]
  - Binary Serialization for ETEvent/ETSample using Protocol Buffers
+
+[Bugs]
+ - Package documentation is not added for packages that only include a package-info.java and other packages
