@@ -24,8 +24,23 @@ test {
 	testLogging.showStandardStreams = true
 }
 
-//Tasks
+// Tasks
 javadoc {
 	options.links("https://docs.oracle.com/javase/8/docs/api/")
 	exclude "**/iviewxapi/**"
 }
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+// Task Grouping
+
+def ARCHIVE_GROUP = 'archives'
+
+jar.group = ARCHIVE_GROUP
+
+fatJar.group = ARCHIVE_GROUP
+fatJar.description = 'Assembles a jar archive containing the main classes and all third party dependencies.'
