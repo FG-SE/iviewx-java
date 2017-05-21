@@ -1,6 +1,7 @@
 // Plugins
 apply plugin: 'java'
 
+// JVM config
 sourceCompatibility = 1.8
 
 // Repositories
