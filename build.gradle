@@ -1,7 +1,19 @@
 // Plugins
-apply plugin: 'java'
+plugins {
+    id 'net.saliman.properties' version '1.4.6'
+    id "com.jfrog.bintray" version "1.7.3"
+}
 
-// JVM config
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'java'
+apply plugin: 'java-library'
+
+// Project config
+group = 'de.unihannover.se.iviewxjava'
+version = '0.1.0'
+
+// JVM
 sourceCompatibility = 1.8
 
 // Repositories
@@ -20,6 +32,50 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.+'
     testCompile 'org.awaitility:awaitility:2.0.0'
+}
+
+// Maven publication configuration
+publishing {
+    publications {
+        IViewXJavaPublication(MavenPublication) {
+            from components.java
+            groupId 'de.unihannover.se.iviewxjava'
+            artifactId 'iviewx-java'
+            version '0.1.0'
+        }
+    }
+}
+
+// Bintray configuration
+bintray {
+    user = project.property('bintray_user')
+    key  = project.property('bintray_key')
+
+    publications = ['IViewXJavaPublication']
+
+    dryRun = false
+    publish = true
+    override = false
+
+    pkg {
+        repo = 'iviewx-java'
+        name = 'iviewx-java'
+        userOrg = 'fg-se'
+        desc = 'Java adapter for the SMI IViewX SDK'
+        licenses = ['Apache-2.0']
+        labels = ['eyetracking', 'java', 'iviewx']
+        vcsUrl = 'https://github.com/FG-SE/iviewx-java.git'
+        issueTrackerUrl = 'https://github.com/FG-SE/iviewx-java/issues'
+        githubRepo = 'FG-SE/iviewx-java'
+        publicDownloadNumbers = true
+
+        version {
+            name = '0.1.0'
+            desc = 'Testing correct deployment to Bintray'
+            released = new Date()
+            vcsTag = '0.1.0'
+        }
+    }
 }
 
 // Test configuration
