@@ -26,12 +26,17 @@ bintray_user=iviewxuser
 bintray_key=1234abcd5678ef
 ```
 
-The username can be found on the top-right on your bintray menu bar.
-The API-key can be found on your Bintray user page via `Edit -> API Key`.
-
 **NOTE:** Make sure you do not commit this file into version control! It
           contains private information you do not want to be published.
           This file is git-ignored in this repository by default.
+
+The username can be found on the top-right on your bintray menu bar.
+The API-key can be found on your Bintray user page via `Edit -> API Key`.
+
+If no credentials were supplied in the properties file, the build will
+fall back to the environment variables `BINTRAY_USER` and `BINTRAY_KEY`.
+Using the environment variables isn't recommended, as they get harder
+to manage if you want to deploy to other Bintray repositories aswell.
 
 ## Versioning ##
 

@@ -48,8 +48,8 @@ publishing {
 
 // Bintray configuration
 bintray {
-    user = project.property('bintray_user')
-    key  = project.property('bintray_key')
+    user = project.hasProperty('bintray_user') ? project.property('bintray_user') : System.getenv('BINTRAY_USER')
+    key  = project.hasProperty('bintray_key')  ? project.property('bintray_key')  : System.getenv('BINTRAY_KEY')
 
     publications = ['IViewXJavaPublication']
 
