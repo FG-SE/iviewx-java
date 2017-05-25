@@ -76,6 +76,9 @@ which will in turn publish to JCenter. To do that, simply call the
 execute the task from the command line:
 
 ```
-./gradlew bintrayUpload`     # Linux
+./gradlew bintrayUpload      # Linux
 ./gradlew.bat bintrayUpload  # Windows
 ```
+
+If you want to publish to your local Maven repository, you can use the
+`publishToMavenLocal` task instead.

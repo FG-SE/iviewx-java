@@ -11,7 +11,7 @@ apply plugin: 'java-library'
 
 // Project config
 group = 'de.unihannover.se.iviewxjava'
-version = '0.1.0'
+version = '0.1.1'
 
 // JVM
 sourceCompatibility = 1.8
@@ -35,13 +35,44 @@ dependencies {
 }
 
 // Maven publication configuration
+def pomConfig = {
+    licenses {
+        license {
+            name 'The Apache Software License, Version 2.0'
+            url 'https://www.apache.org/licenses/LICENSE-2.0'
+            distribution 'repo'
+        }
+    }
+    developers {
+        developer {
+            id 'lucafuelbier'
+            name 'Luca Fülbier'
+            email 'luca.fuelbier94@gmail.com'
+        }
+    }
+    scm {
+        connection 'scm:git:git://github.com/FG-SE/iviewx-java.git'
+        developerConnection 'scm:git:ssh://github.com:FG-SE/iviewx-java.git'
+        url 'https://github.com/FG-SE/iviewx-java'
+    }
+}
+
 publishing {
     publications {
         IViewXJavaPublication(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
             groupId 'de.unihannover.se.iviewxjava'
             artifactId 'iviewx-java'
-            version '0.1.0'
+            version '0.1.1'
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Java adapter for the SMI IViewX SDK')
+                root.appendNode('name', 'iviewx-java')
+                root.appendNode('url', 'https://github.com/FG-SE/iviewx-java')
+                root.children().last() + pomConfig
+            }
         }
     }
 }
@@ -70,10 +101,10 @@ bintray {
         publicDownloadNumbers = true
 
         version {
-            name = '0.1.0'
+            name = '0.1.1'
             desc = 'Testing correct deployment to Bintray'
             released = new Date()
-            vcsTag = '0.1.0'
+            vcsTag = '0.1.1'
         }
     }
 }
@@ -89,17 +120,38 @@ javadoc {
 	exclude "**/iviewxapi/**"
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 task fatJar(type: Jar) {
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
 
-// Task Grouping
+// Artifacts
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
 
+// Task Grouping
 def ARCHIVE_GROUP = 'archives'
 
 jar.group = ARCHIVE_GROUP
+
+sourcesJar.group = ARCHIVE_GROUP
+sourcesJar.description = 'Assembles a jar archive containing the main sources.'
+
+javadocJar.group = ARCHIVE_GROUP
+javadocJar.description = 'Assembles a jar archive containing the project documentation.'
 
 fatJar.group = ARCHIVE_GROUP
 fatJar.description = 'Assembles a jar archive containing the main classes and all third party dependencies.'
