@@ -1,0 +1,11 @@
+de.unihannover.se.iviewxjava.core.chronologic
+de.unihannover.se.iviewxjava.core.reactive
+de.unihannover.se.iviewxjava.core.receiver
+de.unihannover.se.iviewxjava.core.receiver.response
+de.unihannover.se.iviewxjava.core.receiver.stabilization
+de.unihannover.se.iviewxjava.core.recorder
+de.unihannover.se.iviewxjava.exception
+de.unihannover.se.iviewxjava.iviewx
+de.unihannover.se.iviewxjava.iviewx.data
+de.unihannover.se.iviewxjava.iviewx.eyetracker
+de.unihannover.se.iviewxjava.iviewx.serialization.json
