@@ -30,6 +30,15 @@ public class ETPlaybackReceiver<E extends ChronologicComparable<E>> extends ETRe
 	public ETPlaybackReceiver() {
 		this(new ETChronologicCollection<>(), new ETDefaultStabilizationStrategy<>());
 	}
+
+	/** Constructs a new ETPlaybackReceiver with the given collection and
+	 *  a default stabilization strategy.
+	 *
+	 *  @param elements Collection containing the data that will be fetched
+	 */
+	public ETPlaybackReceiver(ETChronologicCollection<E> elements) {
+		this(elements, new ETDefaultStabilizationStrategy<>());
+	}
 	
 	/** Constructs a new ETPlaybackReceiver with the given collection and
 	 *  stabilization strategy.
