@@ -6,6 +6,7 @@
  - Add package-info for serialization.json package
  - Add tests for ETEventReceiver / ETSampleReceiver
  - Sort imports
+ - Add Eyetracking Server Version information to the Readme
  
 [Future Improvements]
  - Refactor ETRecorder and ETStreamService to use ExecutorService instead of raw threads
