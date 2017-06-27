@@ -77,7 +77,18 @@ public class ETStreamService<E extends ChronologicComparable<E>> {
 		@Override
 		public void run() {
 			while(!Thread.currentThread().isInterrupted()) {
-				ETResponse<E> response = receiver.getNext();
+				ETResponse<E> response;
+
+				try {
+					response = receiver.getNext();
+				} catch (Exception e) {
+					System.out.println("An exception has occurred in the streaming thread:");
+					e.printStackTrace();
+					System.out.println("Stopping stream and emitting error.");
+					publisher.onError(e);
+					Thread.currentThread().interrupt();
+					continue;
+				}
 				
 				switch(response.getType()) {
 				case NEW_DATA:
