@@ -7,6 +7,11 @@
  - Add tests for ETEventReceiver / ETSampleReceiver
  - Sort imports
  - Add Eyetracking Server Version information to the Readme
+ - Add remove to ETChronologicCollection
+ - Add documentation to ETChronologicCollection iterator that it is unmodifiable
+ - Add pollrate information to ETRecorder (milliseconds)
+ - Add contributing to Readme
+ - Add accuracy results for validation method in IViewX
  
 [Future Improvements]
  - Refactor ETRecorder and ETStreamService to use ExecutorService instead of raw threads
