@@ -74,7 +74,17 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 		@Override
 		public void run() {
 			while(!Thread.currentThread().isInterrupted()) {
-				ETResponse<E> response = receiver.getNext();
+				ETResponse<E> response;
+
+				try {
+					response = receiver.getNext();
+				} catch (Exception e) {
+					System.out.println("An exception has occurred in the recording thread:");
+					e.printStackTrace();
+					System.out.println("Stopping recording.");
+					Thread.currentThread().interrupt();
+					continue;
+				}
 				
 				switch(response.getType()) {
 				case NEW_DATA:
@@ -96,7 +106,6 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 				}
 			}
 		}
-		
 	}
 	
 	/** Constructs a new ETRecorder with the given receiver.
@@ -235,5 +244,4 @@ public class ETRecorder<E extends ChronologicComparable<E>> {
 			throw new ETRecordingException("Got interrupted while waiting for the recording thread to return.", e);
 		}
 	}
-	
 }
