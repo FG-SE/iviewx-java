@@ -107,7 +107,7 @@ code examples, application design advice and developer information.
 For a detailed description of all classes and their methods, we
 provide a online version of the projects Javadoc.
 
-* **[User Guide (WIP)][5]**
+* **[User Guide][5]**
 * **[Javadoc][6]**
 
 ## Examples ##
