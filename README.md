@@ -110,6 +110,11 @@ provide a online version of the projects Javadoc.
 * **[User Guide (WIP)][5]**
 * **[Javadoc][6]**
 
+## Examples ##
+
+See the [Examples Repository][17] for small code examples,
+showcasing how to work with the IView X Java library.
+
 ## Troubleshooting ##
 
 If you find a bug, or have a request for a feature, please open
@@ -164,3 +169,4 @@ the dependencies used by this library.
 [14]: https://github.com/mockito/mockito
 [15]: https://github.com/FG-SE/iviewx-java/issues
 [16]: https://wiredcraft.com/blog/how-we-write-our-github-issues/
+[17]: https://github.com/FG-SE/iviewx-java-examples
