@@ -46,7 +46,7 @@ dependency.
 #### Gradle: ####
 
 ```groovy
-compile 'de.unihannover.se.iviewxjava:iviewx-java:1.0.0'
+compile 'de.unihannover.se.iviewxjava:iviewx-java:x.y.z'
 ```
 
 #### Maven: ####
@@ -55,7 +55,7 @@ compile 'de.unihannover.se.iviewxjava:iviewx-java:1.0.0'
 <dependency>
   <groupId>de.unihannover.se.iviewxjava</groupId>
   <artifactId>iviewx-java</artifactId>
-  <version>1.0.0</version>
+  <version>x.y.z</version>
   <type>pom</type>
 </dependency>
 ```
@@ -121,7 +121,7 @@ If you find a bug, or have a request for a feature, please open
 a new [Issue][15] and provide thorough information on your request.
 
 If you have trouble writing a good issue, check out this
-[Article by Wiredcraft][16] that explains what information to
+[Article on Wiredcraft][16] that explains what information to
 include in a good GitHub issue.
 
 ## Versioning ##
