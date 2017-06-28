@@ -11,7 +11,7 @@ apply plugin: 'java-library'
 
 // Project config
 group = 'de.unihannover.se.iviewxjava'
-version = '0.1.1'
+version = '1.0.0'
 
 // JVM
 sourceCompatibility = 1.8
@@ -65,7 +65,7 @@ publishing {
             artifact javadocJar
             groupId 'de.unihannover.se.iviewxjava'
             artifactId 'iviewx-java'
-            version '0.1.1'
+            version '1.0.0'
             pom.withXml {
                 def root = asNode()
                 root.appendNode('description', 'Java adapter for the SMI IViewX SDK')
@@ -101,10 +101,10 @@ bintray {
         publicDownloadNumbers = true
 
         version {
-            name = '0.1.1'
+            name = '1.0.0'
             desc = 'Testing correct deployment to Bintray'
             released = new Date()
-            vcsTag = '0.1.1'
+            vcsTag = '1.0.0'
         }
     }
 }
